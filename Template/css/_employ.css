@@ -1,0 +1,21 @@
+﻿.people
+{
+    cursor: pointer;
+}
+.people:hover
+{
+    outline: 3px solid #B91D47;
+}
+.rollback
+{
+    display: inline-block;
+}
+button
+{
+    overflow: hidden;
+}
+button i
+{
+    display: inline-block;
+}
+

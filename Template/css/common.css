@@ -1,0 +1,176 @@
+﻿/*icons*/
+.icon-number-0:before
+{
+    content: " 0";
+}
+.icon-number-1:before
+{
+    content: " 1";
+}
+.icon-number-2:before
+{
+    content: " 2";
+}
+.icon-number-3:before
+{
+    content: " 3";
+}
+.icon-number-4:before
+{
+    content: " 4";
+}
+.icon-number-5:before
+{
+    content: " 5";
+}
+.icon-number-6:before
+{
+    content: " 6";
+}
+.icon-number-7:before
+{
+    content: " 7";
+}
+.icon-number-8:before
+{
+    content: " 8";
+}
+.icon-number-9:before
+{
+    content: " 9";
+}
+.icon-number-10:before
+{
+    content: "10";
+}
+.myicon-QQ:before
+{
+    content: "Q";
+    border: 1px solid transparent;
+    display: inline-block;
+    font-family: 'Hobo Std';
+    font-style: normal;
+    font-weight: normal;
+    margin: 0 2px;
+    text-decoration: inherit;
+}
+/*清除浮动*/
+.clearfix:after
+{
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+}
+.clearfix
+{
+    zoom: 1;
+}
+/*空位符*/
+.spaces
+{
+    padding: 0em 1em;
+}
+/*mask*/
+#mask
+{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    background: #000;
+}
+.mask-none
+{
+    opacity: 0;
+    z-index: -1;
+    display: none;
+}
+.mask-middle /*遮住基本界面*/
+{
+    opacity: 0.3;
+    z-index: 1;
+}
+.mask-top /*遮住应用层、功能层*/
+{
+    opacity: 0.5;
+    z-index: 3;
+}
+.mask-top-top /*遮住对话框层*/
+{
+    opacity: 0.8;
+    z-index: 5;
+}
+#loading
+{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color:transparent;
+    z-index: 6;
+    font-size:112px;
+    text-align:center;
+}#loading i
+{
+    display: inline-block;
+    position:relative;
+    margin-bottom:45px;
+    margin-top:50px;
+}
+/*hidden*/
+.hidden
+{
+    display: none;
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+    overflow: hidden;
+}
+/*scrollbar*/
+::-webkit-scrollbar
+{
+    width: 13px;
+    height: 13px;
+}
+
+::-webkit-scrollbar-corner
+{
+    background-image: url(resources/corner.png);
+    background-repeat: no-repeat;
+}
+
+::-webkit-scrollbar-corner:window-inactive
+{
+    background-image: url(resources/corner-inactive.png);
+}
+
+::-webkit-resizer
+{
+    background-image: url(resources/resizer.png);
+    background-repeat: no-repeat;
+    background-position: bottom right;
+}
+
+::-webkit-resizer:window-inactive
+{
+    background-image: url(resources/resizer-inactive.png);
+}
+
+::-webkit-scrollbar-track-piece:disabled
+{
+    display: none !important;
+}
+
+::-webkit-scrollbar-button:disabled
+{
+    display: none !important;
+}
+
+::-webkit-scrollbar-track:disabled
+{
+    margin: 6px;
+}
