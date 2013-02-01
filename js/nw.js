@@ -82,7 +82,7 @@ var DOMwhell = function (obj, maxheight) {
     //初始化
     jQobj.css({ "overflow": "hidden", "maxHeight": maxheight });
     //jQobj.append("")
-    var px = 120; //单位滚动像素
+    var px = 80; //单位滚动像素
     //var Interval = false;//降低滚动监听的帧数
     addWhellEvent(obj, function (e) {
         var delta = getWheelValue(e);
@@ -90,9 +90,13 @@ var DOMwhell = function (obj, maxheight) {
         delta = delta > 0 ? marginTop + px : marginTop - px;
         //console.log(delta);
         var readelta = range(delta, mt, (maxheight - height));
-        jQobj.stop().animate({ "marginTop": delta }, 300, function () {
+        jQobj.css({ "marginTop": delta });
+		if(readelta!==delta){
+			jQobj.stop().animate({ "marginTop": readelta }, 200);
+		}
+        /*jQobj.stop().animate({ "marginTop": delta }, 300, function () {
             jQobj.animate({ "marginTop": readelta }, 200);
-        });
+        });*/
     });
 }
 
