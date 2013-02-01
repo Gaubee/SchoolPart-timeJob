@@ -1,34 +1,56 @@
-﻿#nw-form div{
-	position:fixed;
-	z-index:10;
+﻿#nw-frame div
+{
+    position: fixed;
+    z-index: 10;
+    background-color: #999999;
 }
-#nw-form .top{
-	width:100%;
-	height:1px;
-	background-color:#6D6D6D;
-	left:0px;
-	top:0px;
+#nw-frame .top
+{
+    width: 100%;
+    height: 1px;
+    left: 0px;
+    top: 0px;
 }
-#nw-form .bottom{
-	width:100%;
-	height:1px;
-	margin-top: -1px;
-	background-color:#6D6D6D;
-	left:0px;
-	top:100%;
+#nw-frame .bottom
+{
+    width: 100%;
+    height: 1px;
+    left: 0px;
+    bottom: 0px;
 }
-#nw-form .left{
-	height:100%;
-	width:1px;
-	background-color:#6D6D6D;
-	left:0px;
-	top:0px;
+#nw-frame .left
+{
+    height: 100%;
+    width: 1px;
+    left: 0px;
+    top: 0px;
 }
-#nw-form .right{
-	height:100%;
-	width:1px;
-	margin-left: -1px;
-	background-color:#6D6D6D;
-	left:100%;
-	top:0px;
+#nw-frame .right
+{
+    height: 100%;
+    width: 1px;
+    right: 0px;
+    top: 0px;
+}
+
+/*滚动条*/
+.wheel
+{
+    right: 0px;
+    top: 0px;
+    position: fixed;
+    z-index: 11;
+    border-radius: 2px;
+    width: 6px;
+    height:100%;
+    padding: 1px;
+    background-color: #666666;
+    overflow:hidden;
+}
+.wheel .scroll-bar
+{
+    border-radius: 2px;
+    width: 4px;
+    background-color: #CCCCCC;
+    position:relative;
 }

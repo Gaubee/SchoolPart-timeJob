@@ -77,26 +77,39 @@ var DOMwhell = function (obj, maxheight) {
     }
     var jQobj = $(obj);
     var mt = parseInt(jQobj.css("marginTop"));
-    //var width =parseInt( jQobj.css("width") );
-    var height = parseInt(jQobj.css("height"));
     //初始化
-    jQobj.css({ "overflow": "hidden", "maxHeight": maxheight });
-    //jQobj.append("")
+    jQobj.wrap("<body></body>");
+    jQobj.append('<div class="wheel"><div class="scroll-bar"></div></div>');
+    var wheel_P = jQobj.find(".wheel");
+    var wheel = wheel_P.find(".scroll-bar");
+    setTimeout(function () {
+        wheel_P.hide(400);
+    }, 2000);
+    var height = parseInt(jQobj.css("height"));
+    wheel.css({ "height": (maxheight / height) * 100 + "%" });
+    //console.log(jQobj.parent())
+    jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight });
     var px = 80; //单位滚动像素
     //var Interval = false;//降低滚动监听的帧数
     addWhellEvent(obj, function (e) {
+        var height = parseInt(jQobj.css("height"));
         var delta = getWheelValue(e);
         var marginTop = parseInt(jQobj.css("marginTop"));
         delta = delta > 0 ? marginTop + px : marginTop - px;
-        //console.log(delta);
         var readelta = range(delta, mt, (maxheight - height));
         jQobj.css({ "marginTop": delta });
-		if(readelta!==delta){
-			jQobj.stop().animate({ "marginTop": readelta }, 200);
-		}
-        /*jQobj.stop().animate({ "marginTop": delta }, 300, function () {
-            jQobj.animate({ "marginTop": readelta }, 200);
-        });*/
+        if (readelta !== delta) {
+            jQobj.stop().animate({ "marginTop": readelta }, 500, "easeOut");
+        }
+        //滚动条滚动
+        console.log((readelta / height) * -100);
+        wheel_P.show(100);
+        wheel.css({ "height": (maxheight / height) * 100 + "%" });
+        wheel.stop().animate({ "top": (readelta / height) * -100 + "%" }, 200, "easeOut", function () {
+            setTimeout(function () {
+                wheel_P.hide(400);
+            }, 500);
+        });
     });
 }
 
@@ -111,14 +124,14 @@ var title = {
     ti: null,
     show: function (str, e) {
         this._$.style.display = "block";
-        this._$.style.left = e.clientX+10 + "px";
-        this._$.style.top = e.clientY+10 + "px";
+        this._$.style.left = e.clientX + 10 + "px";
+        this._$.style.top = e.clientY + 10 + "px";
         this._$.innerHTML = str;
         clearTimeout(this.ti);
     },
     move: function (e) {
-        this._$.style.left = e.clientX+10 + "px";
-        this._$.style.top = e.clientY+10 + "px";
+        this._$.style.left = e.clientX + 10 + "px";
+        this._$.style.top = e.clientY + 10 + "px";
         //clearTimeout(this.ti);
     },
     hide: function () {
