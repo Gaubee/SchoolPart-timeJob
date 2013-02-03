@@ -8,7 +8,7 @@
 }
 .people:hover
 {
-    outline: 3px solid #B91D47;
+    outline: 3px solid #999999;
 }
 .rollback
 {
@@ -26,17 +26,14 @@ button i
 /*rewrite interface*/
 #interface .page-header
 {
-    margin-left: 10px;
 }
 #interface .page.fill
 {
     border: 0px;
-    margin-left: 20px;
 }
 #interface .page.snapped
 {
     border: 0px;
     border-left: 1px solid #6D6D6D;
     padding-left: 10px;
-    margin-left: -30px;
 }

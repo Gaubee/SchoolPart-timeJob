@@ -36,7 +36,7 @@
 /*滚动条*/
 .wheel
 {
-    right: 0px;
+    right: 3px;
     top: 0px;
     position: fixed;
     z-index: 11;

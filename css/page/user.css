@@ -1,0 +1,42 @@
+﻿#calendar
+{
+}
+#calendar .days
+{
+    height: 360px; /*360/24 = 15px/小时*/
+    overflow: hidden;
+}
+#calendar .days .duty
+{
+    position: absolute;
+    display: block;
+    background-color: #666666;
+    z-index: 1;
+    cursor: n-resize; /* */
+}
+#calendar .days .duty:hover
+{
+    -webkit-transform: scale(1.5); /* for Chrome || Safari */
+    -moz-transform: scale(1.5); /* for Firefox */
+    -ms-transform: scale(1.5); /* for IE */
+    -o-transform: scale(1.5);
+}
+#calendar .days .time-control
+{
+    position: absolute;
+    z-index: 1;
+    display: block;
+    background-color: #333333;
+}
+#calendar .days .up
+{
+    cursor: n-resize;
+}
+#calendar .days .down
+{
+    cursor: n-resize;
+}
+#interface
+{
+    padding-left: 10px;
+}

@@ -33,13 +33,17 @@
             time = time || 300;
             mask.removeClass().toggleClass("mask-none");
             //interface.css("-webkit-filter", "blur(0px)");
-            interface.animate({ "blur": "0px" }, time);
-            aid.animate({ "blur": "0px" }, time);
+            interface.css({ "blur": "0px" });
+            aid.css({ "blur": "0px" });
+            //            interface.animate({ "blur": "0px" }, time);
+            //            aid.animate({ "blur": "0px" }, time);
         };
         var middle = function (time) {//私有
             mask.removeClass().toggleClass("mask-middle");
-            interface.animate({ "blur": "1px" }, time);
-            aid.animate({ "blur": "0px" }, time);
+            interface.css({ "blur": "1px" });
+            aid.css({ "blur": "0px" });
+            //            interface.animate({ "blur": "1px" }, time);
+            //            aid.animate({ "blur": "0px" }, time);
         }
         mask.middle = function (time) {
             time = time || 300;
@@ -48,6 +52,9 @@
         }
         var top = function (time) {
             mask.removeClass().toggleClass("mask-top");
+            //            interface.css({ "blur": "3px" });
+            //            aid.css({ "blur": "3px" });
+            //            console.log("blur-top" + interface[0]);
             interface.animate({ "blur": "3px" }, time);
             aid.animate({ "blur": "3px" }, time);
         }
@@ -60,10 +67,16 @@
     (function () {//loading-init
         loading.toload = function () {
             mask.top();
+			for (var i=0;i<5 ; ++i)
+			{
+				setTimeout(function(){
+				loading.find(".loading").append('<div class="dot"></div>');},1);
+			}
             this.show();
         }
         loading.noload = function () {
             mask.back();
+			loading.find(".loading").html(" ");
             this.hide();
         }
         loading.find(".place-right").click(function () {
@@ -166,8 +179,4 @@
     }
 
 
-    //ready
-    aid.slider(0); //隐藏用户简要信息页
-    loading.noload(); //隐藏加载页
-    message.message("欢迎回来");
 })(jQuery);

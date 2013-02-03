@@ -1,47 +1,47 @@
 ﻿/*icons*/
 .icon-number-0:before
 {
-    content: " 0";
+    content: "〇";
 }
 .icon-number-1:before
 {
-    content: " 1";
+    content: "①";
 }
 .icon-number-2:before
 {
-    content: " 2";
+    content: "②";
 }
 .icon-number-3:before
 {
-    content: " 3";
+    content: "③";
 }
 .icon-number-4:before
 {
-    content: " 4";
+    content: "④";
 }
 .icon-number-5:before
 {
-    content: " 5";
+    content: "⑤";
 }
 .icon-number-6:before
 {
-    content: " 6";
+    content: "⑥";
 }
 .icon-number-7:before
 {
-    content: " 7";
+    content: "⑦";
 }
 .icon-number-8:before
 {
-    content: " 8";
+    content: "⑧";
 }
 .icon-number-9:before
 {
-    content: " 9";
+    content: "⑨";
 }
 .icon-number-10:before
 {
-    content: "10";
+    content: "⑩";
 }
 .myicon-QQ:before
 {
@@ -110,7 +110,7 @@
     left: 0px;
     top: 0px;
     width: 100%;
-    height: 100%;
+    height: 100%; /*不与遮罩层冲突*/
     background-color:transparent;
     z-index: 6;
     font-size:86px;
@@ -260,6 +260,40 @@
     opacity: 0;
   }
 }
+@-o-keyframes loading {
+  0% {
+    -moz-transform: rotate(225deg);
+    opacity: 1;
+    -moz-animation-timing-function: ease-out;
+  }
+  8% {
+    -moz-transform: rotate(345deg);
+    -moz-animation-timing-function: linear;
+  }
+  30% {
+    -moz-transform: rotate(455deg);
+    -moz-animation-timing-function: ease-in-out;
+  }
+  40% {
+    -moz-transform: rotate(690deg);
+    -moz-animation-timing-function: linear;
+  }
+  60% {
+    -moz-transform: rotate(815deg);
+    opacity: 1;
+    -moz-animation-timing-function: ease-out;
+  }
+  75% {
+    -moz-transform: rotate(965deg);
+    -moz-animation-timing-function: ease-out;
+  }
+  76% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
 @keyframes loading {
   0% {
@@ -320,7 +354,7 @@
     width: 0px;
     overflow: hidden;
 }
-/*scrollbar*/
+/*scrollbar
 ::-webkit-scrollbar
 {
     width: 13px;
@@ -364,3 +398,4 @@
 {
     margin: 6px;
 }
+*/
