@@ -1,4 +1,7 @@
-﻿#nw-frame div
+﻿body{
+	overflow:hidden;
+}
+#nw-frame div
 {
     position: fixed;
     z-index: 10;

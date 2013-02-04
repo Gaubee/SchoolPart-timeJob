@@ -84,8 +84,11 @@ var DOMwhell = function (obj, maxheight, isNull) {
     //初始化
     if (obj === document.body) {
         jQobj.wrap("<body></body>");
+    	jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight });
     } else {
         jQobj.wrap("<div></div>");
+		//jQobj.html("<div>"+jQobj.html()+"</div>");
+    	jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight,"display":"inline" });
     }
     jQobj.append('<div class="wheel"><div class="scroll-bar"></div></div>');
     var wheel_P = jQobj.find(".wheel");
@@ -96,13 +99,12 @@ var DOMwhell = function (obj, maxheight, isNull) {
     var height = parseInt(jQobj.css("height"));
     wheel.css({ "height": (maxheight / height) * 100 + "%", "opacity": .8 });
     //console.log(jQobj.parent())
-    jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight });
-    //jQobj.css({ "overflow": "hidden", "maxHeight": maxheight });
     var px = 80; //单位滚动像素
     //var Interval = false;//降低滚动监听的帧数
     if (!isNull) {
         addWhellEvent(obj, function (e) {
             var height = parseInt(jQobj.css("height"));
+			console.log(height);
             var delta = getWheelValue(e);
             var marginTop = parseInt(jQobj.css("marginTop"));
             delta = delta > 0 ? marginTop + px : marginTop - px;
@@ -132,10 +134,7 @@ var DOMwhell = function (obj, maxheight, isNull) {
     }
 }
 
-/*限制范围函数, 
-参数是三个数字,如果num 大于 max, 则返回max， 如果小于min，则返回min,如果在max和min之间，则返回num 
-*/
-DOMwhell(document.body, 600);
+
 //标题取代框
 
 

@@ -10,7 +10,7 @@
     <link href="css/nw.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <div class="page snapped">
+    <div id="info" class="page snapped">
         <!-- bg-color-blue -->
         <div class="page secondary">
             <div class="page-header">
@@ -21,83 +21,18 @@
                 <div class="page-region-content with-sidebar">
                     <div style="text-align: right; float: right;">
                         <h3>
-                            name</h3>
+                            Name</h3>
                         <blockquote class="place-right">
-                            Gaubee</blockquote>
+                            柯肇丰</blockquote>
                         <h3>
-                            studentId</h3>
+                            Student ID</h3>
                         <blockquote class="place-right">
                             3111104136</blockquote>
                         <h3>
-                            department</h3>
+                            Department</h3>
                         <blockquote class="place-right">
-                            Computer softword engine</blockquote>
+                            计算机科学与技术系软件工程</blockquote>
                     </div>
-                    <!-- <div class="tile image-slider">
-                        <div class="tile-content">
-                            <img src="images/0_head.png" alt="head" />
-                        </div>
-                    </div>-->
-                    <!--   <div id="news" class="tile double bg-color-darken" data-role="tile-slider" data-param-period="3000"
-                        data-param-direction="right">
-                        <div class="tile-content">
-                            <h3>
-                                新闻标题1</h3>
-                            <h5>
-                                发布时间</h5>
-                            <p class="indent">
-                                ……………内容预览……………内容预览……………内容预览……………内容
-                            </p>
-                        </div>
-                        <div class="tile-content">
-                            <h3>
-                                新闻标题2</h3>
-                            <h5>
-                                发布时间</h5>
-                            <p class="indent">
-                                ……………内容预览……………内容预览……………内容预览……………内容
-                            </p>
-                        </div>
-                        <div class="tile-content">
-                            <h3>
-                                新闻标题3</h3>
-                            <h5>
-                                发布时间</h5>
-                            <p class="indent">
-                                ……………内容预览……………内容预览……………内容预览……………内容
-                            </p>
-                        </div>
-                        <div class="brand">
-                            <div class="name">
-                                最新资讯</div>
-                            <div class="badge">
-                                <span class="icon-newspaper"></span>
-                            </div>
-                        </div>
-                    </div>-->
-                    <!--学生动态，留言等-->
-                    <!-- <div class="page-sidebar">
-                        <ul>
-                            <li class="sticker sticker-color-red"><a><i class="icon-cube"></i>Item</a></li>
-                            <li><a><i class="icon-cube"></i>Item</a></li>
-                            <li><a><i class="icon-cube"></i>Item</a></li>
-                            <li class="sticker sticker-color-blue" data-role="dropdown"><a><i class="icon-list">
-                            </i>评分排名</a>
-                                <ul class="sub-menu sidebar-dropdown-menu">
-                                    <li><a><i class="icon-star-3 fg-color-yellow"></i>name</a></li>
-                                    <li><a><i class="icon-star-2 fg-color-orange"></i>name</a></li>
-                                    <li><a><i class="icon-star fg-color-orangeDark"></i>name</a></li>
-                                    <li><a><i class="icon-number-4 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-5 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-6 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-7 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-8 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-9 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-10 fg-color-red"></i>name</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>-->
                 </div>
             </div>
         </div>
@@ -113,8 +48,9 @@
                     <p class="indent">…………生的评价………对学生的评价……生的评价…………生的评价…………生的评价………对学生的评价……生的评价…………生的评价……</p></h3>
                 </div>
             </div>
-            <div class="page-region">
-                <div class="page-region-content">
+              <div class="page-region">
+                  <div class="page-region-content">
+                 	<!-- 日历模块 -->
                     <div id="calendar" class="grid">
                         <!-- element-border -->
                         <div class="row">
@@ -150,8 +86,50 @@
                             </div>
                         </div>
                     </div>
+                
+                    <!-- 分隔栏 -->
+                    <div class="progress-bar span7">
+                        <div class="bar bg-color-pink" style="width: 30%"></div>
+                        <div class="bar bg-color-yellow" style="width: 30%"></div>
+                        <div class="bar bg-color-green" style="width: 40%"></div>
+                    </div>
+                    <!-- 信息模块 -->
+                    <div id="calendarInfo">
+                    	<!-- 周选择器 -->
+                        <div id="weekSeleter" class="place-left">
+                            <h3>
+                                <div class="button-set" data-role="button-set">
+                                第
+                                    <button class="tool-button"> <i class="icon-arrow-left-2"></i> </button>
+                                    <button class="tool-button">
+                                        <div class="input-control text" style="display:inline-block;width:32px;">
+                                            <input type="text" style="padding:4px 5px 6px 5px;font-size:18px;" value="8" />
+                                        </div>
+                                    </button>
+                                    <button class="tool-button"> <i class="icon-arrow-right-2"></i> </button>
+                                周
+                                </div>
+                            </h3>
+                        </div>	
+	                    <!-- 信息模块 -->
+                    	<div id="thisWeek">
+                        	<p class="indent">本周共计时工作时长：23h:34mm</p>
+                        	<p class="indent">本月共计工作时长：87h</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+   	<!-- frame -->
+    <div id="nw-frame" class="">
+        <div id="" class="top">
+        </div>
+        <div id="" class="bottom">
+        </div>
+        <div id="" class="left">
+        </div>
+        <div id="" class="right">
         </div>
     </div>
 </body>

@@ -68,7 +68,8 @@
 
 
     //滚动
-
+	DOMwhell(document.getElementById("interface"), 600);
+	DOMwhell(document.getElementById("news"), 600);
     DOMwhell(document.getElementById("mask"), 1, true);
     DOMwhell(document.getElementById("loading"), 1, true);
     DOMwhell(document.getElementById("message"), 1, true);

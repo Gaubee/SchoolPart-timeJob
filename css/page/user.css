@@ -12,14 +12,15 @@
     display: block;
     background-color: #666666;
     z-index: 1;
-    cursor: n-resize; /* */
+    cursor: url(images/up.cur),n-resize; /* */
 }
-#calendar .days .duty:hover
+#calendar .days .duty.active:hover
 {
     -webkit-transform: scale(1.5); /* for Chrome || Safari */
     -moz-transform: scale(1.5); /* for Firefox */
     -ms-transform: scale(1.5); /* for IE */
     -o-transform: scale(1.5);
+    border:1px solid #4EA6EA;
 }
 #calendar .days .time-control
 {
@@ -35,6 +36,9 @@
 #calendar .days .down
 {
     cursor: n-resize;
+}
+#weekSeleter i{
+	cursor:pointer;
 }
 #interface
 {

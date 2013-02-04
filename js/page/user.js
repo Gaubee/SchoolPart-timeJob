@@ -32,10 +32,16 @@
                     day.mouseover(function () {
                         dutyobj.stop().animate({ top: con.star }, 200, "easeOut", function () {
                             con.canControl = true;
+							for(var i = 0 ;i<dutys.length;++i){
+								dutys[i].addClass("active");
+							}
                         });
                     }).mouseout(function () {
                         dutyobj.stop().animate({ top: con.P_Height }, 200, "easeOut", function () {
                             con.canControl = false;
+							for(var i = 0 ;i<dutys.length;++i){
+								dutys[i].removeClass("active");
+							}
                         });
                     }).dblclick(function (e) {
                         var duty = $("<span class='duty span1'></span>");
@@ -103,4 +109,30 @@
             }
         }
     })
+	//周选择
+	var weekSeleter =	$("#weekSeleter");
+	(function(){
+		var controls = weekSeleter.find("button")	;
+		var controlsFormer = $(controls[0]);
+		var controlsLatter = $(controls[2]);
+		var weekValue = weekSeleter.find("input");
+		controlsFormer.mouseover(function(){
+			controlsFormer.addClass("fg-color-white bg-color-blue");
+		}).mouseout(function(){
+			controlsFormer.removeClass("fg-color-white bg-color-blue");
+		}).click(function(){
+			weekValue.val(weekValue.val()-1);
+		});
+		
+		controlsLatter.mouseover(function(){
+			controlsLatter.addClass("fg-color-white bg-color-blue");
+		}).mouseout(function(){
+			controlsLatter.removeClass("fg-color-white bg-color-blue");
+		}).click(function(){
+			weekValue.val(parseInt(weekValue.val())+1);
+		});
+	})();
+	//滚动
+	DOMwhell(document.getElementById("interface"), 600);
+	DOMwhell(document.getElementById("info"), 600);
 })(jQuery);

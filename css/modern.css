@@ -2113,7 +2113,7 @@ li .icon-large:before {
 #font .body,
 #font .body-secondary,
 #font .normal {
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -2357,7 +2357,7 @@ h6:active {
 }
 body,
 p {
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -2384,7 +2384,7 @@ p.indent:first-letter {
 }
 .tertiary-info-text,
 .tertiary-text {
-  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', 'Open Sans',"Microsoft yahei" , "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 400;
   font-size: 9pt;
   font-smooth: always;
@@ -2400,7 +2400,7 @@ p.indent:first-letter {
 }
 .tertiary-info-secondary-text,
 .tertiary-secondary-text {
-  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', 'Open Sans', "Microsoft yahei" , "微软雅黑" , "Tahoma" ,Verdana, Arial, Helvetica, sans-serif;
   font-weight: 400;
   font-size: 9pt;
   font-smooth: always;
@@ -2424,7 +2424,7 @@ abbr[title] {
 address {
   display: block;
   margin-bottom: 20px;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "Microsoft yahei" , "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -2905,7 +2905,7 @@ button.big,
   height: auto;
   color: #000;
   background-color: #ccc;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans' , "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -2914,7 +2914,7 @@ button.big,
 }
 .command-button  > small {
   display: block;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans' , "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -3568,7 +3568,7 @@ table tbody tr {
   border: 1px #fff solid;
 }
 table tbody tr td {
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -4399,7 +4399,7 @@ th[class*="span"] {
   float: none !important;
   width: 310px;
   height: 150px;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -4747,7 +4747,7 @@ th[class*="span"] {
   color: #ffffff;
   overflow: hidden;
   position: relative;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -5352,7 +5352,7 @@ th[class*="span"] {
 .input-control.password .btn-search:before {
   font-size: 12pt;
   position: absolute;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -5398,7 +5398,7 @@ th[class*="span"] {
   top: 3px;
 }
 label {
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -5416,7 +5416,7 @@ fieldset {
 fieldset legend {
   padding-left: 10px;
   padding-right: 10px;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -5788,7 +5788,7 @@ input[type=submit] {
 code,
 pre {
   padding: 0 3px 2px;
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', "微软雅黑" , "Tahoma" , Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
