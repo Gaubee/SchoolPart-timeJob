@@ -29,13 +29,16 @@
                 dutys[i] = duty; //保存浮块
                 configs[i] = config; //保存浮块配置
                 (function (dutyobj, con) {
-                    day.mouseover(function () {
+                    day.mouseover(function (e) {
                         dutyobj.stop().animate({ top: con.star }, 200, "easeOut", function () {
                             con.canControl = true;
 							for(var i = 0 ;i<dutys.length;++i){
 								dutys[i].addClass("active");
 							}
                         });
+						if(!day.Incontrol){
+							title.show("双击进行详细编辑",e);
+						}
                     }).mouseout(function () {
                         dutyobj.stop().animate({ top: con.P_Height }, 200, "easeOut", function () {
                             con.canControl = false;
@@ -43,17 +46,23 @@
 								dutys[i].removeClass("active");
 							}
                         });
-                    }).dblclick(function (e) {
-                        var duty = $("<span class='duty span1'></span>");
+						title.hide();
+                    }).mousemove(function(e){
+						title.move(e);
+					}).dblclick(function (e) {
+                        /*
+						var duty = $("<span class='duty span1'></span>");
                         duty.css({ height: 30, top: 120, opacity: 0.8 });
                         day.append(duty);
+						*/
+						datas
 
                     });
                     var timeControls = {
                         begin: $('<span class="time-control span1 up"></span>'),
                         end: $('<span class="time-control span1 down"></span>')
                     }
-                    dutyobj.mouseover(function () {
+                    dutyobj.mouseover(function (e) {
                         if (con.canControl) {
                             var halfHeight = con.height / 2;
                             timeControls.begin.css({ top: con.star, height: halfHeight - 1 });
@@ -61,14 +70,22 @@
                             day.prepend(timeControls.begin);
                             day.prepend(timeControls.end);
 
+							day.Incontrol = true;//控制滑块中
+							title.show("拖动以快速调整时间",e);
+							//e.stopPropagation();
                         }
-                    }).mouseout(function () {
+                    }).mousemove(function(e){
+						
+						//title.move(e);
+					}).mouseout(function () {
                         timeControls.begin.remove(); //清除控制柄
                         timeControls.end.remove(); //清除控制柄
-                        dutyobj.off("mousemove"); //清除滑块拖动事件
+                        dutyobj.off("mousemove"); //清除滑块拖动事件console.log("out")
+						day.Incontrol = false;
+						//title.hide();
                     }).mousedown(function (e) {//拖动调整
                         var upSetoff = timeControls.begin.offset();
-                        if (upSetoff.top < e.clientY && e.clientY < upSetoff.top + timeControls.begin.height() + 1) {
+                        if (e.clientY < upSetoff.top + timeControls.begin.height() + 1) {
                             dutyobj.on("mousemove", function (e2) { // 向上调整滑块
                                 console.log("up");
                                 timeControls.begin.remove(); //清除控制柄
@@ -114,7 +131,7 @@
 	(function(){
 		var controls = weekSeleter.find("button")	;
 		var controlsFormer = $(controls[0]);
-		var controlsLatter = $(controls[2]);
+		var controlsLatter = $(controls[1]);
 		var weekValue = weekSeleter.find("input");
 		controlsFormer.mouseover(function(){
 			controlsFormer.addClass("fg-color-white bg-color-blue");
@@ -135,4 +152,11 @@
 	//滚动
 	DOMwhell(document.getElementById("interface"), 600);
 	DOMwhell(document.getElementById("info"), 600);
+
 })(jQuery);
+	//页面初始化 
+
+    //ready
+    aid.slider(0); //隐藏用户简要信息页
+    loading.noload(); //隐藏加载页
+    message.message("欢迎回来");

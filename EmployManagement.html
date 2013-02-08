@@ -8,6 +8,10 @@
     <link href="css/modern-responsive.css" rel="stylesheet">
     <link href="css/page/employ.css" rel="stylesheet" type="text/css" />
     <link href="css/nw.css" rel="stylesheet" type="text/css" />
+    <script src="js/lib/jquery-1.9.0.min.js" type="text/javascript"></script>
+    <script src="js/app/handlebars.js" type="text/javascript"></script>
+    <script src="js/app/ember-1.0.0-pre.4.js" type="text/javascript"></script>
+    <!--<script src="js/app/ember.min.js" type="text/javascript"></script>-->
 </head>
 <body>
     <div id="mask" class="mask-none">
@@ -35,14 +39,14 @@
         </div>
     </div>
     <!-- title -->
-    <div id="title" class="span2 bg-color-white" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-        position: absolute; top: 100px; left: 100px; z-index: 6;">
+    <div id="title" class="span2 bg-color-darken fg-color-white" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        position: absolute; top: 100px; left: 100px; z-index: 6;padding:4px 5px 6px 5px;">
     </div>
     <div id="config" class="page snapped ">
         <!--设置信息页面-->
     </div>
 
-    <div id="interface" class="page fill" style="float:left;">
+    <div id="interface" class="page fill interface" style="float:left;">
         <div class="page secondary">
             <div class="page-header">
                 <div class="page-header-content">
@@ -65,7 +69,8 @@
                         <br />
                     </div>
                     <div id="human" class="grid"> <!-- 加虚线element-border-->
-                        <div class="row">
+                        
+						<!--
                             <div class="people span2 bg-color-blueDark">
                                 <img alt="student-name" src="images/0_head.png" class="head" />
                                 <p class="fg-color-white">
@@ -76,65 +81,28 @@
                                 <p class="fg-color-white">
                                     kidi</p>
                             </div>
-                            <div class="people span2 bg-color-blueDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    Gaubee</p>
-                            </div>
-                            <div class="people span2 bg-color-grayDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    poo</p>
-                            </div>
-                            <div class="people span2 bg-color-blueDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    Gaubee</p>
-                            </div>
-                            <div class="people span2 bg-color-grayDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    lala</p>
-                            </div>
-                            <div class="people span2 bg-color-grayDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    kidi</p>
-                            </div>
-                            <div class="people span2 bg-color-grayDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    poo</p>
-                            </div>
-                            <div class="people span2 bg-color-grayDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    lala</p>
-                            </div>
-                            <div class="people span2 bg-color-blueDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    Gaubee</p>
-                            </div>
-                            <div class="people span2 bg-color-blueDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    Gaubee</p>
-                            </div>
-                            <div class="people span2 bg-color-grayDark">
-                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                <p class="fg-color-white">
-                                    poo</p>
-                            </div>
-                        </div>
+							-->
+							<!-- star app -->
+							<script type="text/x-handlebars" template-name="employers-list">
+							<div class="row">
+								{{#collection Employment.EmployersView}}
+								<div {{bindAttr class=":people :span2 LoginIng:bg-color-blueDark:bg-color-grayDark"}} {{bindAttr userId="id"}} >
+									<img alt="student-name" src="images/0_head.png" class="head" />
+									<p class="fg-color-white">
+									   {{Name}}</p>
+								</div>
+								 {{/collection}}
+							</div>
+							</script>
+							<!-- end app -->
                     </div>
                 </div>
                 </div>
             </div>
         </div>
-    </div>
+    
        
-    <div id="news" class="page snapped" style="float:right;">
+    <div id="news" class="page snapped interface" style="float:right;">
         <div class="page">
             <div class="page-header">
                 <div class="page-header-content">
@@ -142,43 +110,6 @@
             </div>
             <div class="page-region">
                 <div class="page-region-content">
-			        <!--<div id="news" class="tile  bg-color-darken" data-role="tile-slider" data-param-period="3000"
-                        data-param-direction="right">
-                        <div class="tile-content">
-                            <h3>
-                                新闻标题1</h3>
-                            <h5>
-                                发布时间</h5>
-                            <p class="indent">
-                                ……………内容预览……………内容预览……………内容预览……………内容
-                            </p>
-                        </div>
-                        <div class="tile-content">
-                            <h3>
-                                新闻标题2</h3>
-                            <h5>
-                                发布时间</h5>
-                            <p class="indent">
-                                ……………内容预览……………内容预览……………内容预览……………内容
-                            </p>
-                        </div>
-                        <div class="tile-content">
-                            <h3>
-                                新闻标题3</h3>
-                            <h5>
-                                发布时间</h5>
-                            <p class="indent">
-                                ……………内容预览……………内容预览……………内容预览……………内容
-                            </p>
-                        </div>
-                        <div class="brand">
-                            <div class="name">
-                                最新资讯</div>
-                            <div class="badge">
-                                <span class="icon-newspaper"></span>
-                            </div>
-                        </div>
-                    </div>-->
                     <ul class="accordion" data-role="accordion">
                         <li class="active">
                             <a href="#"> 新闻标题1 </a>
@@ -225,50 +156,16 @@
                             </div>
                         </li>
                     </ul>
-                    <!--学生动态，留言等
-                    <div class="page-sidebar">
-                        <ul>
-                            <li class="sticker sticker-color-red"><a><i class="icon-cube"></i>Item</a></li>
-                            <li><a><i class="icon-cube"></i>Item</a></li>
-                            <li><a><i class="icon-cube"></i>Item</a></li>
-                            <li class="sticker sticker-color-blue" data-role="dropdown"><a><i class="icon-list">
-                            </i>评分排名</a>
-                                <ul class="sub-menu sidebar-dropdown-menu">
-                                    <li><a><i class="icon-star-3 fg-color-yellow"></i>name</a></li>
-                                    <li><a><i class="icon-star-2 fg-color-orange"></i>name</a></li>
-                                    <li><a><i class="icon-star fg-color-orangeDark"></i>name</a></li>
-                                    <li><a><i class="icon-number-4 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-5 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-6 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-7 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-8 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-9 fg-color-red"></i>name</a></li>
-                                    <li><a><i class="icon-number-10 fg-color-red"></i>name</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <blockquote><a><i class="icon-star-3 fg-color-yellow"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-star-2 fg-color-orange"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-star fg-color-orangeDark"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-number-4 fg-color-red"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-number-5 fg-color-red"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-number-6 fg-color-red"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-number-7 fg-color-red"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-number-8 fg-color-red"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-number-9 fg-color-red"></i>name</a></blockquote>
-                    <blockquote><a><i class="icon-number-10 fg-color-red"></i>name</a></blockquote>-->
                 </div>
                 </div>
             </div>
         </div>
-    </div>
     
-    <div id="aid" class="charms bg-color-blue">
+    <div id="aid" class="charms bg-color-darken fg-color-white" style="opacity:0.6">
         <div class="page">
             <div class="page-header">
                 <!--回退按钮-->
-                <h2>
+                <h2 class="fg-color-blueDark">
                     <span class="icon-arrow-right-3 rollback"></span>个人信息
                 </h2>
                 <div class="page-header-content bg-color-blueDark ">
@@ -279,7 +176,8 @@
             <div class="page-region">
                 <div class="page-region-content">
                     <img id="personalInfo-photo" alt="个人照片" src="images/0_head.png" class="span2 place-left" />
-                    <div id="personalInfo-login" class="place-right">
+						<!--  #未登录 -->
+                    <div id="personalInfo-login" class="span2">
                         <form action="" target="_self" name="login">
                         <div class="input-control text">
                             <input type="text" placeholder="账户 Account" />
@@ -296,17 +194,20 @@
                         <abbr title="点击查看帮助" class="icon-help">
                         </abbr>
                         </form>
-                    </div>
-                    <span class="clearfix"></span>
+                    </div>	
+					<!--  /未登录 -->
+					<!--  #已登录-->
                     <div id="personalInfo-login-info">
                     </div>
+					<!--  /已登录-->
+					<!-- #学生基本信息-->
                     <div id="personalInfo-base" class=" body-text place-left">
-                        <h3>
+                        <h3 class="fg-color-lighten">
                             学号：</h3>
                         <blockquote class="place-right">
                             3111104136
                         </blockquote>
-                        <h3>
+                        <h3 class="fg-color-lighten">
                             年级系别班级：</h3>
                         <blockquote class="place-right">
                             计算机科学系软件工程
@@ -316,27 +217,21 @@
                             <button>
                                 <i class="icon-phone">18046048662</i>
                             </button>
-                            <button>
-                                <i class="icon-mail">gaubeebangeel@gmail.com</i>
-                            </button>
-                            <button>
-                                <i class="myicon-QQ">654393589</i>
-                            </button>
                         </div>
-                        <button class="command-button">
+                        <button class="bg-color-blueDark fg-color-white span3">
                             查看学生具体信息</button>
+						<div id="personalInfo-operating">
+							<button id="sign" class="" disabled>
+								签到</button>
+							<button class="sign-off" disabled>
+								签退</button>
+							<button id="evaluate" class="fg-color-white bg-color-pinkDark">
+								评价</button>
+							<abbr title="点击查看帮助" class="icon-help">
+							</abbr>
+						</div>
                     </div>
-                    <div id="personalInfo-operating">
-                        <br />
-                        <button id="sign" class="" disabled>
-                            签到</button>
-                        <button class="sign-off" disabled>
-                            签退</button>
-                        <button id="evaluate" class="fg-color-white bg-color-pinkDark">
-                            评价</button>
-                        <abbr title="点击查看帮助" class="icon-help">
-                        </abbr>
-                    </div>
+					<!-- /学生基本信息-->
                 </div>
             </div>
         </div>
@@ -364,7 +259,6 @@
     </div>
 </body>
 </html>
-<script src="js/lib/jquery-1.9.0.min.js" type="text/javascript"></script>
 <script src="js/lib/jquery.easing.compatibility.js" type="text/javascript"></script>
 <script src="js/common.js" type="text/javascript"></script>
 <!--  nw  -->
@@ -385,4 +279,5 @@
 <!--    -->
 <script src="js/lib/jquery.rotate.js" type="text/javascript"></script>
 <script src="js/lib/jquery.blur.js" type="text/javascript"></script>
+<script src="js/page/employ_app.js" type="text/javascript"></script>
 <script src="js/page/employ.js" type="text/javascript"></script>

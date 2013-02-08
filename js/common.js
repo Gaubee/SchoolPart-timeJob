@@ -1,7 +1,7 @@
 ﻿(function ($) {
     window.mask = $("#mask");
     window.loading = $("#loading");
-    window.interface = $("#interface");
+    window.interface = $(".interface");
     (function () {//mask-init
         mask.record = function () {
             this.hisarry = this.hisarry || { length: 0 };
@@ -180,3 +180,35 @@
 
 
 })(jQuery);
+    //标题取代框
+    var title = {
+        _$: document.getElementById("title"),
+        ti: null,
+        show: function (str, e) {
+			//this._$ = document.createElement("div");
+            this._$.style.display = "block";
+            this._$.style.left = e.clientX + 10 + "px";
+            this._$.style.top = e.clientY + 15 + "px";
+            this._$.innerHTML = str;
+            //clearTimeout(this.ti);
+			//console.log(str);
+			$(this._$).stop().show(20);
+        },
+        move: function (e) {
+            this._$.style.left = e.clientX + 10 + "px";
+            this._$.style.top = e.clientY + 15 + "px";
+            //clearTimeout(this.ti);
+			//$(this._$).stop().show(20);
+        },
+        hide: function () {
+            var obj = this._$;
+			if(obj){
+				/*this.ti = setTimeout(function () {
+					obj.style.display = "none";
+					console.log("hidden");
+				}, 200);*/
+				$(obj).hide(200,"easeIn");
+			}
+        }
+    };
+    title.hide();

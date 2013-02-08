@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" >
+<head>
+    <title>Angular.js测试页面</title>
+	<script src="js/app/angular.js" type="text/javascript"></script>
+	<script src="js/app/jquery-1.7.2.min.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="base" class="">
+	I can add: {{ 1+2 }}.
+   <input ng-model="name">
+    <p>Hello {{name}}!</p>	
+</div>
+<div id="" class="" ng-app>
+    <div ng-controller="GreetCtrl">
+      Hello {{name}}!
+    </div>
+    <div ng-controller="ListCtrl">
+      <ol>
+        <li ng-repeat="name in names">{{name}}</li>
+      </ol>
+    </div>
+</div>
+<div id="" class="" ng-app="drag">
+	<span draggable>Drag ME</span>
+	<span draggable>Drag ME2</span>
+	<span draggable>Drag ME4</span>
+	<span draggable>Drag ME3</span>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+<!--
+	var baseEle = document.getElementById("base");
+	angular.element(baseEle).ready(function(){
+		angular.bootstrap(baseEle);
+	});
+
+	function GreetCtrl($scope) {
+	  $scope.name = 'World';
+	}
+	 
+	function ListCtrl($scope) {
+	  $scope.names = ['Igor', 'Misko', 'Vojta'];
+	}
+
+
+	angular.module('drag', []).
+  directive('draggable', function($document) {
+    var startX=0, startY=0, x = 0, y = 0;
+    return function(scope, element, attr) {
+      element.css({
+       position: 'relative',
+       border: '1px solid red',
+       backgroundColor: 'lightgrey',
+       cursor: 'pointer'
+      });
+      element.bind('mousedown', function(event) {
+        startX = event.screenX - x;
+        startY = event.screenY - y;
+        $document.bind('mousemove', mousemove);
+        $document.bind('mouseup', mouseup);
+      });
+ 
+      function mousemove(event) {
+        y = event.screenY - startY;
+        x = event.screenX - startX;
+        element.css({
+          top: y + 'px',
+          left:  x + 'px'
+        });
+      }
+ 
+      function mouseup() {
+        $document.unbind('mousemove', mousemove);
+        $document.unbind('mouseup', mouseup);
+      }
+    }
+  });
+
+
+//-->
+</script>

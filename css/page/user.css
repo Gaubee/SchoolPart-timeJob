@@ -12,7 +12,7 @@
     display: block;
     background-color: #666666;
     z-index: 1;
-    cursor: url(images/up.cur),n-resize; /* */
+    cursor: row-resize; /* */
 }
 #calendar .days .duty.active:hover
 {
@@ -43,4 +43,9 @@
 #interface
 {
     padding-left: 10px;
+}
+#dayDetailed .icon i{
+	font-size:24px;
+	width:1em;
+	line-height:26px;
 }

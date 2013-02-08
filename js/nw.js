@@ -24,7 +24,11 @@ var DOMmove = function (b) {
             var latee = lateevent || window.event;
             var point = mousePos(latee);
             //console.log((point.x+":"+move.point.x)+"|"+ (point.y +":"+move.point.y));
-            window.moveBy(point.x - move.point.x, point.y - move.point.y);
+            try{
+				window.moveBy(point.x - move.point.x, point.y - move.point.y);
+			}catch(e){
+				//console.error(e);
+			}
             move.point.x = point.x;
             move.point.y = point.y;
         };
@@ -84,6 +88,9 @@ var DOMwhell = function (obj, maxheight, isNull) {
     //初始化
     if (obj === document.body) {
         jQobj.wrap("<body></body>");
+		var id = "WhellEvent"+Math.random();
+		jQobj.html("<div id='"+id+"'>"+jQobj.html()+"</div>");
+		jQobj = $("#"+id);
     	jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight });
     } else {
         jQobj.wrap("<div></div>");
@@ -104,7 +111,6 @@ var DOMwhell = function (obj, maxheight, isNull) {
     if (!isNull) {
         addWhellEvent(obj, function (e) {
             var height = parseInt(jQobj.css("height"));
-			console.log(height);
             var delta = getWheelValue(e);
             var marginTop = parseInt(jQobj.css("marginTop"));
             delta = delta > 0 ? marginTop + px : marginTop - px;

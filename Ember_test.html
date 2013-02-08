@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Ember.js测试页面</title>
+    <script src="js/app/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="js/app/handlebars.js" type="text/javascript"></script>
+    <script src="js/app/ember.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    <!--
+    (function($,Em){
+	    window.Employment = Em.Application.create();
+	    Employment.employer = Em.Object.extend({
+		    "id":0,
+		    "Name":null,
+		    "RegisterNum":null,
+		    "Grade":0,
+		    "Department":null,
+		    "LoginIng":false
+	    });
+	    Employment.EmployersController = Em.ArrayProxy.create({
+		    content:[],
+		    refreshData:function(){
+			    $.getJSON("./data/employers.json",function(newdata){
+				    Employment.EmployersController.set("content",newdata);
+			    });
+		    }
+	    });
+	    Employment.EmployersController.refreshData();
+
+    })(jQuery,Ember);
+
+    //-->
+    </script>
+</head>
+<body>
+<a href="http://emberjs.com/guides/templates/handlebars-basics/">...Emberjs Docs...</a>
+<a href="http://emberjs.torriacg.org/documentation/">中文辅助文档</a>
+<div id="test">
+    <script type="text/x-handlebars" >
+		{{#each Employment.EmployersController}}
+			{{Grade}}级{{Department}}:{{Name}}
+		{{/each}}
+    </script>
+   </div>
+</body>
+</html>

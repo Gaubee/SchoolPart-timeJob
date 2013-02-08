@@ -1,11 +1,11 @@
-﻿console = console || {
+﻿var console = console || {
     log: function (str) {
         document.body.innerHTML += "<h6>" + str + "</h6>";
     },
-    info: function () {
+    info: function (str) {
         document.body.innerHTML += "<h6 style='color:#0FF;background-color:#ddd;'>" + str + "</h6>";
     },
-    err: function () {
+    error: function (str) {
         document.body.innerHTML += "<h6 style='color:#F00;'>" + str + "</h6>";
     }
 }
