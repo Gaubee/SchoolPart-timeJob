@@ -1,0 +1,30 @@
+﻿{
+    "StudentMessage": [
+        {
+            "T_User": [
+                {
+                    "id": "61",
+                    "rank": "2",
+                    "name": "6455555 ",
+                    "password": "111111 ",
+                    "usermessageid": "4",
+                    "parentid": "60",
+                    "registernum": "123456 ",
+                    "createtime": "2013/2/4 星期一 14:45:34",
+                    "lastlogintime": "2013/2/6 星期三 19:32:34",
+                    "logintimes": "41"
+                }
+            ]
+        },
+        {
+            "T_TeacherMessage": [
+                {
+                    "grade": "11",
+                    "department": "32 ",
+                    "logining": "0",
+                    "evaluate": "45"
+                }
+            ]
+        }
+    ]
+}

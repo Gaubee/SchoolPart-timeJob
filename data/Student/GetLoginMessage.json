@@ -1,0 +1,110 @@
+﻿{
+    "LoginMessage": [
+        {
+            "0": [
+                {
+                    "T_User": [
+                        {
+                            "id": "60",
+                            "rank": "1",
+                            "name": "111111 ",
+                            "password": "111111 ",
+                            "usermessageid": "3",
+                            "parentid": "0",
+                            "registernum": "111111 ",
+                            "createtime": "2013/2/4 星期一 14:45:34",
+                            "lastlogintime": "2013/2/6 星期三 17:16:18",
+                            "logintimes": "0"
+                        }
+                    ]
+                },
+                {
+                    "T_StudentMessage": [
+                        {
+                            "grade": "11",
+                            "department": "计算机系 ",
+                            "working": "0",
+                            "major": "通信工程 ",
+                            "phone": "12345423231 "
+                        }
+                    ]
+                },
+                {
+                    "T_Sign": [
+                        {
+                            "id": "1",
+                            "begintime": "2013/2/5 星期二 13:11:26",
+                            "endtime": "2013/2/5 星期二 13:11:26",
+                            "theacheruserid": "0",
+                            "studentuserid": "60",
+                            "gain": "5",
+                            "other": "35345"
+                        },
+                        {
+                            "id": "5",
+                            "begintime": "2013/2/5 星期二 13:11:51",
+                            "endtime": "2013/2/5 星期二 13:11:51",
+                            "theacheruserid": "0",
+                            "studentuserid": "60",
+                            "gain": "32",
+                            "other": "131"
+                        },
+                        {
+                            "id": "12",
+                            "begintime": "2013/2/5 星期二 13:11:51",
+                            "endtime": "2013/2/5 星期二 13:11:51",
+                            "theacheruserid": "0",
+                            "studentuserid": "60",
+                            "gain": "32",
+                            "other": "131"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "1": [
+                {
+                    "T_User": [
+                        {
+                            "id": "61",
+                            "rank": "2",
+                            "name": "nqqqqqme ",
+                            "password": "111111 ",
+                            "usermessageid": "4",
+                            "parentid": "60",
+                            "registernum": "123456 ",
+                            "createtime": "2013/2/4 星期一 14:45:34",
+                            "lastlogintime": "2013/2/6 星期三 17:46:45",
+                            "logintimes": "37"
+                        }
+                    ]
+                },
+                {
+                    "T_StudentMessage": [
+                        {
+                            "grade": "11",
+                            "department": "32 ",
+                            "working": "0",
+                            "major": "23 ",
+                            "phone": "12212121 "
+                        }
+                    ]
+                },
+                {
+                    "T_Sign": [
+                        {
+                            "id": "2",
+                            "begintime": "2013/2/5 星期二 13:11:41",
+                            "endtime": "2013/2/5 星期二 13:11:41",
+                            "theacheruserid": "60",
+                            "studentuserid": "61",
+                            "gain": "543",
+                            "other": "5345"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

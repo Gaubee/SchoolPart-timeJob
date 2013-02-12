@@ -35,22 +35,18 @@
         }
     });
     //用户
-	Interface.on("click", ".people", function () {
-		aid.slider();
-	});
+//	Interface.on("click", ".people", function () {
+//		aid.slider();
+//	});
     
 
-//    var employLoadButton = $("#employLoadButton"); //登录按钮
-//    employLoadButton.click(function () {
-//        loading.toload();
-//    });
 
 
 
 
     //滚动
     DOMwhell(document.getElementById("interface"), 600);
-    DOMwhell(document.getElementById("news"), 600);
+    DOMwhell(document.getElementById("list"), 600);
     DOMwhell(document.getElementById("mask"), 1, true);
     DOMwhell(document.getElementById("loading"), 1, true);
     DOMwhell(document.getElementById("message"), 1, true);

@@ -100,8 +100,8 @@
     })()
     window.aid = $("#aid");
     (function () {//aid-init
-        var aidSliderButton = aid.find(".rollback");
         aid.slider = function (time) {
+			var aidSliderButton = aid.find(".rollback");
             time = time || 300;
             if (!this.hasClass("hidden")) {
                 mask.back();
@@ -116,36 +116,42 @@
                 this.animate({ right: 0 }, time);
             }
         }
-        aidSliderButton.click(function () {
+		aid.on("click",".rollback",function () {
             aid.slider(500);
+			var aidSliderButton = $(this);
             aidSliderButton.animate({ rotate: '-180deg' }, 300);
-        });
+        })
     })();
 
-    window.toolbarButtons = $(".toolbar button");
-    (function () {//toolbar-init
+    //window.toolbarButtons = $(".toolbar button");
+    (window.toolbarButtonsInit = function () {//toolbar-init
+		window.toolbarButtons = $(".toolbar button");
         toolbarButtons.each(function () {
             var obj = $(this);
-            var icon = obj.find("i");
-            var originalWidth = parseInt(obj.css("width"));
-            var iconWidth = parseInt(icon.css("width"));
-            icon.attr("title", icon.html());
-            icon.html("");
-            var Width = originalWidth + iconWidth;
-            obj.click(function () {
-                icon.html(icon.attr("title"));
-                icon.css({ "marginRight": -iconWidth });
-                icon.stop().animate({ "marginRight": 0 }, iconWidth * 6);
-                obj.stop().animate({ "width": Width }, iconWidth * 6);
-            }).mouseout(function () {
-                if (icon.html() !== "") {
-                    icon.stop().animate({ "marginRight": -iconWidth }, Width * 3);
-                    obj.stop().animate({ "width": originalWidth }, Width * 3, function () {
-                        icon.html("");
-                        icon.css({ "marginRight": 0 });
-                    });
-                }
-            });
+			
+				var icon = obj.find("i");
+				var originalWidth = parseInt(obj.css("width"));
+				icon.html(icon.attr("title"));
+				var iconWidth = parseInt(icon.css("width"));
+				icon.html("");
+				var Width = originalWidth + iconWidth;
+				obj.off();
+				obj.on('click',function () {
+					icon.html(icon.attr("title"));
+					icon.css({ "marginRight": -iconWidth });
+					icon.stop().animate({ "marginRight": 0 }, iconWidth * 6);
+					obj.stop().animate({ "width": Width }, iconWidth * 6);
+				}).on('mouseout',function () {
+					if (icon.html() !== "") {
+						icon.stop().animate({ "marginRight": -iconWidth }, Width * 3);
+						obj.stop().animate({ "width": originalWidth }, Width * 3, function () {
+							icon.html("");
+							icon.css({ "marginRight": 0 });
+						});
+					}
+				});
+				obj.attr("init",true);
+			
         });
     })();
 

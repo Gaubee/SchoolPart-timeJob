@@ -63,10 +63,12 @@ var DOMwhell = function (obj, maxheight, isNull) {
     //绑定事件,这里对mousewheel做了判断,注册时统一使用mousewheel 
     function addWhellEvent(obj, fn) {
         var isFirefox = typeof document.body.style.MozUserSelect != 'undefined';
-        if (obj.addEventListener)
-            obj.addEventListener(isFirefox ? 'DOMMouseScroll' : 'mousewheel', fn, false);
-        else
-            obj.attachEvent('onmousewheel', fn);
+        if (obj) {
+            if (obj.addEventListener)
+                obj.addEventListener(isFirefox ? 'DOMMouseScroll' : 'mousewheel', fn, false);
+            else
+                obj.attachEvent('onmousewheel', fn);
+        }
         return fn;
     }
     /*
@@ -88,14 +90,14 @@ var DOMwhell = function (obj, maxheight, isNull) {
     //初始化
     if (obj === document.body) {
         jQobj.wrap("<body></body>");
-		var id = "WhellEvent"+Math.random();
-		jQobj.html("<div id='"+id+"'>"+jQobj.html()+"</div>");
-		jQobj = $("#"+id);
-    	jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight });
+        var id = "WhellEvent" + Math.random();
+        jQobj.html("<div id='" + id + "'>" + jQobj.html() + "</div>");
+        jQobj = $("#" + id);
+        jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight });
     } else {
         jQobj.wrap("<div></div>");
-		//jQobj.html("<div>"+jQobj.html()+"</div>");
-    	jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight,"display":"inline" });
+        //jQobj.html("<div>"+jQobj.html()+"</div>");
+        jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight, "display": "inline" });
     }
     jQobj.append('<div class="wheel"><div class="scroll-bar"></div></div>');
     var wheel_P = jQobj.find(".wheel");
@@ -118,7 +120,10 @@ var DOMwhell = function (obj, maxheight, isNull) {
             jQobj.css({ "marginTop": delta });
             if (readelta !== delta) {
                 //console.log(maxheight + "-" + height + " = " + readelta);
-                jQobj.stop().animate({ "marginTop": readelta }, 500, "easeOut");
+                clearTimeout(jQobj.ti); jQobj.stop();
+                jQobj.ti = setTimeout(function () {
+                    jQobj.stop().animate({ "marginTop": readelta }, 500, "easeOut");
+                }, 100);
             }
             //滚动条滚动
             //console.log((readelta / height) * -100);

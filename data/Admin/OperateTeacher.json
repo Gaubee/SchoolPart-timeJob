@@ -1,0 +1,66 @@
+{
+    "Add": [
+        {
+            "T_TeacherMessage": [
+                {
+                    "id": "24",
+                    "usesign": "1",
+                    "createtime": "2013/2/6 星期三 20:26:15",
+                    "responsibleteacher": "re ",
+                    "phone": "12212121 "
+                }
+            ]
+        },
+        {
+            "T_User": [
+                {
+                    "id": "88",
+                    "rank": "1",
+                    "name": "name ",
+                    "password": "111111 ",
+                    "usermessageid": "24",
+                    "parentid": "0",
+                    "registernum": "123456 ",
+                    "createtime": "2013/2/6 星期三 20:26:15",
+                    "lastlogintime": "2013/2/6 星期三 20:26:15",
+                    "logintimes": "0"
+                }
+            ]
+        }
+    ]
+}
+
+
+返回数据例子2：
+
+{
+    "Modify": [
+        {
+            "T_TeacherMessage": [
+                {
+                    "id": "88",
+                    "rank": "1",
+                    "name": "name ",
+                    "password": "111111 ",
+                    "usermessageid": "24",
+                    "parentid": "0",
+                    "registernum": "123456 ",
+                    "createtime": "2013/2/6 星期三 20:26:15",
+                    "lastlogintime": "2013/2/6 星期三 20:26:15",
+                    "logintimes": "0"
+                }
+            ]
+        },
+        {
+            "T_User": [
+                {
+                    "id": "24",
+                    "usesign": "0",
+                    "createtime": "2013/2/6 星期三 20:26:15",
+                    "responsibleteacher": "re ",
+                    "phone": "12212121 "
+                }
+            ]
+        }
+    ]
+}

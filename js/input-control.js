@@ -17,8 +17,10 @@
 
         if ($element.hasClass('text')) {
             initTextInput();
+			$element.attr("inputControl",true);
         } else if ($element.hasClass('password')) {
             initPasswordInput();
+			$element.attr("inputControl",true);
         }
     };
 
@@ -82,8 +84,10 @@
         });
     };
 
-    plugin.init();
-
+	if(!$element.attr("inputControl")){
+		plugin.init();
+		console.log("input init")
+	}
 };
 
 $.fn.Input = function (options) {
@@ -97,16 +101,33 @@ $.fn.Input = function (options) {
 
 })(jQuery);
 
+
+
 $(function(){
-    ReactivateInputs();
-});
 
-function ReactivateInputs(){
-    var allInputs = $('.input-control');
-    allInputs.each(function (index, input) {
+
+	 window.ReactivateInputs = function(){
+    
+		var allInputs = $('.input-control');
+
+		allInputs.each(function (index, input) {
+			
         var params = {};
-        $input = $(input);
 
-        $input.Input(params);
-    });
+					$input = $(input);
+
+
+					$input.Input(params);
+ 
+		});
+	
 }
+
+	//ReactivtaeInputs();
+	try{
+		ReactivateInputs();
+
+	}catch(e){
+			console.info(e);
+	}
+});

@@ -1,0 +1,33 @@
+{
+    "Login": [
+        {
+            "T_User": [
+                {
+                    "id": "62",
+                    "rank": "0",
+                    "name": "312 ",
+                    "password": "111111 ",
+                    "usermessageid": "5",
+                    "parentid": "0",
+                    "registernum": "333333 ",
+                    "createtime": "2013/2/4 星期一 14:45:34",
+                    "lastlogintime": "2013/2/6 星期三 20:13:29",
+                    "logintimes": "11"
+                }
+            ]
+        },
+        {
+            "T_Sign": [
+                {
+                    "id": "10",
+                    "begintime": "2013/2/5 星期二 13:11:51",
+                    "endtime": "2013/2/5 星期二 13:11:51",
+                    "theacheruserid": "60",
+                    "studentuserid": "62",
+                    "gain": "32",
+                    "other": "131"
+                }
+            ]
+        }
+    ]
+}

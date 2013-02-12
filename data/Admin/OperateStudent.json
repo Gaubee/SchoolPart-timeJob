@@ -1,0 +1,94 @@
+{
+    "Add": [
+        {
+            "T_StudentMessage": [
+                {
+                    "id": "30",
+                    "sunofworktime": "0",
+                    "signtimes": "0",
+                    "thissunofworktime": "0",
+                    "thissigntimes": "0",
+                    "score": "0",
+                    "evaluate": "0",
+                    "createtime": "2013/2/6 星期三 20:16:56",
+                    "working": "0",
+                    "logining": "0",
+                    "grade": "11",
+                    "department": "32 ",
+                    "major": "23 ",
+                    "phone": "12212121 ",
+                    "beginworkday": "2013/2/6 星期三 20:16:56",
+                    "endworkday": "2013/2/6 星期三 20:16:56",
+                    "worklong": "",
+                    "freetime": "",
+                    "img": ""
+                }
+            ]
+        },
+        {
+            "T_User": [
+                {
+                    "id": "87",
+                    "rank": "2",
+                    "name": "nqqqqqme ",
+                    "password": "111111 ",
+                    "usermessageid": "30",
+                    "parentid": "60",
+                    "registernum": "123456 ",
+                    "createtime": "2013/2/6 星期三 20:16:56",
+                    "lastlogintime": "2013/2/6 星期三 20:16:56",
+                    "logintimes": "0"
+                }
+            ]
+        }
+    ]
+}
+
+
+返回数据例子2：
+
+{
+    "Modify": [
+        {
+            "T_StudentMessage": [
+                {
+                    "id": "61",
+                    "rank": "2",
+                    "name": "nqqqqqme ",
+                    "password": "111111 ",
+                    "usermessageid": "4",
+                    "parentid": "60",
+                    "registernum": "123456 ",
+                    "createtime": "2013/2/4 星期一 14:45:34",
+                    "lastlogintime": "2013/2/6 星期三 19:32:34",
+                    "logintimes": "41"
+                }
+            ]
+        },
+        {
+            "T_User": [
+                {
+                    "id": "4",
+                    "sunofworktime": "0",
+                    "signtimes": "5",
+                    "thissunofworktime": "6",
+                    "thissigntimes": "0",
+                    "score": "0",
+                    "evaluate": "47",
+                    "createtime": "2013/2/4 星期一 14:46:37",
+                    "working": "0",
+                    "logining": "0",
+                    "grade": "11",
+                    "department": "32 ",
+                    "major": "23 ",
+                    "phone": "12212121 ",
+                    "beginworkday": "2013/2/4 星期一 14:46:37",
+                    "endworkday": "2013/2/4 星期一 14:46:37",
+                    "worklong": " ",
+                    "freetime": "",
+                    "img": " "
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+{
+    "T_TeacherList": [
+        {
+            "row": "1",
+            "uid": "88",
+            "usermessageid": "24",
+            "rank": "1",
+            "name": "name ",
+            "parentid": "0",
+            "registernum": "123456 ",
+            "ucreatetime": "2013/2/6 星期三 20:26:15",
+            "lastlogintime": "2013/2/6 星期三 20:26:15",
+            "logintimes": "0",
+            "id": "24",
+            "usesign": "0",
+            "createtime": "2013/2/6 星期三 20:26:15",
+            "responsibleteacher": "re ",
+            "phone": "12212121 "
+        },
+        {
+            "row": "2",
+            "uid": "60",
+            "usermessageid": "3",
+            "rank": "1",
+            "name": "6455555 ",
+            "parentid": "0",
+            "registernum": "222222 ",
+            "ucreatetime": "2013/2/4 星期一 14:45:34",
+            "lastlogintime": "2013/2/6 星期三 19:32:40",
+            "logintimes": "52",
+            "id": "3",
+            "usesign": "1",
+            "createtime": "2013/2/1 星期五 12:39:37",
+            "responsibleteacher": "ResponsibleTeacher ",
+            "phone": "444444 "
+        }
+    ]
+}
