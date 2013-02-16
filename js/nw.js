@@ -98,6 +98,7 @@ var DOMwhell = function (obj, maxheight, isNull) {
         jQobj.wrap("<div></div>");
         //jQobj.html("<div>"+jQobj.html()+"</div>");
         jQobj.parent().css({ "overflow": "hidden", "maxHeight": maxheight, "display": "inline" });
+        jQobj.parent().parent().css({ "overflow": "hidden" });
     }
     jQobj.append('<div class="wheel"><div class="scroll-bar"></div></div>');
     var wheel_P = jQobj.find(".wheel");

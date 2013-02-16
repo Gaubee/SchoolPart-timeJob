@@ -2,18 +2,18 @@
 (function ($) {
 
     //公告栏
-    var Interface = $("#interface"); 
-    Interface.on("mouseover","#info p",function (e) {
+    var Interface = $("#interface");
+    Interface.on("mouseover", "#info p", function (e) {
         //var mes = $()
         //$("#info p").append()
         e = e || event;
         title.show("双击进行编辑", e);
-    }).on("mousemove","#info p",function (e) {
+    }).on("mousemove", "#info p", function (e) {
         e = e || event;
         title.move(e);
-    }).on("mouseout","#info p",function () {
+    }).on("mouseout", "#info p", function () {
         title.hide();
-    }).on("dblclick","#info p",function () {//进行编辑
+    }).on("dblclick", "#info p", function () {//进行编辑
         var pDOM = this;
         if (!pDOM.editing) {
             title.hide();
@@ -35,10 +35,10 @@
         }
     });
     //用户
-//	Interface.on("click", ".people", function () {
-//		aid.slider();
-//	});
-    
+    //	Interface.on("click", ".people", function () {
+    //		aid.slider();
+    //	});
+
 
 
 
@@ -46,6 +46,7 @@
 
     //滚动
     DOMwhell(document.getElementById("interface"), 600);
+    DOMwhell(document.getElementById("frame-page-all-department"), 600);
     DOMwhell(document.getElementById("list"), 600);
     DOMwhell(document.getElementById("mask"), 1, true);
     DOMwhell(document.getElementById("loading"), 1, true);
@@ -58,4 +59,4 @@
     aid.slider(0); //隐藏用户简要信息页
     loading.noload(); //隐藏加载页
     message.message("欢迎回来");
-})(jQuery,Ember);
+})(jQuery, Ember);

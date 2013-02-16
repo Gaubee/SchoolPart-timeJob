@@ -1,5 +1,5 @@
-(function($){
-    $.fn.PageControl = function( options ){
+(function ($) {
+    $.fn.PageControl = function (options) {
         var defaults = {
         };
 
@@ -11,8 +11,8 @@
             , $frame = $frames.children(".frame.active")
             ;
 
-        var initSelectors = function(selectors){
-            selectors.on('click', function(e){
+        var initSelectors = function (selectors) {
+            selectors.off("click").on('click', function (e) {
                 e.preventDefault();
                 var $a = $(this);
                 if (!$a.parent('li').hasClass('active')) {
@@ -30,14 +30,14 @@
             });
 
             $(".page-control .menu-pull-bar").text($(".page-control ul li.active a").text());
-            $(".page-control ul li a").click(function (e) {
+            $(".page-control ul li a").on("click", function (e) {
                 e.preventDefault();
                 $(this).parent("li").parent("ul").parent(".page-control").find(".menu-pull-bar").text($(this).text());
             });
         }
 
-        return this.each(function(){
-            if ( options ) {
+        return this.each(function () {
+            if (options) {
                 $.extend(defaults, options)
             }
 
@@ -45,15 +45,15 @@
         });
     }
 
-    $(function () {
+    $(window.FramePageInit = function () {
         $('[data-role="page-control"]').each(function () {
             $(this).PageControl();
         })
-        $(window).resize(function(){
+        $(window).resize(function () {
             if ($(window).width() >= 768) {
                 $(".page-control ul").css({
                     display: "block"
-                    ,overflow: "visible"
+                    , overflow: "visible"
                 })
             }
             if ($(window).width() < 768 && $(".page-control ul").css("display") == "block") {

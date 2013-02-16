@@ -1,4 +1,14 @@
-﻿/*icons*/
+﻿body
+{
+  cursor:default;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.charms 
+{
+    z-index:2;
+    }
+/*icons*/
 .icon-number-0:before
 {
     content: "〇";

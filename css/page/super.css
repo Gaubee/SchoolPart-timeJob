@@ -1,2 +1,19 @@
-﻿body {
+﻿body
+{
+}
+#interface
+{
+    padding-left: 20px;
+}
+#frame-page-all-department .listview li
+{
+    width:250px;
+    }
+.people
+{
+    cursor: pointer;
+}
+.people:hover
+{
+    outline: 3px solid #999999;
 }

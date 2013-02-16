@@ -15,6 +15,41 @@
     <!--<script src="js/app/ember.min.js" type="text/javascript"></script>-->
     <!-- Ember 自定义控件 -->
     <!--  	-->
+    <script type="text/x-handlebars" data-template-name="all-department">
+			{{#with view.content}}
+						{{#if id}}
+							{{#if UseSign}}
+							<div class="badge strech">
+								<!--strech高度更小-->
+								4个签到
+							</div>
+							{{else}}
+							<div class="badge strech bg-color-red right bottom">
+								此部门取消了登录签到功能
+							</div>
+							{{/if}}
+						<div class="icon">
+							<img {{bindAttr alt="ResponsibleTeacher"}} {{bindAttr src="img"}} />
+						</div>
+						<div class="data">
+							<h4>
+								XX部门1</h4>
+								<p>
+									本部门共有12位学生
+								</p>
+						</div>
+				{{else}}
+					  <div class="icon">
+							<!--<i class="icon-plus"></i>-->
+							<img alt="添加" src="images/expand32-black.png" />
+						</div>
+						<div class="data">
+							<h3>
+								添加新的部门</h3>
+						</div>
+				{{/if}}
+			{{/with}}
+    </script>
     <!-- 	-->
 </head>
 <body>
@@ -50,13 +85,160 @@
         <!--设置信息页面-->
     </div>
     <div id="interface" class="page fill interface">
-        <div class="page secondary">
+        <div class="page">
             <div class="page-header">
                 <div class="page-header-content">
                 </div>
             </div>
             <div class="page-region">
                 <div class="page-region-content">
+                    <div class="page-control" data-role="page-control">
+                        <!-- Responsive controls -->
+                        <span class="menu-pull"></span>
+                        <div class="menu-pull-bar">
+                        </div>
+                        <!-- Tabs -->
+                        <ul id="frame-page-navs">
+                            <li class="active"><a href="#frame-page-all-department">所有部门</a></li>
+                            <li><a href="#frame-page-all-student">所有学生</a></li>
+                            <!--<li><a href="#new-frame-page-dapartment">新建部门</a></li>-->
+                        </ul>
+                        <!-- Tabs content -->
+                        <div id="frame-page-contents" class="frames">
+                            <div class="frame active" id="frame-page-all-department">
+                            </div>
+                            <div class="frame" id="frame-page-all-student">
+                                <div class="page">
+                                    <div class="page-region">
+                                        <div class="page-region-content">
+                                            <div id="human" class="grid">
+                                                <!-- 加虚线element-border-->
+                                                <!-- -->
+                                                <div class="row">
+                                                    <div class="people span2 bg-color-blueDark">
+                                                        <img alt="student-name" src="images/0_head.png" class="head" />
+                                                        <p class="fg-color-white">
+                                                            Gaubee</p>
+                                                    </div>
+                                                    <div class="people span2 bg-color-grayDark">
+                                                        <img alt="student-name" src="images/0_head.png" class="head" />
+                                                        <p class="fg-color-white">
+                                                            kidi</p>
+                                                    </div>
+                                                    <div class="people span2 bg-color-grayDark" style="overflow: hidden">
+                                                        <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
+                                                        <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
+                                                        </span>
+                                                        <p class="fg-color-white">
+                                                            添加新的学生</p>
+                                                    </div>
+                                                </div>
+                                                <!-- -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                            </div>
+                           <!-- <div class="frame" id="new-frame-page-dapartment">-->
+                                <script type="text/x-handlebars" data-template-name="department">
+                                
+                                <div class="toolbar">
+                                    <button {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
+                                        <i class="icon-cog"></i>
+                                    </button>
+                                </div>
+                                <div class="page snapped">
+                                    {{#if isUpdate}}
+                                      <h3>
+                                            用工处：</h3>
+                                        <div class="input-control text">
+                                            {{view view.Inputs.Name}}
+                                            <button class="helper">
+                                            </button>
+                                        </div>
+                                        <h3>
+                                            负责教师：</h3>
+                                        <blockquote class="place-right">
+                                            <div class="input-control text">
+                                                <!-- <input type="text" vlaue="XXX" placeholder="部门负责教师 姓名" /> -->
+                                                {{view view.Inputs.ResponsibleTeacher}}
+                                                <button class="helper">
+                                                </button>
+                                            </div>
+                                        </blockquote>
+                                        <h3>
+                                            登录账户（工号）</h3>
+                                        <blockquote class="place-right">
+                                            <div class="input-control text">
+                                                <!-- <input type="text" vlaue="XXX" placeholder="登录账户" /> -->
+                                                {{view view.Inputs.RegisterNum}}
+                                                <button class="helper">
+                                                </button>
+                                            </div>
+                                        </blockquote>
+                                        <h3>
+                                            登录密码</h3>
+                                        <blockquote class="place-right">
+                                            <div class="input-control password">
+                                                <!-- <input type="password" vlaue="XXX" placeholder="登录密码" /> -->
+                                                {{view view.Inputs.Password}}
+                                                <button class="helper">
+                                                </button>
+                                            </div>
+                                        </blockquote>
+                                    {{else}}
+                                        <h2>
+                                            {{Name}}</h2>
+                                        <h3>
+                                            负责教师：</h3>
+                                        <blockquote class="place-right">
+                                            <span class="content">{{ResponsibleTeacher}}</span>
+                                        </blockquote>
+                                        <h3>
+                                            登录账户（工号）</h3>
+                                        <blockquote class="place-right">
+                                            <span class="content">{{RegisterNum}}</span>
+                                        </blockquote>
+                                        <h3>
+                                            登录密码</h3>
+                                        <blockquote class="place-right">
+                                            <span class="content">{{hiddenPassword}}</span>
+                                        </blockquote>
+                                    {{/if}}
+                                </div>
+                                <div class="page fill">
+                                    <div class="grid">
+                                        <!-- 加虚线element-border-->
+                                        <!-- -->
+                                        <div class="row">
+                                            <div class="people span2 bg-color-blueDark">
+                                                <img alt="student-name" src="images/0_head.png" class="head" />
+                                                <p class="fg-color-white">
+                                                    Gaubee</p>
+                                            </div>
+                                            <div class="people span2 bg-color-grayDark">
+                                                <img alt="student-name" src="images/0_head.png" class="head" />
+                                                <p class="fg-color-white">
+                                                    kidi</p>
+                                            </div>
+                                            <div class="people span2 bg-color-grayDark" style="overflow: hidden">
+                                                <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
+                                                <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
+                                                </span>
+                                                <p class="fg-color-white">
+                                                    添加新的学生</p>
+                                            </div>
+                                        </div>
+                                        <!-- -->
+                                    </div>
+                                </div>
+                                
+                                </script>
+                                        <!-- -->
+                           <!-- </div>-->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,49 +247,31 @@
         <div class="page">
             <div class="page-header">
                 <div class="page-header-content">
-                <h2>您好，管理员</h2>
+                    <h2>
+                        您好，管理员</h2>
                 </div>
             </div>
             <div class="page-region">
                 <div class="page-region-content">
-                <ul class="accordion" data-role="accordion">
-                        <li class="active">
-                            <a href="#"> 新闻标题1 </a>
-                            <div> ……………内容预览……………内容预览……………内容预览……………内 </div>
-                        </li>
-                        <li>
-                            <a href="#"> 新闻标题2 </a>
-                            <div> ...……………内容预览……………内容预览……………内容预览……………内... </div>
-                        </li>
-                        <li>
-                            <a href="#"> 新闻标题3 </a>
-                            <div> ...……………内容预览……………内容预览……………内容预览……………内... </div>
-                        </li>
-                        <li>
-                            <a href="#"> 评分排名 </a>
-                            <div>
-                                <div class="page-sidebar" style="float: none;">
-                                    <ul>
-                                        <li class="" data-role="dropdown"><a><i class="icon-list">
-                                        </i>院级十强</a>
-                                            <ul class="sub-menu sidebar-dropdown-menu">
-                                                <li><a><i class="icon-number-1 fg-color-yellow"></i>name</a></li>
-                                                <li><a><i class="icon-number-2 fg-color-orange"></i>name</a></li>
-                                                <li><a><i class="icon-number-3 fg-color-orangeDark"></i>name</a></li>
-                                                <li><a><i class="icon-number-4 fg-color-red"></i>name</a></li>
-                                                <li><a><i class="icon-number-5 fg-color-red"></i>name</a></li>
-                                                <li><a><i class="icon-number-6 fg-color-red"></i>name</a></li>
-                                                <li><a><i class="icon-number-7 fg-color-red"></i>name</a></li>
-                                                <li><a><i class="icon-number-8 fg-color-red"></i>name</a></li>
-                                                <li><a><i class="icon-number-9 fg-color-red"></i>name</a></li>
-                                                <li><a><i class="icon-number-10 fg-color-red"></i>name</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                    <div class="page-sidebar" style="float: none;">
+                        <ul>
+                            <li class="sticker sticker-color-yellow" data-role="dropdown"><a><i class="icon-list fg-color-yellow">
+                            </i>学生评级——院级十强</a>
+                                <ul class="sub-menu sidebar-dropdown-menu light">
+                                    <li><a><i class="icon-number-1 fg-color-yellow"></i>name</a></li>
+                                    <li><a><i class="icon-number-2 fg-color-orange"></i>name</a></li>
+                                    <li><a><i class="icon-number-3 fg-color-orangeDark"></i>name</a></li>
+                                    <li><a><i class="icon-number-4 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-5 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-6 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-7 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-8 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-9 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-10 fg-color-red"></i>name</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,7 +286,7 @@
                 </h2>
                 <div class="page-header-content bg-color-blueDark ">
                     <h1 id="personalInfo-name" class="fg-color-white">
-                        </h1>
+                    </h1>
                 </div>
             </div>
             <div class="page-region">
@@ -164,8 +328,8 @@
 <script type="text/javascript" src="js/buttonset.js"></script>
 <script type="text/javascript" src="js/carousel.js"></script>-->
 <script type="text/javascript" src="js/input-control.js"></script>
-<!--<script type="text/javascript" src="js/pagecontrol.js"></script>
-<script type="text/javascript" src="js/rating.js"></script>
+<script type="text/javascript" src="js/pagecontrol.js"></script>
+<!--<script type="text/javascript" src="js/rating.js"></script>
 <script type="text/javascript" src="js/tile-drag.js"></script>-->
 <script type="text/javascript" src="js/dropdown.js"></script>
 <script type="text/javascript" src="js/slider.js"></script>

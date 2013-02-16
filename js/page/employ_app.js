@@ -21,9 +21,6 @@
 	});
     Employment.EmployersController = Em.ArrayController.create({
         content: [],
-			rootElement:$( '#interface'),
-        _id: "HumanController",
-        _parentId: "human",
         refreshData: function () {
             $.getData("employers.json", { "_$": Math.random() }, function (newdata) {
                 var controller = Employment.EmployersController;
@@ -36,7 +33,6 @@
 /*----------------------------------------------------*/
 //View
 	Employment.EmployersView = Em.CollectionView.create({
-		templateName:"employers-list",
 		classNames: ['row'],
 		contentBinding:"Employment.EmployersController",
 		itemViewClass:Em.View.extend({
@@ -51,6 +47,8 @@
 					return['span2','people',bgColor];
 				}).property('LoginIng'),*/
 			templateName:"employer",
+				
+
 			eventManager:Em.Object.create({
 				click:function(event,view){
 					var data = view.get("content");

@@ -124,7 +124,7 @@
     })();
 
     //window.toolbarButtons = $(".toolbar button");
-    (window.toolbarButtonsInit = function () {//toolbar-init
+    window.toolbarButtonsInit = function () {//toolbar-init
 		window.toolbarButtons = $(".toolbar button");
         toolbarButtons.each(function () {
             var obj = $(this);
@@ -153,7 +153,7 @@
 				obj.attr("init",true);
 			
         });
-    })();
+    };
 
     //extend jQuery
     $.toTxt = function (str) {
