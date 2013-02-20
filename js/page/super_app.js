@@ -1,5 +1,5 @@
 ﻿//Model bulid & Controler bulid & View Init
-log = console.log;
+log = function(){console.log(arguments[0]);};
 (function($, Em) {
 	DataBase.Admin.Login() //管理员登录
 	window.AdminManager = Em.Application.create({
@@ -142,7 +142,24 @@ log = console.log;
 				console.log("submit the new date");
 				this.content.storeHistory();
 				//update the database
-				DataBase.Admin.OperateTeacher(this.get("content"))
+				var data = this.get("content");
+				if (data.id){
+					log("Modify");
+					DataBase.Admin.ModifyTeacher(data,function(data){
+						for (var i in data)
+						{
+							this.set(i,data[i]);
+						}
+					});
+				}else{
+					log("Add");
+					DataBase.Admin.AddTeacher(data,function(data){
+						for (var i in data)
+						{
+							this.set(i,data[i]);
+						}
+					});
+				}
 			}
 		},//
 		refreshData:function(){

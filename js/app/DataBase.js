@@ -23,13 +23,26 @@
             },
             complete: function () {//执行回调函数
                 if (result) {//如可需要执行回调函数
+					try{
                     callback.call(this, result);
+					}catch(e){
+
+						try{
+							console.log(result)
+							var error = result.Error[0].describe;
+							alert(error);
+						}catch(e){
+							alert("操作失败！");
+						}
+					//
+					}
                 }
             },
             type: type
         });
         return result;
     }
+
     window.DataBase = {
         Student: {
             Login: function () {
@@ -138,18 +151,49 @@
                 var url = "Admin/OperateStudent.ashx";
                 $.getData(url);
             },
-            OperateTeacher: function (data,foo) {
+            OperateTeacher: function (formatData,foo) {
                 var url = "Admin/OperateTeacher.ashx";
+                $.getData(url,formatData,function(data){
+						data = data.Modify||data.Add;
+						data = data[0].T_TeacherMessage;
+						formattedData={
+							id : data.id.trim(),
+							Name:data.name.trim(),
+							ResponsibleTeacher:data.responsibledata.trim(),
+							Phone:data.phone.trim(),
+							UseSign:!!(data.usesign-0),
+							RegisterNum:data.registernum.trim()
+						}
+					if (foo){
+						foo(formattedData);
+					}
+				});
+            },
+			AddTeacher:function(data,foo){
 				var formatData = {
-						type = "Modify",
-						Name = data.Name,
-						RegisterNum = data.RegisterNum,
-						Password = data.Password,
-						Phone = data.Phone,
-						ResponsibleTeacher = data.ResponsibleTeacher,
+						type : "Add",
+						Name : data.Name,
+						RegisterNum : data.RegisterNum,
+						Password : data.Password,
+						Phone : data.Phone,
+						ResponsibleTeacher : data.ResponsibleTeacher,
+						UseSign : (data.UseSign?1:0)
 				};
-                $.getData(url);
-            }
+				this.OperateTeacher(formatData,foo)
+			},
+			ModifyTeacher:function(data,foo){
+				var formatData = {
+						Id : data.id,
+						Name : data.Name,
+						RegisterNum : data.RegisterNum,
+						Password : data.Password,
+						Phone : data.Phone,
+						ResponsibleTeacher : data.ResponsibleTeacher,
+						UseSign : (data.UseSign?1:0)
+				};
+				this.OperateTeacher(formatData,foo)
+			}
+			//
         }
     }
 })(jQuery);
