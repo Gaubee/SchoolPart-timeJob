@@ -24,9 +24,8 @@
             complete: function () {//执行回调函数
                 if (result) {//如可需要执行回调函数
 					try{
-                    callback.call(this, result);
+						callback.call(this, result);
 					}catch(e){
-
 						try{
 							console.log(result)
 							var error = result.Error[0].describe;
@@ -111,7 +110,7 @@
             },
             GetTeacherList: function (foo) {
                 var url = "Admin/GetTeacherList.ashx";
-                $.getData(url,{},function(data){
+                $.getData(url,{Len:10000},function(data){
 					var _super = data;
 					var formattedData = [{}];
 					var T_TeacherList = data. T_TeacherList;
@@ -155,14 +154,25 @@
                 var url = "Admin/OperateTeacher.ashx";
                 $.getData(url,formatData,function(data){
 						data = data.Modify||data.Add;
-						data = data[0].T_TeacherMessage;
-						formattedData={
-							id : data.id.trim(),
-							Name:data.name.trim(),
-							ResponsibleTeacher:data.responsibledata.trim(),
-							Phone:data.phone.trim(),
-							UseSign:!!(data.usesign-0),
-							RegisterNum:data.registernum.trim()
+						var D1 = data[0].T_TeacherMessage[0];
+						console.log(D1);
+						var D2 = data[1].T_User[0];
+						console.log(D2);
+						try{
+							var formattedData={
+								id : D1.id.trim(),
+								Name:D1.name.trim(),
+								ResponsibleTeacher:D2.responsibleteacher.trim(),
+								Phone:D2.phone.trim(),
+								UseSign:!!(D2.usesign-0),
+								RegisterNum:D1.registernum.trim(),
+								Password : D1.password/**/
+							}
+						}catch(e){
+							for (var i in e)
+							{
+								console.log(e[i]);
+							}
 						}
 					if (foo){
 						foo(formattedData);

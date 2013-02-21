@@ -1,5 +1,4 @@
 ﻿//Model bulid & Controler bulid & View Init
-log = function(){console.log(arguments[0]);};
 (function($, Em) {
 	DataBase.Admin.Login() //管理员登录
 	window.AdminManager = Em.Application.create({
@@ -126,6 +125,7 @@ log = function(){console.log(arguments[0]);};
 	//Per
 	AdminManager.DepartmentController = Em.ObjectController.extend({
 		content: AdminManager.DepartmentObject.create(),
+		navView:null,
 		isUpdate: function() {
 			return !this.get("id");
 		}.property("id"),
@@ -143,21 +143,23 @@ log = function(){console.log(arguments[0]);};
 				this.content.storeHistory();
 				//update the database
 				var data = this.get("content");
+				var self = this;
 				if (data.id){
-					log("Modify");
+					console.log("Modify");
 					DataBase.Admin.ModifyTeacher(data,function(data){
+						
+						console.log(data);
 						for (var i in data)
 						{
-							this.set(i,data[i]);
+							self.set(i,data[i]);
 						}
 					});
 				}else{
-					log("Add");
+					console.log("Add");
 					DataBase.Admin.AddTeacher(data,function(data){
-						for (var i in data)
-						{
-							this.set(i,data[i]);
-						}
+						alert("添加成功,返回所有部门视图!");
+						self.navView.enforceClose();
+						AdminManager.AllDepartmentController.refreshData();
 					});
 				}
 			}
@@ -268,8 +270,11 @@ log = function(){console.log(arguments[0]);};
 				controller: self.get("context"),
 				//共享上下文controller
 				pageContent: self
-			})
-
+			});
+			//为控制器提供View的控制权
+			this.set("controller.navView",this.frameNav);
+			console.log( this.get("controller.navView") );
+			window.C = this;
 			//插入主内容页
 			//this.appendTo("#frame-page-contents");
 			//console.log(this ==AdminManager.newView)
@@ -342,6 +347,19 @@ log = function(){console.log(arguments[0]);};
 				newcontent[Length] = AdminManager.DepartmentObject.create(); //一个保留，用于新建
 				//controller.clear()
 				//controller.addObjects(newcontent);
+					console.log("begin destory");
+					//console.log(controller.content)
+				for (var i=0, items = [],len = controller.content.length;i<len ; ++i)
+				{
+					console.log("destory");
+					console.log(i);
+					items[i] = controller.content[i];
+					(function(n){
+						var item = items[i]
+						item.destroy();
+					})(i);
+				}
+				controller.content.clear();
 				controller.set("content", newcontent);
 			});
 		},
