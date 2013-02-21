@@ -46,7 +46,7 @@
 
     //滚动
     DOMwhell(document.getElementById("interface"), 600);
-    DOMwhell(document.getElementById("frame-page-all-department"), 600);
+    DOMwhell(document.getElementById("frame-page-all-department"), 486);
     DOMwhell(document.getElementById("list"), 600);
     DOMwhell(document.getElementById("mask"), 1, true);
     DOMwhell(document.getElementById("loading"), 1, true);

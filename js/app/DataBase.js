@@ -104,10 +104,30 @@
             }
         },
         Admin: {
-            DeleteUser: function () {
-                var url = "Admin/DeleteUser.json";
-                $.getData(url);
+            DeleteUser: function (userID,foo) {
+                var url = "Admin/DeleteUser.ashx";
+                $.getData(url,{Id:userID},foo);
             },
+			DeleteUsers:function(users){
+				formatData = [];
+				var D = this.DeleteUser;
+				for (var i=0,len = users.length;i<len ; ++i)
+				{
+					(function(){
+						D(users[i].id,function(data){
+							console.log(window.DD = data);
+							switch(data.Error[0].num.trim()){
+								case '7' : formatData[i] = "成功删除："+users[i].Name+" 。";
+											break;
+								case '10' : formatData[i] = "删除 "+users[i].Name+" 失败。";
+											break;
+							}
+							alert(formatData[i]);
+						} )
+					})(i);
+				}
+				return formatData.join('\n');
+			},
             GetTeacherList: function (foo) {
                 var url = "Admin/GetTeacherList.ashx";
                 $.getData(url,{Len:10000},function(data){

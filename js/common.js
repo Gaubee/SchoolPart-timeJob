@@ -1,4 +1,33 @@
 ﻿(function ($) {
+	window.alert = function(str){
+		$.Dialog({
+				'title'       : '警告！',
+				'content'     : str,
+				'draggable'   : false,
+				'overlay'     : true,
+				'closeButton' : true,
+				'buttonsAlign': 'center',
+				'position'    : {
+					'zone'    : 'center'
+				},
+				'buttons'     : {
+					'确定'     : {
+						'action': function(){
+							clearTimeout( alert.ti );
+							return true;
+						}
+					},
+				}
+			});
+			alert.ti = setTimeout(function(){
+				$("#dialogOverlay").animate({
+					opacity:0
+				},1000);
+				setTimeout(function(){
+					$("#dialogOverlay .icon-cancel-2").click();
+				},1000)
+			},str.length*100);
+	}
     window.mask = $("#mask");
     window.loading = $("#loading");
     window.interface = $(".interface");

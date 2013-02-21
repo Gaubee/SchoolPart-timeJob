@@ -388,9 +388,10 @@
 					//destroy from frame page
 					$("a[href=" + content[i].get("frameIDSeletor") + "]").next().click();
 					//delete from Database
-					DataBase.Admin.DeleteUser(content[i].get("id"));
 					content[i].destroy();
 				}
+				var mes = DataBase.Admin.DeleteUsers(content);
+				//alert(mes);
 				//clear objects
 				content.clear();
 				//refresh to get new data
