@@ -31,7 +31,7 @@
             <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
                 <i class="icon-eye"></i>
             </button>
-            <button>
+            <button {{action "addItem"}} >
                 <i class="icon-plus"></i>
             </button>
             <span class="detial-text">dwq3呵呵而后</span>
@@ -74,6 +74,7 @@
 						<div class="data">
 							<h3>
 								添加新的部门</h3>
+                                <p>双击进行编辑</p>
 						</div>
 				{{/if}}
 		    {{/with}}

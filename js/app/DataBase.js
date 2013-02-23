@@ -1,6 +1,6 @@
 ﻿//database
 (function ($) {
-    var BaseURL = "http://localhost:13543/";
+    var BaseURL = "http://xnqg.51myqg.com/";
     $.getData = function (url, data, callback, type) {
         type = type || "GET";
         data = data || {};
@@ -144,7 +144,8 @@
 							ResponsibleTeacher:teacher.responsibleteacher.trim(),
 							Phone:teacher.phone.trim(),
 							UseSign:!!(teacher.usesign-0),
-							RegisterNum:teacher.registernum.trim()
+							RegisterNum:teacher.registernum.trim(),
+							Password:teacher.password.trim(),
 						}
 					}
 					if (foo){
@@ -173,20 +174,17 @@
             OperateTeacher: function (formatData,foo) {
                 var url = "Admin/OperateTeacher.ashx";
                 $.getData(url,formatData,function(data){
-						data = data.Modify||data.Add;
-						var D1 = data[0].T_TeacherMessage[0];
-						console.log(D1);
-						var D2 = data[1].T_User[0];
-						console.log(D2);
+						data = data.Modify||data.Add
+						data = data[0];
 						try{
 							var formattedData={
-								id : D1.id.trim(),
-								Name:D1.name.trim(),
-								ResponsibleTeacher:D2.responsibleteacher.trim(),
-								Phone:D2.phone.trim(),
-								UseSign:!!(D2.usesign-0),
-								RegisterNum:D1.registernum.trim(),
-								Password : D1.password/**/
+								id : data.uid.trim(),
+								Name:data.name.trim(),
+								ResponsibleTeacher:data.responsibleteacher.trim(),
+								Phone:data.phone.trim(),
+								UseSign:!!(data.usesign-0),
+								RegisterNum:data.registernum.trim(),
+								Password : data.password.trim(),/**/
 							}
 						}catch(e){
 							for (var i in e)

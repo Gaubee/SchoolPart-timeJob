@@ -306,6 +306,13 @@
 				type: "text",
 				tagName: "input"
 			}),
+			Phone:  Em.TextArea.extend({
+				valueBinding: "controller.Phone",
+				attributeBindings: ['placeholder', 'type'],
+				placeholder: "负责教师 联系方式",
+				type: "text",
+				tagName: "input"
+			}),
 			RegisterNum: Em.TextArea.extend({
 				valueBinding: "controller.RegisterNum",
 				attributeBindings: ['placeholder', 'type'],
@@ -367,6 +374,10 @@
 		toggleMultipleChoice:function(){
 			//console.log(this.get("multipleChoice"));
 			this.set("multipleChoice",!this.get("multipleChoice"));
+		},
+		addItem:function(){
+			var vs = AdminManager.AllDepartmentView.get("childViews");
+			vs[vs.length-1].$().dblclick();
 		},
 		choiceContent:Em.ArrayController.extend({
 			content:[],
