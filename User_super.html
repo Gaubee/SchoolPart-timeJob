@@ -1,0 +1,231 @@
+﻿<!DOCTYPE HTML>
+<html style="width:78%;">
+<head>
+    <title>学生信息页</title>
+    <link href="css/common.css" rel="stylesheet">
+    <link href="css/modern.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/modern-responsive.css" rel="stylesheet">
+    <link href="css/page/user.css" rel="stylesheet" type="text/css" />
+    <link href="css/nw.css" rel="stylesheet" type="text/css" />
+    <script src="js/lib/jquery-1.9.0.min.js" type="text/javascript"></script>
+    <script src="js/app/DataBase.js" type="text/javascript"></script>
+    <script src="js/app/handlebars.js" type="text/javascript"></script>
+    <script src="js/app/ember-1.0.0-pre.4.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="mask" class="mask-none">
+        <!--遮罩层-->
+    </div>
+    <div id="loading">
+        <div class="message-dialog bg-color-blue" style="">
+            <!-- -->
+            <h2>
+                请稍后
+                <div class="loading">
+                </div>
+            </h2>
+            <!--<img class="span1" alt="……" src="images/preloader-w8-line-black.gif" />-->
+            <button class="place-right">
+                取消</button>
+        </div>
+    </div>
+    <div id="message" class="hidden">
+        <div class="message-dialog bg-color-green" style="">
+            <p id="message-content">
+                请稍后</p>
+            <button class="place-right">
+                确定</button>
+        </div>
+    </div>
+        <!-- title -->
+    <div id="title" class="span2 bg-color-darken fg-color-white" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        position: absolute; top: 100px; left: 100px; z-index: 6;padding:4px 5px 6px 5px;">
+    </div>
+    <div id="config" class="page snapped ">
+        <!--设置信息页面-->
+    </div>
+    
+    <div id="info" class="page snapped interface">
+        <!-- bg-color-blue -->
+        <div class="page secondary">
+            <div class="page-header">
+                <div class="page-header-content">
+                </div>
+            </div>
+            <div class="page-region">
+                <div id="studentInfo" class="page-region-content with-sidebar">
+                    <script type="text/x-handlebars" data-template-name="student-base-data">
+                        <div style="text-align: right; float: right;">
+                            <h3>
+                                Name</h3>
+                            <blockquote class="place-right">
+                                {{Name}}</blockquote>
+                            <h3>
+                                Student ID</h3>
+                            <blockquote class="place-right">
+                                {{RegisterNum}}</blockquote>
+                            <h3>
+                                Department</h3>
+                            <blockquote class="place-right">
+                                {{Department}}-{{Major}}</blockquote>
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="interface" class="page fill interface">
+        <div class="page ">
+            <!--secondary-->
+            <div class="page-header">
+                <div class="page-header-content">
+                   <!-- --><h3 class=" span7">对学生的评价
+                    <div  id="rating" class="rating small place-right" data-role="rating" data-param-vote="off" data-param-rating="3.7">
+                    </div>
+                    <p class="indent">…………生的评价………对学生的评价……生的评价…………生的评价…………生的评价………对学生的评价……生的评价…………生的评价……</p></h3>
+                </div>
+            </div>
+              <div class="page-region">
+                  <div class="page-region-content">
+                 	<!-- 日历模块 -->
+                    <div id="calendar" class="grid">
+                        <!-- element-border -->
+                        <div class="row">
+                            <div title="[{'delay':'3600s','begin':'29900'},{'delay':'5600s','begin':'52300'},{'delay':'1600s','begin':'77891'}]"
+                                class="days span1 bg-color-blue">
+                                <h3>
+                                    Sunday</h3>
+                            </div>
+                            <div title="[{'delay':'2600s','begin':'31920'},{'delay':'1600s','begin':'51300'},{'delay':'2200s','begin':'69891'}]"
+                                class="days span1 bg-color-blue">
+                                <h3>
+                                    Monday</h3>
+                            </div>
+                            <div class="days span1 bg-color-blue">
+                                <h3>
+                                    Tuesday</h3>
+                            </div>
+                            <div class="days span1 bg-color-blue">
+                                <h3>
+                                    Wednesday</h3>
+                            </div>
+                            <div class="days span1 bg-color-blue">
+                                <h3>
+                                    Thursday</h3>
+                            </div>
+                            <div class="days span1 bg-color-blue">
+                                <h3>
+                                    Friday</h3>
+                            </div>
+                            <div class="days span1 bg-color-blue">
+                                <h3>
+                                    Saturday</h3>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- 分隔栏 -->
+                    <div class="progress-bar span7">
+                        <div class="bar bg-color-pink" style="width: 30%"></div>
+                        <div class="bar bg-color-yellow" style="width: 30%"></div>
+                        <div class="bar bg-color-green" style="width: 40%"></div>
+                    </div>
+                    <!-- 信息模块 -->
+                    <div id="calendarInfo">
+                    	<!-- 周选择器 -->
+                        <div id="weekSeleter" class="place-left">
+                            <h3>
+                                <div class="button-set" data-role="button-set">
+                                第
+                                    <button class="tool-button"> <i class="icon-arrow-left-2"></i> </button>
+                                        <div class="tool-button input-control text" style="display:inline-block;width:32px;">
+                                            <input type="text" style="padding:4px 5px 6px 5px;font-size:18px;" value="8" />
+                                        </div>
+                                    <button class="tool-button"> <i class="icon-arrow-right-2"></i> </button>
+                                周
+                                </div>
+                            </h3>
+                        </div>	
+	                    <!-- 信息模块 -->
+                    	<div id="thisWeek">
+                        	<p class="indent">本周共计时工作时长：23h:34mm</p>
+                        	<p class="indent">本月共计工作时长：87h</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 拓展功能栏 -->
+     <div id="aid" class="charms bg-color-blue">
+        <div class="page">
+            <div class="page-header">
+                <!--回退按钮-->
+                <h2>
+                    <span class="icon-arrow-right-3 rollback"></span>2013-2-4
+                </h2>
+            </div>
+            <div class="page-region">
+                <div class="page-region-content">
+                     <ul id="dayDetailed" class="listview iconic">
+                        <li>
+                            <div class="icon">
+                                <i class="icon-clock"></i>
+                            </div>
+                            <div class="data">
+                                <h4>8:30-11:20</h4>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon">
+                                <i class="icon-clock"></i>
+                            </div>
+                            <div class="data">
+                                <h4>14:30-18:00</h4>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--  -->
+                </div>
+            </div>
+        </div>
+    </div>
+   	<!-- frame -->
+    <div id="nw-frame" class="hidden">
+        <div id="" class="top">
+        </div>
+        <div id="" class="bottom">
+        </div>
+        <div id="" class="left">
+        </div>
+        <div id="" class="right">
+        </div>
+    </div>
+</body>
+</html>
+<script src="js/lib/jquery-1.9.0.min.js" type="text/javascript"></script>
+<script src="js/lib/jquery.easing.compatibility.js" type="text/javascript"></script>
+<script src="js/common.js" type="text/javascript"></script>
+<!--  nw  -->
+<script src="js/nw.js" type="text/javascript"></script>
+<script src="js/Binder.js" type="text/javascript"></script>
+<script src="js/lib/jquery.mousewheel.min.js" type="text/javascript"></script>
+<!--
+<script type="text/javascript" src="js/accordion.js"></script>
+<script type="text/javascript" src="js/buttonset.js"></script>
+<script type="text/javascript" src="js/carousel.js"></script>-->
+<script type="text/javascript" src="js/input-control.js"></script>
+<!--<script type="text/javascript" src="js/pagecontrol.js"></script>
+<script type="text/javascript" src="js/slider.js"></script>-->
+<script type="text/javascript" src="js/rating.js"></script>
+<script type="text/javascript" src="js/tile-drag.js"></script>
+<script type="text/javascript" src="js/dropdown.js"></script>
+<script type="text/javascript" src="js/tile-slider.js"></script>
+
+<script type="text/javascript" src="js/dialog.js"></script>
+<!--    -->
+<script src="js/lib/jquery.rotate.js" type="text/javascript"></script>
+<script src="js/lib/jquery.blur.js" type="text/javascript"></script>
+<script src="js/page/user_app.js" type="text/javascript"></script>
+<script src="js/page/user_super.js" type="text/javascript"></script>

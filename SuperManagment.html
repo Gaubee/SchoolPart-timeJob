@@ -79,6 +79,50 @@
 				{{/if}}
 		    {{/with}}
     </script>
+    <!--  	-->
+    
+    <script type="text/x-handlebars" data-template-name="all-student-list-bar">
+        <div class="toolbar">
+            <button {{bindAttr class="multipleChoice:default"}} {{action "toggleMultipleChoice"}}>
+                <i class="icon-checkbox"></i>
+            </button>
+            <button>
+                <img src = "images/refresh_icon_small.png" {{action "refreshData"}}>
+            </button>
+            <span style="font-size:32px;">|</span>
+            <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+                <i class="icon-remove"></i>
+            </button>
+            <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
+                <i class="icon-eye"></i>
+            </button>
+            <button {{action "addItem"}} >
+                <i class="icon-plus"></i>
+            </button>
+            <span class="detial-text">dwq3呵呵而后^^^^</span>
+        </div>
+
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="student-list">
+        {{#with view.content}}
+        {{#if id}}
+            <img alt="student-name" {{bindAttr src="img"}} class="head" />
+            <p class="fg-color-white">
+                <center class="fg-color-white">{{Name}}</center>
+                <small class="fg-color-white place-right">——{{departmentName}}</small>
+            </p>
+        {{else}}
+            <!-- /*<span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;"> */-->
+            <img alt="student-name" {{bindAttr src="img"}} class="head" />
+            <!-- /*</span>*/-->
+            <p class="fg-color-white">
+                <center class="fg-color-white">添加新的学生</center>
+                <small class="fg-color-white place-right">双击进行编辑</small>
+            </p>
+        {{/if}}
+        {{/with}}
+    </script>
     <!-- 	-->
 </head>
 <body>
@@ -135,34 +179,16 @@
                         <!-- Tabs content -->
                         <div id="frame-page-contents" class="frames">
                             <div class="frame active" id="frame-page-all-department">
+                                <!--content by 
+                                    Ember.js-->
                             </div>
                             <div class="frame" id="frame-page-all-student">
+                                <div id="allStudentToolBar"></div>
                                 <div class="page">
                                     <div class="page-region">
                                         <div class="page-region-content">
-                                            <div id="human" class="grid">
-                                                <!-- 加虚线element-border-->
-                                                <!-- -->
-                                                <div class="row">
-                                                    <div class="people span2 bg-color-blueDark">
-                                                        <img alt="student-name" src="images/0_head.png" class="head" />
-                                                        <p class="fg-color-white">
-                                                            Gaubee</p>
-                                                    </div>
-                                                    <div class="people span2 bg-color-grayDark">
-                                                        <img alt="student-name" src="images/0_head.png" class="head" />
-                                                        <p class="fg-color-white">
-                                                            kidi</p>
-                                                    </div>
-                                                    <div class="people span2 bg-color-grayDark" style="overflow: hidden">
-                                                        <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
-                                                        <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
-                                                        </span>
-                                                        <p class="fg-color-white">
-                                                            添加新的学生</p>
-                                                    </div>
-                                                </div>
-                                                <!-- -->
+                                            <div id="allStudentList" class="grid">
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -172,124 +198,341 @@
                            <!-- <div class="frame" id="new-frame-page-dapartment">-->
                                 <script type="text/x-handlebars" data-template-name="department">
                                 
-                                <div class="toolbar">
-                                    <button {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
-                                        <i class="icon-wrench"></i>
-                                    </button>
-                                    <button {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
-                                        <i class="icon-history"></i>
-                                    </button>
-                                    <span style="font-size:32px;">|</span>
-                                    <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
-                                        <i class="icon-remove"></i>
-                                    </button>
-                                    <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
-                                        <i class="icon-eye"></i>
-                                    </button>
-                                    <button>
-                                        <i class="icon-clock"></i>
-                                    </button>
-                                    <button>
-                                        <i class="icon-plus"></i>
-                                    </button>
-                                    <span class="detial-text">some detial messages</span>
-                                </div>
-                                <div class="page snapped">
-                                    {{#if isUpdate}}
-                                      <h3>
-                                            用工处：</h3>
-                                        <div class="input-control text">
-                                            {{view view.Inputs.Name}}
-                                            <button class="helper">
-                                            </button>
-                                        </div>
-                                        <h3>
-                                            负责教师：</h3>
-                                        <blockquote class="place-right">
-                                            <div class="input-control text">
-                                                <!-- <input type="text" vlaue="XXX" placeholder="部门负责教师 姓名" /> -->
-                                                {{view view.Inputs.ResponsibleTeacher}}
-                                                <button class="helper">
-                                                </button>
-                                            </div>
-                                        </blockquote>
-                                        <h3>
-                                            登录账户（工号）</h3>
-                                        <blockquote class="place-right">
-                                            <div class="input-control text">
-                                                <!-- <input type="text" vlaue="XXX" placeholder="登录账户" /> -->
-                                                {{view view.Inputs.RegisterNum}}
-                                                <button class="helper">
-                                                </button>
-                                            </div>
-                                        </blockquote>
-                                        <h3>
-                                            登录密码</h3>
-                                        <blockquote class="place-right">
-                                            <div class="input-control password">
-                                                <!-- <input type="password" vlaue="XXX" placeholder="登录密码" /> -->
-                                                {{view view.Inputs.Password}}
-                                                <button class="helper">
-                                                </button>
-                                            </div>
-                                        </blockquote>
-                                    {{else}}
-                                        <h2>
-                                            {{Name}}</h2>
-                                        <h3>
-                                            负责教师：</h3>
-                                        <blockquote class="place-right">
-                                            <span class="content">{{ResponsibleTeacher}}</span>
-                                        </blockquote>
-                                        <h3>
-                                            登录账户（工号）</h3>
-                                        <blockquote class="place-right">
-                                            <span class="content">{{RegisterNum}}</span>
-                                        </blockquote>
-                                        <h3>
-                                            登录密码</h3>
-                                        <blockquote class="place-right">
-                                            <span class="content">{{hiddenPassword}}</span>
-                                        </blockquote>
-                                    {{/if}}
-                                </div>
-                                <div class="page fill">
-                                    <div class="grid">
-                                        <!-- 加虚线element-border-->
-                                        <!-- -->
-                                        <div class="row">
-                                            <div class="people span2 bg-color-blueDark">
-                                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                                <p class="fg-color-white">
-                                                    Gaubee</p>
-                                            </div>
-                                            <div class="people span2 bg-color-grayDark">
-                                                <img alt="student-name" src="images/0_head.png" class="head" />
-                                                <p class="fg-color-white">
-                                                    kidi</p>
-                                            </div>
-                                            <div class="people span2 bg-color-grayDark" style="overflow: hidden">
-                                                <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
-                                                <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
-                                                </span>
-                                                <p class="fg-color-white">
-                                                    添加新的学生</p>
-                                            </div>
-                                        </div>
-                                        <!-- -->
+                                    <div class="toolbar">
+                                        <button {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
+                                            <i class="icon-wrench"></i>
+                                        </button>
+                                        <button {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
+                                            <i class="icon-history"></i>
+                                        </button>
+                                        <span style="font-size:32px;">|</span>
+                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
+                                            <i class="icon-eye"></i>
+                                        </button>
+                                        <button>
+                                            <i class="icon-clock"></i>
+                                        </button>
+                                        <button>
+                                            <i class="icon-plus"></i>
+                                        </button>
+                                        <span class="detial-text">some detial messages</span>
                                     </div>
-                                </div>
+                                    <div class="page snapped">
+                                        {{#if isUpdate}}
+                                          <h3>
+                                                用工处：</h3>
+                                            <div class="input-control text">
+                                                {{view view.Inputs.Name}}
+                                                <button class="helper">
+                                                </button>
+                                            </div>
+                                            <h3>
+                                                负责教师：</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control text">
+                                                    <!-- <input type="text" vlaue="XXX" placeholder="部门负责教师 姓名" /> -->
+                                                    {{view view.Inputs.ResponsibleTeacher}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                            <h3>
+                                                联系方式：</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control text">
+                                                    <!-- <input type="text" vlaue="XXX" placeholder="负责教师 联系方式" /> -->
+                                                    {{view view.Inputs.Phone}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                            <h3>
+                                                登录账户（工号）</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control text">
+                                                    <!-- <input type="text" vlaue="XXX" placeholder="登录账户" /> -->
+                                                    {{view view.Inputs.RegisterNum}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                            <h3>
+                                                登录密码</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control password">
+                                                    <!-- <input type="password" vlaue="XXX" placeholder="登录密码" /> -->
+                                                    {{view view.Inputs.Password}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                        {{else}}
+                                            <h2>
+                                                {{Name}}</h2>
+                                            <h3>
+                                                负责教师：</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{ResponsibleTeacher}}</span>
+                                            </blockquote>
+                                            <h3>
+                                            <h3>
+                                                联系方式：</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{Phone}}</span>
+                                            </blockquote>
+                                            <h3>
+                                                登录账户（工号）</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{RegisterNum}}</span>
+                                            </blockquote>
+                                            <h3>
+                                                登录密码</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{hiddenPassword}}</span>
+                                            </blockquote>
+                                        {{/if}}
+                                    </div>
+                                    <div class="page fill">
+                                        <div class="grid">
+                                            <!-- 加虚线element-border-->
+                                            <!-- -->
+                                            <div class="row">
+                                                <div class="people span2 bg-color-blueDark">
+                                                    <img alt="student-name" src="images/0_head.png" class="head" />
+                                                    <p class="fg-color-white">
+                                                        Gaubee</p>
+                                                </div>
+                                                <div class="people span2 bg-color-grayDark">
+                                                    <img alt="student-name" src="images/0_head.png" class="head" />
+                                                    <p class="fg-color-white">
+                                                        kidi</p>
+                                                </div>
+                                                <div class="people span2 bg-color-grayDark" style="overflow: hidden">
+                                                    <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
+                                                    <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
+                                                    </span>
+                                                    <p class="fg-color-white">
+                                                        添加新的学生</p>
+                                                </div>
+                                            </div>
+                                            <!-- -->
+                                        </div>
+                                    </div>
                                 
                                 </script>
                                         <!-- -->
                            <!-- </div>-->
+                           <script type="text/x-handlebars" data-template-name="lists">
+                               {{#with view.content}}
+                                    <a>{{Name}}</a>
+                               {{/with}}
+                           </script>
+                            <!--<div class="frame" id="Div1">-->
+                                <script type="text/x-handlebars" data-template-name="student">
+
+                                    <div class="toolbar" style="margin-left:40px;">
+                                        <button {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
+                                            <i class="icon-wrench"></i>
+                                        </button>
+                                        <button {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
+                                            <i class="icon-history"></i>
+                                        </button>
+                                        <span style="font-size:32px;">|</span>
+                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
+                                            <i class="icon-eye"></i>
+                                        </button>
+                                        <button>
+                                            <i class="icon-clock"></i>
+                                        </button>
+                                        <button>
+                                            <i class="icon-plus"></i>
+                                        </button>
+                                        <span class="detial-text">some detial messages</span>
+                                    </div>
+                                    <div class="page snapped info">
+                                        <!-- bg-color-blue -->
+                                        <div class="page secondary">
+                                            <div class="page-header">
+                                                <div class="page-header-content">
+                                                <img alt="student-name" {{bindAttr src="img"}} class="head span2 place-right" />
+                                                </div>
+                                            </div>
+                                            <div class="page-region">
+                                                <div id="studentInfo" class="page-region-content with-sidebar">
+                                                    <div style="text-align: right; float: right;">
+                                                        
+                                                        {{#if isUpdate}}
+                                                            <h3>
+                                                                学生姓名：</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Name}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                联系方式：</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Phone}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                年级</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Grade}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                系别</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Department}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                班级</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Major}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                隶属部门</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.departmentName}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录账户（学号）</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.RegisterNum}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录密码</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control password">
+                                                                    {{view view.Inputs.Password}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                        {{else}}
+                                                            <h3>
+                                                                姓名</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Name}}</blockquote>
+                                                            <h3>
+                                                                联系方式</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Phone}}</blockquote>
+                                                            <h3>
+                                                                学号</h3>
+                                                            <blockquote class="place-right">
+                                                                {{RegisterNum}}</blockquote>
+                                                            <h3>
+                                                                系别班级</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Department}}({{Grade}}级)-{{Major}}</blockquote>
+                                                            <h3>隶属部门</h3>
+                                                            <blockquote class="place-right">
+                                                            {{departmentName}}</blockquote>
+                                                            <h3>
+                                                                联系方式：</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Phone}}
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录账户（学号）</h3>
+                                                            <blockquote class="place-right">
+                                                                {{RegisterNum}}
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录密码</h3>
+                                                            <blockquote class="place-right">
+                                                                {{hiddenPassword}}
+                                                            </blockquote>
+                                                        {{/if}}
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="page fill interface">
+                                        <div class="page ">
+                                            <!--secondary-->
+                                            <div class="page-header">
+                                                <div class="page-header-content">
+                                                   <!-- --><h3 class=" span7">对学生的评价
+                                                    <div  id="rating" class="rating small place-right" data-role="rating" data-param-vote="off" data-param-rating="3.7">
+                                                    </div>
+                                                    <p class="indent">…………生的评价………对学生的评价……生的评价…………生的评价…………生的评价………对学生的评价……生的评价…………生的评价……{{Evaluate}}</p></h3>
+                                                </div>
+                                            </div>
+                                              <div class="page-region">
+                                                  <div class="page-region-content">
+
+                                                    <div></div>
+                                                    <!-- 分隔栏 -->
+                                                    <div class="progress-bar span7">
+                                                        <div class="bar bg-color-pink" style="width: 30%"></div>
+                                                        <div class="bar bg-color-yellow" style="width: 30%"></div>
+                                                        <div class="bar bg-color-green" style="width: 40%"></div>
+                                                    </div>
+                                                    <!-- 信息模块 -->
+                                                    <div id="calendarInfo">
+                                                        
+                                                        <!-- 信息模块 -->
+                                                        <div id="thisWeek">
+                                                            <p class="indent">本周共计时工作时长：23h:34mm</p>
+                                                            <p class="indent">本月共计工作时长：87h</p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- 分隔栏 -->
+                                                    <div class="progress-bar span7">
+                                                        <div class="bar bg-color-green" style="width: 20%"></div>
+                                                        <div class="bar bg-color-pink" style="width: 50%"></div>
+                                                        <div class="bar bg-color-yellow" style="width: 30%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </script>
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="list" class="page snapped interface">
+    <div id="list" class="page snapped interface" style="height:620px;">
         <div class="page">
             <div class="page-header">
                 <div class="page-header-content">
@@ -299,6 +542,16 @@
             </div>
             <div class="page-region">
                 <div class="page-region-content">
+                    <div id="tishi" class="page-sidebar" style="float: none;">
+                        <ul>
+                            <li class="sticker sticker-color-blue" data-role="dropdown"><a><i class="icon-list fg-color-blue">
+                            </i>辅助下拉选择</a>
+                            <li id="otherMes"></li>
+                        </ul>
+                    </div>
+                    <script type="text/javascript">
+                        $("#tishi").hide();
+                    </script>
                     <div class="page-sidebar" style="float: none;">
                         <ul>
                             <li class="sticker sticker-color-yellow" data-role="dropdown"><a><i class="icon-list fg-color-yellow">
@@ -386,4 +639,5 @@
 <script src="js/lib/jquery.rotate.js" type="text/javascript"></script>
 <script src="js/lib/jquery.blur.js" type="text/javascript"></script>
 <script src="js/page/super_app.js" type="text/javascript"></script>
+<script src="js/page/super_student_app.js" type="text/javascript"></script>
 <script src="js/page/super.js" type="text/javascript"></script>

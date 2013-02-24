@@ -108,6 +108,7 @@
 			}).length;
 		}.property("student")
 	});
+		/*
 	AdminManager.StudentObject = Em.Object.extend({
 		id: 0,
 		Name: "新建部门",
@@ -121,6 +122,7 @@
 		img: "images/0_head.png",
 		
 	})
+		*/
 	////Controller
 	//Per
 	AdminManager.DepartmentController = Em.ObjectController.extend({

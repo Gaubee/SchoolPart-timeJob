@@ -136,7 +136,8 @@ var DOMwhell = function (obj, maxheight, isNull) {
                     wheel_P.animate({ "opacity": 0 }, 800, "easeIn");
                 }, 500);
             });
-            e.stopPropagation(); //阻止冒泡
+			e.cancelBubble = true;
+            e.stopPropagation(); 
         });
 
     } else {

@@ -56,9 +56,34 @@
                 var url = "Student/GetLoginMessage.json";
                 $.getData(url);
             },
-            GetMessage: function () {
-                var url = "Student/GetMessage.json";
-                $.getData(url);
+            GetMessage: function (studentID,foo) {
+                var url = "Student/GetMessage.ashx";
+                if (!studentID) {return};
+                $.getData(url,{Id:studentID},function(data){
+					var formattedData = {};
+					
+					var student = data.StudentMessageList[0];
+					console.log("student data format");
+					formattedData = {
+						id: student.uid.trim(),
+						Name: student.name.trim(),
+						TeacherID: student.parentid.trim(),
+						Phone: student.phone.trim(),
+						Logining: (student.logining==1?true:false),
+						RegisterNum: student.registernum.trim(),
+						Password: student.password.trim(),
+						Score: student.score.trim(),//评分
+						Evaluate: student.contents.trim(),//评价内容
+						img: student.img.trim()||"images/0_head.png",
+						Department:student.department.trim(),
+						Major:student.major.trim(),
+
+					}
+					/**/
+					if (foo){
+						foo(formattedData);
+					}
+                });
             }
         },
         Teacher: {
@@ -76,16 +101,30 @@
             },
             GetStudentList: function (teacherId,foo) {
                 var url = "teacher/GetStudentList.ashx";
-                $.getData(url,{Pid:teacherId},function(data){
+				var urlData = teacherId?{Pid:teacherId,Len:100000}:{Len:100000};
+                $.getData(url,urlData,function(data){
 					var _super = data;
 					var formattedData = [{}];
-					var T_StudentList = data. T_StudentList;
-					var Length = T_StudentList.length;
+					var StudentList = data. StudentList;
+					var Length = StudentList.length;
 					for (var i=0;i<Length ; ++i)
 					{
-						var student = T_StudentList[i];
+						var student = StudentList[i];
 						formattedData[i]={
-							
+							id: student.uid.trim(),
+							Name: student.name.trim(),
+							TeacherID: student.parentid.trim(),
+							Phone: student.phone.trim(),
+							Logining: (student.logining==1?true:false),
+							RegisterNum: student.registernum.trim(),
+							Password: student.password.trim(),
+							Score: student.score.trim(),
+							Evaluate: student.contents.trim(),
+							img: student.img.trim()||"images/0_head.png",
+							Department:student.department.trim(),
+							Major:student.major.trim(),
+							Grade:student.grade.trim(),
+
 						}
 
 					}
@@ -169,7 +208,43 @@
             },
             OperateStudent: function (data,foo) {
                 var url = "Admin/OperateStudent.ashx";
-                $.getData(url);
+                var upData = {
+                	Id:data.id,
+                	Name:data.Name,
+                	Department:data.Department,
+                	Major:data.Major,
+                	RegisterNum:data.RegisterNum.trim(),
+                	Password:data.Password,
+                	Phone:data.Phone,
+                	Grade:11,
+                	ParentId:data.TeacherID,
+
+                }
+                if (!data.id) {
+                	upData.type="Add";
+                };
+                $.getData(url,upData,function(data){
+                	var student = data.Add||data.Modify;
+                	student = student[0];
+                	var formattedData = {
+							id: student.uid.trim(),
+							Name: student.name.trim(),
+							TeacherID: student.parentid.trim(),
+							Phone: student.phone.trim(),
+							Logining: (student.logining==1?true:false),
+							RegisterNum: student.registernum.trim(),
+							Password: student.password.trim(),
+							Score: student.score.trim(),
+							//Evaluate: student.contents.trim(),
+							img: (student.img.trim()||"images/0_head.png"),
+							Department:student.department.trim(),
+							Major:student.major.trim(),
+							Grade:student.grade.trim(),/**/
+						}
+					if (foo) {
+						foo(formattedData);
+					};
+                });
             },
             OperateTeacher: function (formatData,foo) {
                 var url = "Admin/OperateTeacher.ashx";

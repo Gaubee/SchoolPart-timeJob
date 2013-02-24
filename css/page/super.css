@@ -17,3 +17,73 @@
 {
     outline: 3px solid #999999;
 }
+.listview .people
+{
+	padding: 0px;
+}
+@media (max-width: 979px) and (min-width: 768px){
+	.listview .people 
+	{
+		width: 104px;
+	}
+}
+/*student info and calendar*/
+.studentframe{
+	margin-left: -40px;
+}
+
+.prompt{
+	/*margin-bottom: -600px;*/
+	z-index: 2;
+	position:relative;
+}
+
+.calendar
+{
+	width: 120%;
+	margin-left: 12px;
+}
+.calendar .days
+{
+    height: 360px; /*360/24 = 15px/小时*/
+    overflow: hidden;
+}
+.calendar .days .duty
+{
+    position: absolute;
+    display: block;
+    background-color: #666666;
+    z-index: 1;
+    cursor: row-resize; /* */
+}
+.calendar .days .duty.active:hover
+{
+    -webkit-transform: scale(1.5); /* for Chrome || Safari */
+    -moz-transform: scale(1.5); /* for Firefox */
+    -ms-transform: scale(1.5); /* for IE */
+    -o-transform: scale(1.5);
+    border:1px solid #4EA6EA;
+}
+.calendar .days .time-control
+{
+    position: absolute;
+    z-index: 1;
+    display: block;
+    background-color: #333333;
+}
+.calendar .days .up
+{
+    cursor: n-resize;
+}
+.calendar .days .down
+{
+    cursor: n-resize;
+}
+.weekSeleter i{
+	cursor:pointer;
+}
+.dayDetailed .icon i{
+	font-size:24px;
+	width:1em;
+	line-height:26px;
+}
