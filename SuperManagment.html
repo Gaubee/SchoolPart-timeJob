@@ -3,9 +3,10 @@
 <head>
     <title>管理员页面</title>
     <link href="css/common.css" rel="stylesheet">
-    <link href="css/modern.css" rel="stylesheet">
+    <!-- <link href="css/modern.css" rel="stylesheet"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/modern-responsive.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/groundwork.css">
+    <!-- <link href="css/modern-responsive.css" rel="stylesheet"> -->
     <link href="css/page/super.css" rel="stylesheet" type="text/css" />
     <link href="css/nw.css" rel="stylesheet" type="text/css" />
     <script src="js/lib/jquery-1.9.0.min.js" type="text/javascript"></script>
@@ -18,23 +19,23 @@
     
     <script type="text/x-handlebars" data-template-name="all-department-control-bar">
         <div class="toolbar">
-            <button {{bindAttr class="multipleChoice:default"}} {{action "toggleMultipleChoice"}}>
+            <button title="进行多选" {{bindAttr class="multipleChoice:default"}} {{action "toggleMultipleChoice"}}>
                 <i class="icon-checkbox"></i>
             </button>
-            <button>
+            <button title="刷新数据">
                 <img src = "images/refresh_icon_small.png" {{action "refreshData"}}>
             </button>
             <span style="font-size:32px;">|</span>
-            <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+            <button title="多选删除" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
                 <i class="icon-remove"></i>
             </button>
-            <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
+            <button title="多选打开浏览" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
                 <i class="icon-eye"></i>
             </button>
-            <button {{action "addItem"}} >
+            <button title="添加新的部门" {{action "addItem"}} >
                 <i class="icon-plus"></i>
             </button>
-            <span class="detial-text">dwq3呵呵而后</span>
+            <span class="detial-text"></span>
         </div>
 
     </script>
@@ -83,20 +84,20 @@
     
     <script type="text/x-handlebars" data-template-name="all-student-list-bar">
         <div class="toolbar">
-            <button {{bindAttr class="multipleChoice:default"}} {{action "toggleMultipleChoice"}}>
+            <button title="进行多选" {{bindAttr class="multipleChoice:default"}} {{action "toggleMultipleChoice"}}>
                 <i class="icon-checkbox"></i>
             </button>
-            <button>
+            <button title="刷新数据">
                 <img src = "images/refresh_icon_small.png" {{action "refreshData"}}>
             </button>
             <span style="font-size:32px;">|</span>
-            <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+            <button title="多选删除" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
                 <i class="icon-remove"></i>
             </button>
-            <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
+            <button title="多选打开浏览" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
                 <i class="icon-eye"></i>
             </button>
-            <button {{action "addItem"}} >
+            <button title="添加新的学生" {{action "addItem"}} >
                 <i class="icon-plus"></i>
             </button>
             <span class="detial-text">dwq3呵呵而后^^^^</span>
@@ -110,7 +111,7 @@
             <img alt="student-name" {{bindAttr src="img"}} class="head" />
             <p class="fg-color-white">
                 <center class="fg-color-white">{{Name}}</center>
-                <small class="fg-color-white place-right">——{{departmentName}}</small>
+                <small class="fg-color-white place-right">--{{departmentName}}</small>
             </p>
         {{else}}
             <!-- /*<span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;"> */-->
@@ -199,25 +200,16 @@
                                 <script type="text/x-handlebars" data-template-name="department">
                                 
                                     <div class="toolbar">
-                                        <button {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
+                                        <button title="修改部门信息" {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
                                             <i class="icon-wrench"></i>
                                         </button>
-                                        <button {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
+                                        <button title="回退操作" {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
                                             <i class="icon-history"></i>
                                         </button>
-                                        <span style="font-size:32px;">|</span>
-                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+                                        <button title="删除此部门" {{bindAttr disabled="canDeleteAble"}} {{action "deleteUser"  target="view"}} >
                                             <i class="icon-remove"></i>
                                         </button>
-                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
-                                            <i class="icon-eye"></i>
-                                        </button>
-                                        <button>
-                                            <i class="icon-clock"></i>
-                                        </button>
-                                        <button>
-                                            <i class="icon-plus"></i>
-                                        </button>
+                                        <span style="font-size:32px;">|</span>
                                         <span class="detial-text">some detial messages</span>
                                     </div>
                                     <div class="page snapped">
@@ -300,23 +292,25 @@
                                             <!-- 加虚线element-border-->
                                             <!-- -->
                                             <div class="row">
-                                                <div class="people span2 bg-color-blueDark">
-                                                    <img alt="student-name" src="images/0_head.png" class="head" />
-                                                    <p class="fg-color-white">
-                                                        Gaubee</p>
-                                                </div>
-                                                <div class="people span2 bg-color-grayDark">
-                                                    <img alt="student-name" src="images/0_head.png" class="head" />
-                                                    <p class="fg-color-white">
-                                                        kidi</p>
-                                                </div>
-                                                <div class="people span2 bg-color-grayDark" style="overflow: hidden">
-                                                    <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
-                                                    <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
-                                                    </span>
-                                                    <p class="fg-color-white">
-                                                        添加新的学生</p>
-                                                </div>
+                                                {{#each students}}
+                                                    {{#view AdminManager.DepartmentStudentsView studentBinding = "this"}}
+                                                        {{#if id}}
+                                                            <div {{bindAttr class=":people :span2 Logining:bg-color-blueDark:bg-color-grayDark"}} {{action "open" target="view" on="doubleClick"}}>
+                                                                <img alt="student-name"  {{bindAttr src="img"}} class="head" />
+                                                                <p class="fg-color-white">
+                                                                    {{Name}}</p>
+                                                            </div>
+                                                        {{else}}
+                                                            <div class="people span2 bg-color-grayDark" style="overflow: hidden" {{action "open" target="view" on="doubleClick"}}>
+                                                                <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
+                                                                <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
+                                                                </span>
+                                                                <p class="fg-color-white">
+                                                                    添加新的学生</p>
+                                                            </div>
+                                                        {{/if}}
+                                                    {{/view}}
+                                                {{/each}}
                                             </div>
                                             <!-- -->
                                         </div>
@@ -334,26 +328,17 @@
                                 <script type="text/x-handlebars" data-template-name="student">
 
                                     <div class="toolbar" style="margin-left:40px;">
-                                        <button {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
+                                        <button title="编辑用户信息" {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
                                             <i class="icon-wrench"></i>
                                         </button>
-                                        <button {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
+                                        <button title="回退操作" {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
                                             <i class="icon-history"></i>
                                         </button>
-                                        <span style="font-size:32px;">|</span>
-                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+                                        <button title="删除此用户" {{bindAttr disabled="canDeleteAble"}} {{action "deleteUser"  target="view"}} >
                                             <i class="icon-remove"></i>
                                         </button>
-                                        <button {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
-                                            <i class="icon-eye"></i>
-                                        </button>
-                                        <button>
-                                            <i class="icon-clock"></i>
-                                        </button>
-                                        <button>
-                                            <i class="icon-plus"></i>
-                                        </button>
-                                        <span class="detial-text">some detial messages</span>
+                                        <span style="font-size:32px;">|</span>
+                                        <span class="detial-text"></span>
                                     </div>
                                     <div class="page snapped info">
                                         <!-- bg-color-blue -->
@@ -507,12 +492,31 @@
                                                     </div>
                                                     <!-- 信息模块 -->
                                                     <div id="calendarInfo">
-                                                        
+                                                        <ul class="listview">
                                                         <!-- 信息模块 -->
-                                                        <div id="thisWeek">
-                                                            <p class="indent">本周共计时工作时长：23h:34mm</p>
-                                                            <p class="indent">本月共计工作时长：87h</p>
-                                                        </div>
+                                                        {{#each signMessage}}
+                                                            {{#view AdminManager.StudentSignMessageView signBinding = "this"}}
+                                                            
+                                                            <li class="bg-color-pinkDark fg-color-white">
+                                                                <div class="icon">
+                                                                    <i class="icon-tag" ></i>
+                                                                </div>
+
+                                                                <div class="data">
+                                                                    <h4 class="fg-color-white">开始时间</h4>
+                                                                    <p>{{BeginTime}}</p>
+                                                                    <h4 class="fg-color-white">结束时间</h4>
+                                                                    <p>{{EndTime}}</p>
+                                                                </div>
+                                                                <div class="badge bg-color-pinkDark right bottom">
+                                                                    <h4 class="fg-color-white">评分：{{Gain}}</h4>
+                                                                    <div class="rating small" data-param-stars="10" data-role="rating" {{action "changeGain" target ="view"}} >
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            {{/view}}   
+                                                        {{/each}}
+                                                        </ul>
                                                     </div>
                                                     <!-- 分隔栏 -->
                                                     <div class="progress-bar span7">
@@ -552,6 +556,32 @@
                     <script type="text/javascript">
                         $("#tishi").hide();
                     </script>
+                    <div class="page-sidebar" style="float: none;">
+                        <ul>
+                            <li id="searchList" class="sticker sticker-color-red">
+                                <a><i class="icon-search fg-color-red">
+                                </i>
+                                <div id="searchInput" style="margin-right:-5px;margin-left: -3px;margin-top: -5px;" class="input-control text span3 place-right">
+                                    <!-- <input type="text" placeholder="搜索 部门 与 学生" /> -->
+                                    <button class="helper">
+                                    </button>
+                                </div>  
+                                </a>
+                                <!-- <ul class="sub-menu sidebar-dropdown-menu light open">
+                                    <li><a><i class="icon-number-1 fg-color-yellow"></i>name</a></li>
+                                    <li><a><i class="icon-number-2 fg-color-orange"></i>name</a></li>
+                                    <li><a><i class="icon-number-3 fg-color-orangeDark"></i>name</a></li>
+                                    <li><a><i class="icon-number-4 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-5 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-6 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-7 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-8 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-9 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-10 fg-color-red"></i>name</a></li>
+                                </ul> -->
+                            </li>
+                        </ul>
+                    </div>
                     <div class="page-sidebar" style="float: none;">
                         <ul>
                             <li class="sticker sticker-color-yellow" data-role="dropdown"><a><i class="icon-list fg-color-yellow">
@@ -628,8 +658,8 @@
 <script type="text/javascript" src="js/carousel.js"></script>-->
 <script type="text/javascript" src="js/input-control.js"></script>
 <script type="text/javascript" src="js/pagecontrol.js"></script>
-<!--<script type="text/javascript" src="js/rating.js"></script>
-<script type="text/javascript" src="js/tile-drag.js"></script>-->
+<script type="text/javascript" src="js/rating.js"></script>
+<!--<script type="text/javascript" src="js/tile-drag.js"></script>-->
 <script type="text/javascript" src="js/dropdown.js"></script>
 <script type="text/javascript" src="js/slider.js"></script>
 <script type="text/javascript" src="js/tile-slider.js"></script>
@@ -640,4 +670,5 @@
 <script src="js/lib/jquery.blur.js" type="text/javascript"></script>
 <script src="js/page/super_app.js" type="text/javascript"></script>
 <script src="js/page/super_student_app.js" type="text/javascript"></script>
+<script src="js/page/super_search_app.js" type="text/javascript"></script>
 <script src="js/page/super.js" type="text/javascript"></script>

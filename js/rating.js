@@ -235,7 +235,7 @@
 
 })(jQuery);
 
-$(function(){
+window.InitRating = function(){
     var allratings = $('[data-role=rating], .rating');
     allratings.each(function (index, rating) {
         var params = {};
@@ -246,4 +246,5 @@ $(function(){
 
         $rating.Rating(params);
     });
-});
+};
+$(window.InitRating());

@@ -1,12 +1,26 @@
 ﻿//Model bulid & Controler bulid & View Init
 (function($, Em) {
-	DataBase.Admin.Login() //管理员登录
+
+	DataBase.Admin.Login({RegisterNum:"87428899",Password:"myqg384266018"},function(data){
+		window.EmploymentName = data.Name;
+		window.EmploymentId = data.id;
+		$("#departmentName").html(EmploymentName);
+		setTimeout(function(){
+			app();
+		},0);
+	}); //管理员登录
+	//Init
+var app = function(){
+
 	window.AdminManager = Em.Application.create({
 
 });
 	////Model
 	AdminManager.DepartmentObject = Em.Object.extend({
 		id: 0,
+		canDeleteAble:function(){
+			return this.get("id")<=0;
+		}.property("id"),
 		Name: "新建部门",
 		ResponsibleTeacher: "无",
 		Phone: "无",
@@ -100,13 +114,13 @@
 		frameIDSeletor: function() { //frame page 的selectID，一次性生成
 			return "#" + this.get("frameID");
 		}.property("frameID"),
-		student: [],
+		students: [],
 		signNum: function() {
-			var allStudents = this.get("student");
+			var allStudents = this.get("students");
 			return allStudents.filter(function(student) {
 				return student.Logging;
 			}).length;
-		}.property("student")
+		}.property("students")
 	});
 		/*
 	AdminManager.StudentObject = Em.Object.extend({
@@ -129,7 +143,7 @@
 		content: AdminManager.DepartmentObject.create(),
 		navView:null,
 		isUpdate: function() {
-			return !this.get("id");
+			return this.get("id")<=0;
 		}.property("id"),
 		toggleIsUpdate: function() {
 			//console.log(this.get("isUpdate"));
@@ -169,6 +183,16 @@
 		refreshData:function(){
 			
 		},
+		_students:function(){
+			var self = this.get("content");
+			var allStudents = AdminManager.AllStudentListController.get("content");
+			var students = allStudents.filter(function(student){
+				return student.TeacherID === self.get("id");
+			});
+			students.push(AdminManager.StudentObject.create({TeacherID:self.id}).storeHistory("cut"));
+			self.set("students",students);
+			console.log("refresh students data");
+		}.observes("AdminManager.AllStudentListController.content.length"),
 		canBackHistory:true,
 		_canBackHistory:function(){
 			window.D = this;
@@ -182,9 +206,61 @@
 			//console.log(this.content.get("frameIDSeletor"))
 			var A = "<a href=\"" + this.content.get("frameIDSeletor") + "\">" + this.content.get("Name") + "</a>";
 			return A;
-		}.property("Name")
+		}.property("Name"),
+		init:function(){
+			this._super();
+			var self = this;
+			console.log("init department");
+			setTimeout(function(){
+				self._students();
+			},1);
+		},
+
+		openDepartment:function(event,view){
+			// if (view.img) {
+				console.log("doubleClick");
+				console.log(window.E = event);
+				console.log(window.V = view);
+				console.log(window.T = this);
+			try{
+				var Obj = view.get("content");
+				// var framePages = content.map(function(Obj){
+				if (!$("a[href=" + Obj.get("frameIDSeletor") + "]").length) {
+					var Con  = AdminManager.DepartmentController.create({
+						content: Obj
+					});
+					AdminManager.DepartmentView.create({
+						controller: Con
+					});
+				}
+				// })
+			}catch(e){
+				console.log("not DepartmentObject")
+			}
+			// };
+		}
 	});
 
+	AdminManager.DepartmentStudentsView = Em.View.extend({
+		student:null,
+		open:function(){
+			try{
+				var Obj = this.get("student");
+				// var framePages = content.map(function(Obj){
+				if (!$("a[href=" + Obj.get("frameIDSeletor") + "]").length) {
+					var Con  = AdminManager.StudentController.create({
+						content: Obj
+					});
+					AdminManager.StudentView.create({
+						controller: Con
+					});
+				}
+				// })
+			}catch(e){
+				console.log("not DepartmentObject")
+			}
+		}
+	})
 	//////View
 	//导航栏，不可独立存在，由内容页赋予内容
 	AdminManager.frameNavView = Em.View.extend({
@@ -267,7 +343,8 @@
 			//原生init
 			this._super();
 			var self = this;
-
+			maxSelf = this;
+			//console.log(maxSelf);
 			this.frameNav = AdminManager.frameNavView.create({
 				controller: self.get("context"),
 				//共享上下文controller
@@ -275,7 +352,7 @@
 			});
 			//为控制器提供View的控制权
 			this.set("controller.navView",this.frameNav);
-			console.log( this.get("controller.navView") );
+			//console.log( this.get("controller.navView") );
 			window.C = this;
 			//插入主内容页
 			//this.appendTo("#frame-page-contents");
@@ -290,8 +367,55 @@
 				1);
 			},
 			1);
+			window.zz=  this;
 			//console.log("a[href="+this.controller.get("frameIDSeletor")+"]")
 			//$("a[href="+this.get("frameIDSeletor")+"]").click;
+			//管理本部门学生
+			this.set("studentsView.parentView",this);
+		},
+
+		deleteUser:function(){
+			var self = this;
+			var content = this.get("controller.content");
+			var ID = content.id;
+			var Name = content.Name;
+			var str = "确定删除"+Name
+			var time = (str.length+2)*100;
+			$.Dialog({
+				'title'       : '警告！',
+				'content'     : str,
+				'draggable'   : false,
+				'overlay'     : true,
+				'closeButton' : true,
+				'buttonsAlign': 'center',
+				'position'    : {
+					'zone'    : 'center'
+				},
+				'buttons'     : {
+					'确定'     : {
+						'action': function(){
+							DataBase.Admin.DeleteUser(ID,function(data){
+								if (data.Error[0].describe==="操作成功，") {
+									setTimeout(function(){
+										AdminManager.AllDepartmentController.refreshData();
+										alert("删除成功,返回所有部门视图");
+										self.frameNav.enforceClose();
+									},time);
+								}else{
+									setTimeout(function(){
+										alert("删除失败");
+									},time);
+								}
+							})
+						}
+					},
+					'取消'		:{
+						'action':function(){
+
+						}
+					}
+				}
+			});
 		},
 		Inputs: {
 			Name: Em.TextArea.extend({
@@ -334,7 +458,13 @@
 				input:function(event,view){
 					//console.log(view.get("controller.canBackHistory"))
 					view.set("controller.content.canBackHistory",true);
-				}
+				},
+
+
+		}),
+
+		studentsView:Em.CollectionView.create({
+				contentBinding:"parentView.controller.content.students",
 		})
 	});
 	/*
@@ -361,7 +491,7 @@
 				for (var i=0, items = [],len = controller.content.length;i<len ; ++i)
 				{
 					console.log("destory");
-					console.log(i);
+					//console.log(i);
 					items[i] = controller.content[i];
 					(function(n){
 						var item = items[i]
@@ -488,9 +618,15 @@
 					//console.log(e);
 				}
 			}
-		})
+		}),
 	});
 	AdminManager.AllDepartmentView.appendTo("#frame-page-all-department");
 	/**/
+	//student
+	app_student($,Em);
+
+
+}
+/**/
 
 })(jQuery, Ember);

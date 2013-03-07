@@ -44,17 +44,63 @@
 
     window.DataBase = {
         Student: {
-            Login: function () {
-                var url = "Student/Login.json";
-                $.getData(url);
+            Login: function (content,foo) {
+                var url = "Sign/Login.ashx";
+                var data = {
+					RegisterNum:content.RegisterNum,
+					Password:content.Password,
+					type:2,
+				};
+                $.getData(url,data,function(result){
+                	var formattedData = {};
+                	var student = result.Login[0];
+					formattedData = {
+						id: student.uid.trim(),
+						Name: student.name.trim(),
+						TeacherID: student.parentid.trim(),
+						Phone: student.phone.trim(),
+						Logining: (student.logining==1?true:false),
+						RegisterNum: student.registernum.trim(),
+						// Password: student.password.trim(),
+						Score: student.score.trim(),//评分
+						// Evaluate: student.contents.trim(),//评价内容
+						img: student.img.trim()||"images/0_head.png",
+						Department:student.department.trim(),
+						Major:student.major.trim(),
+
+					}
+                	if(foo){
+                		foo(formattedData);
+                	}
+                });
             },
             Logout: function () {
                 var url = "Student/Logout.json";
                 $.getData(url);
             },
-            GetLoginMessage: function () {
-                var url = "Student/GetLoginMessage.json";
-                $.getData(url);
+            GetSignMessage: function (StudentId,beginTime,endTime,foo) {
+                var url = "Student/GetSignMessage.ashx";
+                var b = new Date,e = new Date;
+                b.setDate(b.getDate()-beginTime);
+                e.setDate(e.getDate()-endTime);
+                b =	(1900+b.getYear()) +"-"+ (b.getMonth()+1) +"-"+ b.getDate();
+                e =	(1900+e.getYear()) +"-"+ (e.getMonth()+1) +"-"+ e.getDate();
+                $.getData(url,{Id:StudentId,BeginTime:b,EndTime:e},function(result){
+                	var formattedData = [];
+                	result = result.T_SignMessageList;
+                	for (var i = result.length - 1; i >= 0; i--) {
+                		var sign = result[i];
+                		formattedData[i] = {
+                			id:sign.id.trim(),
+                			BeginTime:sign.begintime.trim(),
+                			EndTime:sign.endtime.trim(),
+                			Gain:sign.gain.trim(),
+                		}
+                	};
+                	if(foo){
+                		foo(formattedData);
+                	}
+                });
             },
             GetMessage: function (studentID,foo) {
                 var url = "Student/GetMessage.ashx";
@@ -84,12 +130,74 @@
 						foo(formattedData);
 					}
                 });
+            },
+            Sign:{
+            	SignIn:function(Tid,Sid,foo){
+            		var url = "Sign/Sign.ashx";
+               		$.getData(url,{Tid:Tid,Sid:Sid},function(data){
+               			var formattedData = {}
+               			var signMes = data.T_Sign[0];
+               			formattedData = {
+               				//Gain:signMes.gain.trim(),
+               				Sid:signMes.id.trim(),
+               				LastLoginTime:signMes.begintime.trim(),
+               			}
+               			if (foo) {
+               				foo(data);
+               			};
+               		})
+            	},
+            	SignOut:function(sid,foo){
+            		var url = "Sign/SignExit.ashx";
+               		$.getData(url,{id:sid},function(data){
+               			var formattedData = {}
+               			var signMes = data.T_Sign[0];
+               			formattedData = {
+               				Gain:signMes.gain.trim(),
+               			}
+               			if (foo) {
+               				foo(data);
+               			};
+               		})
+            	},
+            	ModifyGain:function(signMes,foo){
+            		var url = "Sign/ModifySign.ashx";
+				    /// ModifySign 修改签到表各数据
+				    /// 权限：用工部门以上权限
+				    /// 需要：T_Sign需要更改的参数（id除外）
+				    /// 执行：修改SId下信息
+				    var data = {
+				    	id:signMes.id,
+				    	gain:signMes.Gain,
+				    }
+				    $.getData(url,data,function(result){
+				    	var formattedData = {};
+				    	if (foo) {
+				    		foo(formattedData);
+				    	};
+				    })
+            	}
             }
         },
         Teacher: {
-            Login: function () {
-                var url = "Teacher/Login.json";
-                $.getData(url);
+            Login: function (data,foo) {
+				var data = data||{
+					RegisterNum:data.RegisterNum,//"333333",
+					Password:data.Password,//"111111"
+				}
+                var url = "Sign/Login.ashx?Type=1";
+                $.getData(url,data,function(result){
+					//console.log(result);
+					result = result.Login[0];
+					var data = {
+						type:(result.rank==0?"Admin":"Teacher"),
+						Name:result.name.trim(),
+						id:result.uid.trim(),
+					}
+					if (foo) {
+						foo(data);
+					};
+				});
             },
             Logout: function () {
                 var url = "Teacher/Logout.json";
@@ -102,9 +210,10 @@
             GetStudentList: function (teacherId,foo) {
                 var url = "teacher/GetStudentList.ashx";
 				var urlData = teacherId?{Pid:teacherId,Len:100000}:{Len:100000};
+				console.log("teacherId:"+teacherId);
                 $.getData(url,urlData,function(data){
 					var _super = data;
-					var formattedData = [{}];
+					var formattedData = [];
 					var StudentList = data. StudentList;
 					var Length = StudentList.length;
 					for (var i=0;i<Length ; ++i)
@@ -124,7 +233,8 @@
 							Department:student.department.trim(),
 							Major:student.major.trim(),
 							Grade:student.grade.trim(),
-
+							Sid:student.sid.trim(),
+							LastLoginTime:student.begintime.trim(),
 						}
 
 					}
@@ -192,14 +302,23 @@
 					}
 				});
             },
-            Login:  function (data) {
+            Login:  function (data,foo) {
 				var data = data||{
-					RegisterNum:"333333",
-					Password:"111111"
+					RegisterNum:data.RegisterNum,//"333333",
+					Password:data.Password,//"111111"
 				}
                 var url = "Sign/Login.ashx?Type=0";
                 $.getData(url,data,function(result){
 					//console.log(result);
+					result = result.Login[0];
+					var data = {
+						type:(result.rank==0?"Admin":"Teacher"),
+						Name:result.name.trim(),
+						id:result.uid.trim,
+					}
+					if (foo) {
+						foo(data);
+					};
 				});
             },
             Logout: function () {

@@ -1,5 +1,5 @@
 ﻿//Model bulid & Controler bulid & View Init
-(function($, Em) {
+(window.app_student = function($, Em) {
 	AdminManager.AllDepartments =	[
 						{Name:"xxx"},
 						{Name:"zzz"},
@@ -16,6 +16,9 @@
 	]
 	AdminManager.StudentObject = Em.Object.extend({
 		id: 0,
+		canDeleteAble:function(){
+			return this.get("id")<=0;
+		}.property("id"),
 		Name: "新的学生",
 		TeacherID: 0,
 		Phone: "无",
@@ -55,13 +58,17 @@
 
 		_history:{
 			id: 0,
-			Name: "新建部门",
-			ResponsibleTeacher: "无",
+			Name: "新的学生",
+			TeacherID: 0,
 			Phone: "无",
-			UseSign: true,
+			Logining: false,
 			RegisterNum: "无",
 			Password: "",
-			img: "images/Department.jpg",
+			Score: 0,
+			Evaluate: "无",
+			Department:"无",//系别
+			Major:"无",//班级
+			img: "images/new.png",
 			_history:null//history link ---- multiple recovery
 		},
 		canBackHistory:false,
@@ -133,10 +140,25 @@
 			return password;
 		}.property('Password'),
 
+		signMessage:[],
 	});
 //per
 	AdminManager.StudentController = Em.ObjectController.extend({
 		content:AdminManager.StudentObject.create(),
+		init:function(){
+			var self = this;
+			var content = this.get("content");
+			var beginDay = (new Date).getDay()||7;
+			DataBase.Student.GetSignMessage(content.id,beginDay-1,-1,function(data){
+				//console.log(data);
+				self.set("signMessage",data);
+				setTimeout(function(){
+					console.log("InitRating");
+					window.InitRating();//初始化Rating
+				},10);
+			})
+			this._super();
+		},
 		iframeUrl:function(){
 			return "User_super.html?uid="+this.get("content.id");
 		}.property("content.id"),
@@ -148,9 +170,9 @@
 			this.set("isUpdate", !this.get("isUpdate"));
 			if (this.get("isUpdate")){// reinit the inputs
 				setTimeout(function() { //最后执行，避免渲染冲突
-					window.ReactivateInputs(); //重新初始化输入框
-					window.FramePageInit(); //重新初始化
-				},
+						window.ReactivateInputs(); //重新初始化输入框
+						window.FramePageInit(); //重新初始化
+					},
 				1);
 			}else{//submit the new date
 				console.log("submit the new date");
@@ -179,7 +201,27 @@
 			return A;
 		}.property("Name")
 	});
+	
+	AdminManager.StudentSignMessageView = Em.View.extend({
+		sign:null,
 
+		init:function(){
+			this._super();
+			var self = this;
+			setTimeout(function(){
+				self.$().find(".rating.small").RatingPercents(self.get("sign.Gain"));
+			},1);
+		},
+		changeGain:function(){
+			var sign = this.get("sign");
+			console.log("sign");
+			this.set("sign.Gain",this.$().find(".rating").RatingPercents());
+			DataBase.Student.Sign.ModifyGain(sign,function(){
+
+			});
+		},
+
+	});
 	
 	AdminManager.DepartmentPromptView = Em.CollectionView.extend({
 		parentView:null,
@@ -233,6 +275,7 @@
 		
 		init:function(){
 			this._super();
+			this.eventManager.input();
 		},
 		prompt:null,
 		
@@ -270,7 +313,7 @@
 			},
 		}),
 	});
-		//导航栏，不可独立存在，由内容页赋予内容
+	//导航栏，不可独立存在，由内容页赋予内容
 	AdminManager.frameNavForStudentView = Em.View.extend({
 		parentSelector: "#frame-page-navs",
 		layout: Ember.Handlebars.compile("<a {{bindAttr href='frameIDSeletor'}}>{{yield}}</a><i class=' icon-cancel-2' {{action 'frameClose' target='view'}}></i>"),
@@ -348,6 +391,50 @@
 			classNames: ["frame","studentframe"],
 			templateName: "student",
 			frameNav: null,
+
+			deleteUser:function(){
+				var self = this;
+				var content = this.get("controller.content");
+				var ID = content.id;
+				var Name = content.Name;
+				var str = "确定删除"+Name
+				var time = (str.length+2)*100;
+				$.Dialog({
+					'title'       : '警告！',
+					'content'     : str,
+					'draggable'   : false,
+					'overlay'     : true,
+					'closeButton' : true,
+					'buttonsAlign': 'center',
+					'position'    : {
+						'zone'    : 'center'
+					},
+					'buttons'     : {
+						'确定'     : {
+							'action': function(){
+								DataBase.Admin.DeleteUser(ID,function(data){
+									if (data.Error[0].describe==="操作成功，") {
+										setTimeout(function(){
+											AdminManager.AllStudentListController.refreshData();
+											alert("删除成功,返回所有部门视图");
+											self.frameNav.enforceClose();
+										},time);
+									}else{
+										setTimeout(function(){
+											alert("删除失败");
+										},time);
+									}
+								})
+							}
+						},
+						'取消'		:{
+							'action':function(){
+
+							}
+						}
+					}
+				});
+			},
 			//AdminManager.frameNavView
 			init: function() {
 				//原生init
@@ -524,7 +611,7 @@
 				var newcontent = [];
 				var Length = data.length;
 				for (var i = 0; i < Length; ++i) {
-					newcontent[i] = AdminManager.StudentObject.create(data[i]);//
+					newcontent[i] = AdminManager.StudentObject.create(data[i]).storeHistory("cut");//
 				}
 				newcontent[Length] = AdminManager.StudentObject.create(); //一个保留，用于新建
 				//controller.clear()
@@ -679,5 +766,10 @@
 	});
 	AdminManager.AllStudentListController.set("ListViewer",AdminManager.AllStudentListView);//!!!!!important
 	AdminManager.AllStudentListView.appendTo("#allStudentList");/**/
-})(jQuery, Ember);
+
+	//app_search
+	app_search($,Em);
+
+
+});//(jQuery, Ember);
 

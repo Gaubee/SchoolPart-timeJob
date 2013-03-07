@@ -54,8 +54,14 @@
     DOMwhell(document.getElementById("mask"), 1, true);
     DOMwhell(document.getElementById("loading"), 1, true);
     DOMwhell(document.getElementById("message"), 1, true);
-    DOMwhell($("#aid .page")[0]);
+    TI = setInterval(function(){
 
+        if($("#aid .page").length){
+            console.log("okkoko");
+            DOMwhell($("#aid .page")[0],640);
+            clearInterval(TI);
+        }
+    })
     //页面初始化 
 
     //ready

@@ -1,0 +1,674 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>管理员页面</title>
+    <link href="css/common.css" rel="stylesheet">
+    <!-- <link href="css/modern.css" rel="stylesheet"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="css/groundwork.css">
+    <!-- <link href="css/modern-responsive.css" rel="stylesheet"> -->
+    <link href="css/page/super.css" rel="stylesheet" type="text/css" />
+    <link href="css/nw.css" rel="stylesheet" type="text/css" />
+    <script src="js/lib/jquery-1.9.0.min.js" type="text/javascript"></script>
+    <script src="js/app/DataBase.js" type="text/javascript"></script>
+    <script src="js/app/handlebars.js" type="text/javascript"></script>
+    <script src="js/app/ember-1.0.0-pre.4.js" type="text/javascript"></script>
+    <!--<script src="js/app/ember.min.js" type="text/javascript"></script>-->
+    <!-- Ember 自定义控件 -->
+    <!--  	-->
+    
+    <script type="text/x-handlebars" data-template-name="all-department-control-bar">
+        <div class="toolbar">
+            <button title="进行多选" {{bindAttr class="multipleChoice:default"}} {{action "toggleMultipleChoice"}}>
+                <i class="icon-checkbox"></i>
+            </button>
+            <button title="刷新数据">
+                <img src = "images/refresh_icon_small.png" {{action "refreshData"}}>
+            </button>
+            <span style="font-size:32px;">|</span>
+            <button title="多选删除" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+                <i class="icon-remove"></i>
+            </button>
+            <button title="多选打开浏览" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
+                <i class="icon-eye"></i>
+            </button>
+            <button title="添加新的部门" {{action "addItem"}} >
+                <i class="icon-plus"></i>
+            </button>
+            <span class="detial-text"></span>
+        </div>
+
+    </script>
+    <script type="text/x-handlebars" data-template-name="all-department">
+			{{#with view.content}}
+						{{#if id}}
+							{{#if UseSign}}
+							<div class="badge strech">
+								<!--strech高度更小-->
+								{{signNum}}个签到
+							</div>
+							{{else}}
+							<div class="badge strech bg-color-red right bottom">
+								此部门取消了登录签到功能
+							</div>
+							{{/if}}
+						<div class="icon">
+							<img {{bindAttr alt="ResponsibleTeacher"}} {{bindAttr src="img"}} />
+						</div>
+						<div class="data">
+                                    <blockquote  class="place-right">
+							<h4>
+								        {{Name}}
+                            </h4>
+                                    </blockquote>
+                                    负责人：
+                                {{ResponsibleTeacher}}
+								<p>
+									本部门共有{{student.length}}位学生
+								</p>
+						</div>
+				{{else}}
+					  <div class="icon">
+							<!--<i class="icon-plus"></i>-->
+							<img alt="添加" src="images/expand32-black.png" />
+						</div>
+						<div class="data">
+							<h3>
+								添加新的部门</h3>
+                                <p>双击进行编辑</p>
+						</div>
+				{{/if}}
+		    {{/with}}
+    </script>
+    <!--  	-->
+    
+    <script type="text/x-handlebars" data-template-name="all-student-list-bar">
+        <div class="toolbar">
+            <button title="进行多选" {{bindAttr class="multipleChoice:default"}} {{action "toggleMultipleChoice"}}>
+                <i class="icon-checkbox"></i>
+            </button>
+            <button title="刷新数据">
+                <img src = "images/refresh_icon_small.png" {{action "refreshData"}}>
+            </button>
+            <span style="font-size:32px;">|</span>
+            <button title="多选删除" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "removeChoice" target="choiceContent"}}>
+                <i class="icon-remove"></i>
+            </button>
+            <button title="多选打开浏览" {{bindAttr disabled="choiceContent.canMultipleOperatorAble"}} {{action "openChoice" target="choiceContent"}}>
+                <i class="icon-eye"></i>
+            </button>
+            <button title="添加新的学生" {{action "addItem"}} >
+                <i class="icon-plus"></i>
+            </button>
+            <span class="detial-text">dwq3呵呵而后^^^^</span>
+        </div>
+
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="student-list">
+        {{#with view.content}}
+        {{#if id}}
+            <img alt="student-name" {{bindAttr src="img"}} class="head" />
+            <p class="fg-color-white">
+                <center class="fg-color-white">{{Name}}</center>
+                <small class="fg-color-white place-right">--{{departmentName}}</small>
+            </p>
+        {{else}}
+            <!-- /*<span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;"> */-->
+            <img alt="student-name" {{bindAttr src="img"}} class="head" />
+            <!-- /*</span>*/-->
+            <p class="fg-color-white">
+                <center class="fg-color-white">添加新的学生</center>
+                <small class="fg-color-white place-right">双击进行编辑</small>
+            </p>
+        {{/if}}
+        {{/with}}
+    </script>
+    <!-- 	-->
+</head>
+<body>
+    <div id="mask" class="mask-none">
+        <!--遮罩层-->
+    </div>
+    <div id="loading">
+        <div class="message-dialog bg-color-blue" style="">
+            <!-- -->
+            <h2>
+                请稍后
+                <div class="loading">
+                </div>
+            </h2>
+            <!--<img class="span1" alt="……" src="images/preloader-w8-line-black.gif" />-->
+            <button class="place-right">
+                取消</button>
+        </div>
+    </div>
+    <div id="message">
+        <div class="message-dialog bg-color-green" style="">
+            <p id="message-content">
+                请稍后</p>
+            <button class="place-right">
+                确定</button>
+        </div>
+    </div>
+    <!-- title -->
+    <div id="title" class="span2 bg-color-darken fg-color-white" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        position: absolute; top: 100px; left: 100px; z-index: 6; padding: 4px 5px 6px 5px;">
+    </div>
+    <div id="config" class="page snapped ">
+        <!--设置信息页面-->
+    </div>
+    <div id="interface" class="page fill interface">
+        <div class="page">
+            <div class="page-header">
+                <div class="page-header-content">
+                </div>
+            </div>
+            <div class="page-region">
+                <div class="page-region-content">
+                    <div class="page-control" data-role="page-control">
+                        <!-- Responsive controls -->
+                        <span class="menu-pull"></span>
+                        <div class="menu-pull-bar">
+                        </div>
+                        <!-- Tabs -->
+                        <ul id="frame-page-navs">
+                            <li class="active"><a href="#frame-page-all-department">所有部门</a></li>
+                            <li><a href="#frame-page-all-student">所有学生</a></li>
+                            <!--<li><a href="#new-frame-page-dapartment">新建部门</a></li>-->
+                        </ul>
+                        <!-- Tabs content -->
+                        <div id="frame-page-contents" class="frames">
+                            <div class="frame active" id="frame-page-all-department">
+                                <!--content by 
+                                    Ember.js-->
+                            </div>
+                            <div class="frame" id="frame-page-all-student">
+                                <div id="allStudentToolBar"></div>
+                                <div class="page">
+                                    <div class="page-region">
+                                        <div class="page-region-content">
+                                            <div id="allStudentList" class="grid">
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  -->
+                            </div>
+                           <!-- <div class="frame" id="new-frame-page-dapartment">-->
+                                <script type="text/x-handlebars" data-template-name="department">
+                                
+                                    <div class="toolbar">
+                                        <button title="修改部门信息" {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
+                                            <i class="icon-wrench"></i>
+                                        </button>
+                                        <button title="回退操作" {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
+                                            <i class="icon-history"></i>
+                                        </button>
+                                        <button title="删除此部门" {{bindAttr disabled="canDeleteAble"}} {{action "deleteUser"  target="view"}} >
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                        <span style="font-size:32px;">|</span>
+                                        <span class="detial-text">some detial messages</span>
+                                    </div>
+                                    <div class="page snapped">
+                                        {{#if isUpdate}}
+                                          <h3>
+                                                用工处：</h3>
+                                            <div class="input-control text">
+                                                {{view view.Inputs.Name}}
+                                                <button class="helper">
+                                                </button>
+                                            </div>
+                                            <h3>
+                                                负责教师：</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control text">
+                                                    <!-- <input type="text" vlaue="XXX" placeholder="部门负责教师 姓名" /> -->
+                                                    {{view view.Inputs.ResponsibleTeacher}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                            <h3>
+                                                联系方式：</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control text">
+                                                    <!-- <input type="text" vlaue="XXX" placeholder="负责教师 联系方式" /> -->
+                                                    {{view view.Inputs.Phone}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                            <h3>
+                                                登录账户（工号）</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control text">
+                                                    <!-- <input type="text" vlaue="XXX" placeholder="登录账户" /> -->
+                                                    {{view view.Inputs.RegisterNum}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                            <h3>
+                                                登录密码</h3>
+                                            <blockquote class="place-right">
+                                                <div class="input-control password">
+                                                    <!-- <input type="password" vlaue="XXX" placeholder="登录密码" /> -->
+                                                    {{view view.Inputs.Password}}
+                                                    <button class="helper">
+                                                    </button>
+                                                </div>
+                                            </blockquote>
+                                        {{else}}
+                                            <h2>
+                                                {{Name}}</h2>
+                                            <h3>
+                                                负责教师：</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{ResponsibleTeacher}}</span>
+                                            </blockquote>
+                                            <h3>
+                                            <h3>
+                                                联系方式：</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{Phone}}</span>
+                                            </blockquote>
+                                            <h3>
+                                                登录账户（工号）</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{RegisterNum}}</span>
+                                            </blockquote>
+                                            <h3>
+                                                登录密码</h3>
+                                            <blockquote class="place-right">
+                                                <span class="content">{{hiddenPassword}}</span>
+                                            </blockquote>
+                                        {{/if}}
+                                    </div>
+                                    <div class="page fill">
+                                        <div class="grid">
+                                            <!-- 加虚线element-border-->
+                                            <!-- -->
+                                            <div class="row">
+                                                {{#each students}}
+                                                    {{#view AdminManager.DepartmentStudentsView studentBinding = "this"}}
+                                                        {{#if id}}
+                                                            <div {{bindAttr class=":people :span2 Logining:bg-color-blueDark:bg-color-grayDark"}} {{action "open" target="view" on="doubleClick"}}>
+                                                                <img alt="student-name"  {{bindAttr src="img"}} class="head" />
+                                                                <p class="fg-color-white">
+                                                                    {{Name}}</p>
+                                                            </div>
+                                                        {{else}}
+                                                            <div class="people span2 bg-color-grayDark" style="overflow: hidden" {{action "open" target="view" on="doubleClick"}}>
+                                                                <!--<img alt="student-name" src="images/0_head.png" class="head" />-->
+                                                                <span class=" icon-user-2 head" style="font-size: 11.5em; line-height: 0.46; margin-left: -20px;">
+                                                                </span>
+                                                                <p class="fg-color-white">
+                                                                    添加新的学生</p>
+                                                            </div>
+                                                        {{/if}}
+                                                    {{/view}}
+                                                {{/each}}
+                                            </div>
+                                            <!-- -->
+                                        </div>
+                                    </div>
+                                
+                                </script>
+                                        <!-- -->
+                           <!-- </div>-->
+                           <script type="text/x-handlebars" data-template-name="lists">
+                               {{#with view.content}}
+                                    <a>{{Name}}</a>
+                               {{/with}}
+                           </script>
+                            <!--<div class="frame" id="Div1">-->
+                                <script type="text/x-handlebars" data-template-name="student">
+
+                                    <div class="toolbar" style="margin-left:40px;">
+                                        <button title="编辑用户信息" {{bindAttr class="isUpdate:default" }}{{action 'toggleIsUpdate'}}>
+                                            <i class="icon-wrench"></i>
+                                        </button>
+                                        <button title="回退操作" {{bindAttr disabled="canBackHistory"}} {{action "recoveryHistory" target="content"}}>
+                                            <i class="icon-history"></i>
+                                        </button>
+                                        <button title="删除此用户" {{bindAttr disabled="canDeleteAble"}} {{action "deleteUser"  target="view"}} >
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                        <span style="font-size:32px;">|</span>
+                                        <span class="detial-text"></span>
+                                    </div>
+                                    <div class="page snapped info">
+                                        <!-- bg-color-blue -->
+                                        <div class="page secondary">
+                                            <div class="page-header">
+                                                <div class="page-header-content">
+                                                <img alt="student-name" {{bindAttr src="img"}} class="head span2 place-right" />
+                                                </div>
+                                            </div>
+                                            <div class="page-region">
+                                                <div id="studentInfo" class="page-region-content with-sidebar">
+                                                    <div style="text-align: right; float: right;">
+                                                        
+                                                        {{#if isUpdate}}
+                                                            <h3>
+                                                                学生姓名：</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Name}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                联系方式：</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Phone}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                年级</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Grade}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                系别</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Department}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                班级</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.Major}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                隶属部门</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.departmentName}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录账户（学号）</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control text">
+                                                                    {{view view.Inputs.RegisterNum}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录密码</h3>
+                                                            <blockquote class="place-right">
+                                                                <div class="input-control password">
+                                                                    {{view view.Inputs.Password}}
+                                                                    <button class="helper">
+                                                                    </button>
+                                                                </div>
+                                                            </blockquote>
+                                                        {{else}}
+                                                            <h3>
+                                                                姓名</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Name}}</blockquote>
+                                                            <h3>
+                                                                联系方式</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Phone}}</blockquote>
+                                                            <h3>
+                                                                学号</h3>
+                                                            <blockquote class="place-right">
+                                                                {{RegisterNum}}</blockquote>
+                                                            <h3>
+                                                                系别班级</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Department}}({{Grade}}级)-{{Major}}</blockquote>
+                                                            <h3>隶属部门</h3>
+                                                            <blockquote class="place-right">
+                                                            {{departmentName}}</blockquote>
+                                                            <h3>
+                                                                联系方式：</h3>
+                                                            <blockquote class="place-right">
+                                                                {{Phone}}
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录账户（学号）</h3>
+                                                            <blockquote class="place-right">
+                                                                {{RegisterNum}}
+                                                            </blockquote>
+                                                            <h3>
+                                                                登录密码</h3>
+                                                            <blockquote class="place-right">
+                                                                {{hiddenPassword}}
+                                                            </blockquote>
+                                                        {{/if}}
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="page fill interface">
+                                        <div class="page ">
+                                            <!--secondary-->
+                                            <div class="page-header">
+                                                <div class="page-header-content">
+                                                   <!-- --><h3 class=" span7">对学生的评价
+                                                    <div  id="rating" class="rating small place-right" data-role="rating" data-param-vote="off" data-param-rating="3.7">
+                                                    </div>
+                                                    <p class="indent">…………生的评价………对学生的评价……生的评价…………生的评价…………生的评价………对学生的评价……生的评价…………生的评价……{{Evaluate}}</p></h3>
+                                                </div>
+                                            </div>
+                                              <div class="page-region">
+                                                  <div class="page-region-content">
+
+                                                    <div></div>
+                                                    <!-- 分隔栏 -->
+                                                    <div class="progress-bar span7">
+                                                        <div class="bar bg-color-pink" style="width: 30%"></div>
+                                                        <div class="bar bg-color-yellow" style="width: 30%"></div>
+                                                        <div class="bar bg-color-green" style="width: 40%"></div>
+                                                    </div>
+                                                    <!-- 信息模块 -->
+                                                    <div id="calendarInfo">
+                                                        <ul class="listview">
+                                                        <!-- 信息模块 -->
+                                                        {{#each signMessage}}
+                                                            {{#view AdminManager.StudentSignMessageView signBinding = "this"}}
+                                                            
+                                                            <li class="bg-color-pinkDark fg-color-white">
+                                                                <div class="icon">
+                                                                    <i class="icon-tag" ></i>
+                                                                </div>
+
+                                                                <div class="data">
+                                                                    <h4 class="fg-color-white">开始时间</h4>
+                                                                    <p>{{BeginTime}}</p>
+                                                                    <h4 class="fg-color-white">结束时间</h4>
+                                                                    <p>{{EndTime}}</p>
+                                                                </div>
+                                                                <div class="badge bg-color-pinkDark right bottom">
+                                                                    <h4 class="fg-color-white">评分：{{Gain}}</h4>
+                                                                    <div class="rating small" data-param-stars="10" data-role="rating" {{action "changeGain" target ="view"}} >
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            {{/view}}   
+                                                        {{/each}}
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 分隔栏 -->
+                                                    <div class="progress-bar span7">
+                                                        <div class="bar bg-color-green" style="width: 20%"></div>
+                                                        <div class="bar bg-color-pink" style="width: 50%"></div>
+                                                        <div class="bar bg-color-yellow" style="width: 30%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </script>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="list" class="page snapped interface" style="height:620px;">
+        <div class="page">
+            <div class="page-header">
+                <div class="page-header-content">
+                    <h2>
+                        您好，管理员</h2>
+                </div>
+            </div>
+            <div class="page-region">
+                <div class="page-region-content">
+                    <div id="tishi" class="page-sidebar" style="float: none;">
+                        <ul>
+                            <li class="sticker sticker-color-blue" data-role="dropdown"><a><i class="icon-list fg-color-blue">
+                            </i>辅助下拉选择</a>
+                            <li id="otherMes"></li>
+                        </ul>
+                    </div>
+                    <script type="text/javascript">
+                        $("#tishi").hide();
+                    </script>
+                    <div class="page-sidebar" style="float: none;">
+                        <ul>
+                            <li id="searchList" class="sticker sticker-color-red">
+                                <a><i class="icon-search fg-color-red">
+                                </i>
+                                <div id="searchInput" style="margin-right:-5px;margin-left: -3px;margin-top: -5px;" class="input-control text span3 place-right">
+                                    <!-- <input type="text" placeholder="搜索 部门 与 学生" /> -->
+                                    <button class="helper">
+                                    </button>
+                                </div>  
+                                </a>
+                                <!-- <ul class="sub-menu sidebar-dropdown-menu light open">
+                                    <li><a><i class="icon-number-1 fg-color-yellow"></i>name</a></li>
+                                    <li><a><i class="icon-number-2 fg-color-orange"></i>name</a></li>
+                                    <li><a><i class="icon-number-3 fg-color-orangeDark"></i>name</a></li>
+                                    <li><a><i class="icon-number-4 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-5 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-6 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-7 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-8 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-9 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-10 fg-color-red"></i>name</a></li>
+                                </ul> -->
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="page-sidebar" style="float: none;">
+                        <ul>
+                            <li class="sticker sticker-color-yellow" data-role="dropdown"><a><i class="icon-list fg-color-yellow">
+                            </i>学生评级——院级十强</a>
+                                <ul class="sub-menu sidebar-dropdown-menu light">
+                                    <li><a><i class="icon-number-1 fg-color-yellow"></i>name</a></li>
+                                    <li><a><i class="icon-number-2 fg-color-orange"></i>name</a></li>
+                                    <li><a><i class="icon-number-3 fg-color-orangeDark"></i>name</a></li>
+                                    <li><a><i class="icon-number-4 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-5 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-6 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-7 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-8 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-9 fg-color-red"></i>name</a></li>
+                                    <li><a><i class="icon-number-10 fg-color-red"></i>name</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="aid" class="charms bg-color-darken fg-color-white">
+        <!--  -->
+        <div class="page">
+            <div class="page-header">
+                <!--回退按钮-->
+                <h2 class="fg-color-lighten">
+                    <span class="icon-arrow-right-3 rollback"></span>返回
+                </h2>
+                <div class="page-header-content bg-color-blueDark ">
+                    <h1 id="personalInfo-name" class="fg-color-white">
+                    </h1>
+                </div>
+            </div>
+            <div class="page-region">
+                <div class="page-region-content">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog">
+        <!--弹出对话框-->
+    </div>
+    <!-- 滚动条，动态载入
+    <div class="wheel">
+        <div class="scroll-bar">
+        </div>
+    </div> 
+    -->
+    <!-- frame -->
+    <div id="nw-frame" class="">
+        <div id="" class="top">
+        </div>
+        <div id="" class="bottom">
+        </div>
+        <div id="" class="left">
+        </div>
+        <div id="" class="right">
+        </div>
+    </div>
+</body>
+</html>
+<script src="js/lib/jquery.easing.compatibility.js" type="text/javascript"></script>
+<script src="js/common.js" type="text/javascript"></script>
+<!--  nw  -->
+<script src="js/nw.js" type="text/javascript"></script>
+<script src="js/Binder.js" type="text/javascript"></script>
+<script src="js/lib/jquery.mousewheel.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/accordion.js"></script>
+<!--
+<script type="text/javascript" src="js/buttonset.js"></script>
+<script type="text/javascript" src="js/carousel.js"></script>-->
+<script type="text/javascript" src="js/input-control.js"></script>
+<script type="text/javascript" src="js/pagecontrol.js"></script>
+<script type="text/javascript" src="js/rating.js"></script>
+<!--<script type="text/javascript" src="js/tile-drag.js"></script>-->
+<script type="text/javascript" src="js/dropdown.js"></script>
+<script type="text/javascript" src="js/slider.js"></script>
+<script type="text/javascript" src="js/tile-slider.js"></script>
+
+<script type="text/javascript" src="js/dialog.js"></script>
+<!--    -->
+<script src="js/lib/jquery.rotate.js" type="text/javascript"></script>
+<script src="js/lib/jquery.blur.js" type="text/javascript"></script>
+<script src="js/page/super_app.js" type="text/javascript"></script>
+<script src="js/page/super_student_app.js" type="text/javascript"></script>
+<script src="js/page/super_search_app.js" type="text/javascript"></script>
+<script src="js/page/super.js" type="text/javascript"></script>

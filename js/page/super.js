@@ -34,11 +34,25 @@
             pDOM.editing = true;
         }
     });
+    //按钮功能提示
+    $("#frame-page-contents").on("mouseover",".toolbar button",function(e){
+        var $self = $(this);
+        var $detial = $self.parent().find(".detial-text");
+        if ($detial.length) {
+            $detial.html($self.attr("title"));
+        };
+    }).on("mouseout",".toolbar button",function(e){
+        var $self = $(this);
+        var $detial = $self.parent().find(".detial-text");
+        if ($detial.length) {
+            $detial.html("");
+        };
+    })
     //用户
     //	Interface.on("click", ".people", function () {
     //		aid.slider();
     //	});
-
+    
 
 
 

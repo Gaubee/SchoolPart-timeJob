@@ -1,7 +1,7 @@
 ﻿(function ($) {
 	window.alert = function(str){
 		$.Dialog({
-				'title'       : '警告！',
+				'title'       : '注意！',
 				'content'     : str,
 				'draggable'   : false,
 				'overlay'     : true,
