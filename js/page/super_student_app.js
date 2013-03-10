@@ -170,8 +170,8 @@
 			this.set("isUpdate", !this.get("isUpdate"));
 			if (this.get("isUpdate")){// reinit the inputs
 				setTimeout(function() { //最后执行，避免渲染冲突
-						window.ReactivateInputs(); //重新初始化输入框
-						window.FramePageInit(); //重新初始化
+						//window.ReactivateInputs(); //重新初始化输入框
+						//window.FramePageInit(); //重新初始化
 					},
 				1);
 			}else{//submit the new date
@@ -222,14 +222,54 @@
 		},
 
 	});
-	
-	AdminManager.DepartmentPromptView = Em.CollectionView.extend({
+
+	AdminManager.DepartmentPromptController = Em.ArrayController.extend({
 		parentView:null,
-		filterValue:"",
 		content:[],
 		baseContent:[],
+		filterValue:"",
 		filterFn: function(){
-			var filterValue = this.get("filterValue").trim();
+			var filterValue = this.get("filterValue");
+			filterValue = filterValue?filterValue.trim():'';
+			if (filterValue.length) {
+				var filterArray = filterValue.split("");
+			}else{
+				filterArray = [''];
+			}
+			var allDepartments = this.get("baseContent");
+			var newContent = allDepartments.filter(function(department){
+				var name = department.Name;
+				//console.log(name);
+				var isSimilar = true;
+				for (var i = filterArray.length - 1; i >= 0; i--) {
+					isSimilar =  isSimilar&&name.indexOf(filterArray[i])!== -1;
+					if (!isSimilar) {break;};
+				};
+				return isSimilar;
+			});
+			this.set("content",newContent);
+		}.observes("filterValue","baseContent.@each.Name"),
+		init:function(){
+			window.P = this;
+			this._super();
+			this.set("filterValue",this.get("filterValue")+" ");
+		}
+	});
+
+
+	AdminManager.DepartmentPromptView = Em.CollectionView.extend({
+		parentView:null,
+		filterValueBinding:"parentView.filterValue",
+		content:[],
+		baseContent:[],
+		init:function(){
+			window.PV = this;
+			console.log("init PV");
+			this._super();
+		},
+		filterFn: function(){
+			var filterValue = this.get("filterValue");
+			filterValue = filterValue?filterValue.trim():'';
 			var filterArray = filterValue?filterValue.split(""):[''];
 			console.log()
 			var allDepartments = this.get("baseContent");
@@ -246,10 +286,13 @@
 			this.set("content",newContent);
 		}.observes("filterValue","baseContent.@each.Name"),
 		tagName:"ul",
-		classNames:["sub-menu","sidebar-dropdown-menu","light","open","prompt"],// 
+		// classNames:["sub-menu","sidebar-dropdown-menu","light","open","prompt"],// 
 		//classNames:["dropdown-menu","open","prompt"],
 		itemViewClass:Em.View.extend({
-			templateName: "lists",	
+			tagName:"li",
+			templateName: "lists",
+			valueBinding:"content.Name",
+			attributeBindings:['value'],
 		}),
 		/*eventManager:Em.Object.create({}),Em.Object.extend({
 			click:function(event,view){
@@ -269,54 +312,48 @@
 	//下拉栏提示输入框
 	AdminManager.InputWithPromptView = Em.TextArea.extend({//list view
 		attributeBindings: ['placeholder', 'type'],
+		classNames:['dropdown'],
 		placeholder: "",
 		type: "text",
 		tagName: "input",
-		
-		init:function(){
-			this._super();
-			this.eventManager.input();
-		},
+		// init:function(){
+		// 	this._super();
+		// 	this.eventManager.input();
+		// },
 		prompt:null,
 		
 		eventManager:Em.Object.create({
-			appendTo:false,
 			focusIn:function(event,view){
-				var self = this;
-				setTimeout(function(){
-					if(!self.get("appendTo")){
-						$("#tishi").show();
-						view.prompt.appendTo("#otherMes");//显示提示
-						self.set("appendTo",true);
-						view.prompt.set("filterValue",view.get("value"));
-					}
-				},350);
-			},
-			focusOut:function(event,view){
-				var self = this;//&&!view.prompt.eventManager.get("focus")
-				console.log("out");
-				setTimeout(function(){
-					if (self.get("appendTo")) {
-						$("#tishi").hide();
-						view.prompt.remove();
-						self.set("appendTo",false);
-					};
-				},350);
+				var value = view.get("value");
+				view.set("parentView.filterValue",value);
 			},
 			input:function(event,view){
 				clearTimeout(this.ti);
 				this.ti = setTimeout(function(){
-					var value = view.get("value");
-					//console.log(value);
-					view.prompt.set("filterValue",value);
+					try{
+						var value = view.get("value");
+						//console.log(value);
+						view.set("parentView.filterValue",value);
+					}catch(e){
+						//console.log(window.VV = view);
+						console.log(e);
+					}
 				},350);
 			},
 		}),
 	});
+	//下拉提示元素
+	AdminManager.PromptItemView = Em.View.extend({
+		content:{},
+		init:function(){
+			window.PI = this;
+			this._super();
+		}
+	});
 	//导航栏，不可独立存在，由内容页赋予内容
 	AdminManager.frameNavForStudentView = Em.View.extend({
 		parentSelector: "#frame-page-navs",
-		layout: Ember.Handlebars.compile("<a {{bindAttr href='frameIDSeletor'}}>{{yield}}</a><i class=' icon-cancel-2' {{action 'frameClose' target='view'}}></i>"),
+		layout: Ember.Handlebars.compile("<a {{bindAttr href='frameIDSeletor'}}>{{yield}}</a><i class='icon-remove' {{action 'frameClose' target='view'}}></i>"),
 		controller: null,
 		tagName: "li",
 		template: Ember.Handlebars.compile("{{departmentName}}--{{Name}}"),
@@ -381,222 +418,210 @@
 		}
 	});
 	//内容页，已经集成自动插入功能
-	AdminManager.StudentView =  Em.View.extend(function(){
-		var maxSelf = window.maxSelf = {};
-		return {
-			parentSelector: "#frame-page-contents",
-			controller: AdminManager.StudentController.create(),
-			idBinding: "this.controller.frameID",
-			attributeBindings: ["id"],
-			classNames: ["frame","studentframe"],
-			templateName: "student",
-			frameNav: null,
-
-			deleteUser:function(){
-				var self = this;
-				var content = this.get("controller.content");
-				var ID = content.id;
-				var Name = content.Name;
-				var str = "确定删除"+Name
-				var time = (str.length+2)*100;
-				$.Dialog({
-					'title'       : '警告！',
-					'content'     : str,
-					'draggable'   : false,
-					'overlay'     : true,
-					'closeButton' : true,
-					'buttonsAlign': 'center',
-					'position'    : {
-						'zone'    : 'center'
+	AdminManager.StudentView =  Em.View.extend({
+		parentSelector: "#frame-page-contents",
+		controller: AdminManager.StudentController.create(),
+		idBinding: "this.controller.frameID",
+		attributeBindings: ["id"],
+		classNames: ["frame","studentframe"],
+		templateName: "student",
+		frameNav: null,
+		filterValue:"",
+		deleteUser:function(){
+			var self = this;
+			var content = this.get("controller.content");
+			var ID = content.id;
+			var Name = content.Name;
+			var str = "确定删除"+Name
+			var time = (str.length+2)*100;
+			$.Dialog({
+				'title'       : '警告！',
+				'content'     : str,
+				'draggable'   : false,
+				'overlay'     : true,
+				'closeButton' : true,
+				'buttonsAlign': 'center',
+				'position'    : {
+					'zone'    : 'center'
+				},
+				'buttons'     : {
+					'确定'     : {
+						'action': function(){
+							DataBase.Admin.DeleteUser(ID,function(data){
+								if (data.Error[0].describe==="操作成功，") {
+									setTimeout(function(){
+										AdminManager.AllStudentListController.refreshData();
+										alert("删除成功,返回所有部门视图");
+										self.frameNav.enforceClose();
+									},time);
+								}else{
+									setTimeout(function(){
+										alert("删除失败");
+									},time);
+								}
+							})
+						}
 					},
-					'buttons'     : {
-						'确定'     : {
-							'action': function(){
-								DataBase.Admin.DeleteUser(ID,function(data){
-									if (data.Error[0].describe==="操作成功，") {
-										setTimeout(function(){
-											AdminManager.AllStudentListController.refreshData();
-											alert("删除成功,返回所有部门视图");
-											self.frameNav.enforceClose();
-										},time);
-									}else{
-										setTimeout(function(){
-											alert("删除失败");
-										},time);
-									}
-								})
-							}
-						},
-						'取消'		:{
-							'action':function(){
+					'取消'		:{
+						'action':function(){
 
-							}
 						}
 					}
-				});
-			},
-			//AdminManager.frameNavView
-			init: function() {
-				//原生init
-				window.maxSelf = maxSelf = this;
-				console.log("maxSelf init");
-				this._super();
-				var self = this;
-				this.frameNav = AdminManager.frameNavForStudentView.create({
-					controller: self.get("context"),
-					//共享上下文controller
-					pageContent: self
-				});
-				//为控制器提供View的控制权
-				this.set("controller.navView",this.frameNav);
-				//console.log( this.get("controller.navView") );
-				var pageContent = $(this.get("parentSelector"));
+				}
+			});
+		},
+		//AdminManager.frameNavView
+		init: function() {
+			//原生init
+			this._super();
+			var self = this;
+			this.frameNav = AdminManager.frameNavForStudentView.create({
+				controller: self.get("context"),
+				//共享上下文controller
+				pageContent: self
+			});
+			//为控制器提供View的控制权
+			this.set("controller.navView",this.frameNav);
+			//console.log( this.get("controller.navView") );
+			var pageContent = $(this.get("parentSelector"));
+				setTimeout(function() { //最后执行，避免渲染冲突
+					self.appendTo(pageContent);
 					setTimeout(function() { //最后执行，避免渲染冲突
-						self.appendTo(pageContent);
-						setTimeout(function() { //最后执行，避免渲染冲突
-							window.FramePageInit(); //重新初始化page frame
-						},
-						1);
+						//window.FramePageInit(); //重新初始化page frame
 					},
-				1);
-				//为下拉框提供控制权
-				/*
-				self.set("Inputs.departmentName",self.Inputs.departmentNameCreater.create() )
-				self.set("Inputs.Department",self.Inputs.DepartmentCreater.create() )
-				self.set("Inputs.Grade",self.Inputs.GradeCreater.create() )
-				self.Inputs.departmentName.prompt.set("parentView",self);
-				self.Inputs.Department.prompt.set("parentView",self);
-				self.Inputs.Grade.prompt.set("parentView",self);
-				*/
-			},
+					1);
+				},
+			1);
+			//为下拉框提供控制权
+			/*
+			self.set("Inputs.departmentName",self.Inputs.departmentNameCreater.create() )
+			self.set("Inputs.Department",self.Inputs.DepartmentCreater.create() )
+			self.set("Inputs.Grade",self.Inputs.GradeCreater.create() )
+			self.Inputs.departmentName.prompt.set("parentView",self);
+			self.Inputs.Department.prompt.set("parentView",self);
+			self.Inputs.Grade.prompt.set("parentView",self);
+			*/
+		},
 
-			Inputs: {
-				Name: Em.TextArea.extend({
-					valueBinding: "controller.Name",
-					attributeBindings: ['placeholder', 'type'],
-					placeholder: "学生姓名",
-					type: "text",
-					tagName: "input"
-				}),
-				Phone:  Em.TextArea.extend({
-					valueBinding: "controller.Phone",
-					attributeBindings: ['placeholder', 'type'],
-					placeholder: "学生 联系方式",
-					type: "text",
-					tagName: "input"
-				}),
-				/*
-				Department:  Em.TextArea.extend({//list view
-					valueBinding: "controller.Department",
-					attributeBindings: ['placeholder', 'type'],
-					placeholder: "学生 系别",
-					type: "text",
-					tagName: "input"
-				}),
-				*/
-				//Grade:null,
-				Grade:AdminManager.InputWithPromptView.extend({
-					placeholder: "学生 年级",
-					valueBinding: "controller.Grade",
+		Inputs: {
+			Name: Em.TextArea.extend({
+				valueBinding: "controller.Name",
+				attributeBindings: ['placeholder', 'type'],
+				placeholder: "学生姓名",
+				type: "text",
+				tagName: "input"
+			}),
+			Phone:  Em.TextArea.extend({
+				valueBinding: "controller.Phone",
+				attributeBindings: ['placeholder', 'type'],
+				placeholder: "学生 联系方式",
+				type: "text",
+				tagName: "input"
+			}),
+			/*
+			Department:  Em.TextArea.extend({//list view
+				valueBinding: "controller.Department",
+				attributeBindings: ['placeholder', 'type'],
+				placeholder: "学生 系别",
+				type: "text",
+				tagName: "input"
+			}),
+			*/
+			//Grade:null,
+			Grade:AdminManager.InputWithPromptView.extend({
+				placeholder: "学生 年级",
+				valueBinding: "controller.Grade",
+			}),
+			GradePrompt:AdminManager.DepartmentPromptView.extend({
+				baseContentBinding: "AdminManager.AllGrade",
+				eventManager:Em.Object.create({
+					click:function(event,view){
+						window.V = view;
+						console.log(view.content.Name);
+						view.get("parentView.parentView.controller.content").set("Grade",view.content.Name)
 
-					init:function(){
-						var self = this;
-
-						/**/
-						this.set("prompt",AdminManager.DepartmentPromptView.create({
-							parentView:maxSelf,
-							baseContentBinding: "AdminManager.AllGrade",
-							eventManager:Em.Object.create({
-												click:function(event,view){
-													window.V = view;
-													console.log(view.content.Name);
-													view.get("parentView.parentView.controller.content").set("Grade",view.content.Name)
-
-												}
-											})
-						}));
-						this._super();
-						this.prompt.parentView = self;
 					}
 				}),
-				//Department:null,
-				Department:AdminManager.InputWithPromptView.extend({
-					placeholder: "学生 系别",
-					valueBinding: "controller.Department",
+			}),
+			//Department:null,
+			Department:AdminManager.InputWithPromptView.extend({
+				placeholder: "学生 系别",
+				valueBinding: "controller.Department",
+			}),
+			DepartmentPrompt:AdminManager.DepartmentPromptView.extend({
+				baseContentBinding: "AdminManager.AllDepartments",
+				eventManager:Em.Object.create({
+					click:function(event,view){
+						window.V = view;
+						console.log(view.content.Name);
+						view.get("parentView.parentView.controller.content").set("Department",view.content.Name)
+						// view.get("parentView.parentView.controller.content").set("Grade",view.content.Name)
 
-					init:function(){
-						var self = this;
-
-						/**/
-						this.set("prompt",AdminManager.DepartmentPromptView.create({
-							parentView:maxSelf,
-							baseContentBinding: "AdminManager.AllDepartments",
-							eventManager:Em.Object.create({
-												click:function(event,view){
-													window.V = view;
-													console.log(view.content.Name);
-													view.get("parentView.parentView.controller.content").set("Department",view.content.Name)
-
-												}
-											})
-						}));
-						this._super();
-						this.prompt.parentView = self;
 					}
 				}),
-				Major:Em.TextArea.extend({//list view || Input text
-					valueBinding: "controller.Major",
-					attributeBindings: ['placeholder', 'type'],
-					placeholder: "学生 班级",
-					type: "text",
-					tagName: "input"
-				}),
-				//departmentName:null,
-				departmentName: AdminManager.InputWithPromptView.extend({
-					placeholder: "隶属部门名",
-					valueBinding: Ember.Binding.oneWay("controller.departmentName"),
+			}),
+			Major:Em.TextArea.extend({//list view || Input text
+				valueBinding: "controller.Major",
+				attributeBindings: ['placeholder', 'type'],
+				placeholder: "学生 班级",
+				type: "text",
+				tagName: "input"
+			}),
+			//departmentName:null,
+			departmentName: AdminManager.InputWithPromptView.extend({
+				placeholder: "隶属部门名",
+				valueBinding: Ember.Binding.oneWay("controller.departmentName"),
 
-					init:function(){
-						/**/
-						this.set("prompt",AdminManager.DepartmentPromptView.create({
-										parentView:maxSelf,
-										baseContentBinding: "AdminManager.AllDepartmentController.content",
+				init:function(){
+					/**/
+					// this.set("prompt",AdminManager.DepartmentPromptView.create({
+					// 				parentView:maxSelf,
+					// 				baseContentBinding: "AdminManager.AllDepartmentController.content",
 
-										eventManager:Em.Object.create({
-												click:function(event,view){
-													console.log("aaaa");
-													view.get("parentView.parentView.controller.content").set("TeacherID",view.content.id);
-												}
-											})
-									})
-								);
-						this._super();
-						
+					// 				eventManager:Em.Object.create({
+					// 						click:function(event,view){
+					// 							console.log("aaaa");
+					// 							view.get("parentView.parentView.controller.content").set("TeacherID",view.content.id);
+					// 						}
+					// 					})
+					// 			})
+					// 		);
+					this._super();
+					
+				}
+			}),
+			departmentNamePrompt:AdminManager.DepartmentPromptView.extend({
+				baseContentBinding: "AdminManager.AllDepartmentController.content",
+				eventManager:Em.Object.create({
+					click:function(event,view){
+						window.V = view;
+						view.get("parentView.parentView.controller.content").set("TeacherID",view.content.id);
+
 					}
 				}),
-				RegisterNum: Em.TextArea.extend({
-					valueBinding: "controller.RegisterNum",
-					attributeBindings: ['placeholder', 'type'],
-					placeholder: "学生学号 登录账户",
-					type: "text",
-					tagName: "input"
-				}),
-				Password: Em.TextArea.extend({
-					valueBinding: "controller.Password",
-					attributeBindings: ['placeholder', 'type'],
-					placeholder: "登录密码",
-					type: "password",
-					tagName: "input"
-				})
-			},
-			eventManager:Em.Object.create({
-					input:function(event,view){
-						//console.log(view.get("controller.canBackHistory"))
-						view.set("controller.content.canBackHistory",true);
-					}
+			}),
+			RegisterNum: Em.TextArea.extend({
+				valueBinding: "controller.RegisterNum",
+				attributeBindings: ['placeholder', 'type'],
+				placeholder: "学生学号 登录账户",
+				type: "text",
+				tagName: "input"
+			}),
+			Password: Em.TextArea.extend({
+				valueBinding: "controller.Password",
+				attributeBindings: ['placeholder', 'type'],
+				placeholder: "登录密码",
+				type: "password",
+				tagName: "input"
 			})
-		}
-	}());
+		},
+		eventManager:Em.Object.create({
+				input:function(event,view){
+					//console.log(view.get("controller.canBackHistory"))
+					view.set("controller.content.canBackHistory",true);
+				}
+		})
+	});
 
 
 
@@ -613,7 +638,7 @@
 				for (var i = 0; i < Length; ++i) {
 					newcontent[i] = AdminManager.StudentObject.create(data[i]).storeHistory("cut");//
 				}
-				newcontent[Length] = AdminManager.StudentObject.create(); //一个保留，用于新建
+				//newcontent[Length] = AdminManager.StudentObject.create(); //一个保留，用于新建
 				//controller.clear()
 				//controller.addObjects(newcontent);
 					console.log("begin destory");
@@ -645,8 +670,17 @@
 		ListViewer:AdminManager.AllStudentList,
 		addItem:function(){
 			console.log("add student");
-			var vs = this.get("ListViewer.childViews");
-			vs[vs.length-1].$().dblclick();
+			// var vs = this.get("ListViewer.childViews");
+			// vs[vs.length-1].$().dblclick();
+			var Obj = AdminManager.StudentObject.create();
+			if (!$("a[href=" + Obj.get("frameIDSeletor") + "]").length) {
+				var Con  = AdminManager.StudentController.create({
+					content: Obj
+				});
+				AdminManager.StudentView.create({
+					controller: Con
+				});
+			}
 		},
 		choiceContent:Em.ArrayController.extend({
 			content:[],
@@ -698,16 +732,17 @@
 	});
 	AdminManager.StudentListView = Em.CollectionView.extend({
 		content:AdminManager.StudentListController,
-		tagName: "lu",
-		classNames: ["row","listview", "fluid"],
+		//classNames: ["row","listview", "fluid"],
+		tagName: "tbody",
+		classNames: ["listview", "fluid"],
 		itemViewClass: Em.View.extend({
 			templateName: "student-list",
-			tagName: "li",
+			tagName: "tr",
 			selected:false,
 			_selectedClass:function(){
 				return this.get("parentView").get("content").get("multipleChoice")&&this.get("selected")&&this.content.get("id");
 			}.property("selected","this.parentView.content.multipleChoice"),
-			classNameBindings:["_selectedClass:selected",":people",":span2","content.Logining:bg-color-blueDark:bg-color-grayDark"],
+			classNameBindings:["_selectedClass:selected"],
 		}),
 		eventManager: Em.Object.create({
 			doubleClick: function(event, view) {
@@ -751,21 +786,42 @@
 		}),
 	});
 	//View
-	AdminManager.AllStudentListController = AdminManager.StudentListController.create({
+	AdminManager.AllStudentListController = AdminManager.StudentListController.extend({
 			departmenrName:"所有学生",
-		}).refreshData();
+			refreshData:function(){
+				$("#frame-page-all-student_table").dataTable().fnDestroy();
+				this._super();
+				$("#frame-page-all-student_table").width("100%");
+				setTimeout(function(){
+					console.log("reinit table");
+					
+					$("#frame-page-all-student_table").dataTable({
+						"oLanguage": {"sSearch": "查询：",
+						"sLengthMenu": "显示 _MENU_ 记录",
+						"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
+						"oPaginate":{
+							"sNext":"下一页",
+							"sPrevious":"上一页",
+						},
+						"bDestroy":true,
+						"bRetrieve":true,
+					}});
+				},200);
+				return this;
+			}
+		}).create().refreshData();
 
 	AdminManager.AllStudentListControlBarView = Em.View.create({
 		controller:AdminManager.AllStudentListController,
 		templateName:"all-student-list-bar",
 	});
-	AdminManager.AllStudentListControlBarView.appendTo("#allStudentToolBar");
+	AdminManager.AllStudentListControlBarView.appendTo("#frame-page-all-student_toolbar");
 
 	AdminManager.AllStudentListView = AdminManager.StudentListView.create({
 		content:AdminManager.AllStudentListController ,
 	});
 	AdminManager.AllStudentListController.set("ListViewer",AdminManager.AllStudentListView);//!!!!!important
-	AdminManager.AllStudentListView.appendTo("#allStudentList");/**/
+	AdminManager.AllStudentListView.appendTo("#frame-page-all-student_table");/**/
 
 	//app_search
 	app_search($,Em);

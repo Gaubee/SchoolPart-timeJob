@@ -24,7 +24,7 @@
 					opacity:0
 				},1000);
 				setTimeout(function(){
-					$("#dialogOverlay .icon-cancel-2").click();
+					$("#dialogBox .header button").click();
 				},1000)
 			},str.length*100);
 	}

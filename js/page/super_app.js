@@ -150,8 +150,8 @@ var app = function(){
 			this.set("isUpdate", !this.get("isUpdate"));
 			if (this.get("isUpdate")){// reinit the inputs
 				setTimeout(function() { //最后执行，避免渲染冲突
-					window.ReactivateInputs(); //重新初始化输入框
-					window.FramePageInit(); //重新初始化
+					//window.ReactivateInputs(); //重新初始化输入框
+					//window.FramePageInit(); //重新初始化
 				},
 				1);
 			}else{//submit the new date
@@ -265,7 +265,7 @@ var app = function(){
 	//导航栏，不可独立存在，由内容页赋予内容
 	AdminManager.frameNavView = Em.View.extend({
 		parentSelector: "#frame-page-navs",
-		layout: Ember.Handlebars.compile("<a {{bindAttr href='frameIDSeletor'}}>{{yield}}</a><i class=' icon-cancel-2' {{action 'frameClose' target='view'}}></i>"),
+		layout: Ember.Handlebars.compile("<a {{bindAttr href='frameIDSeletor'}}>{{yield}}</a><i class='icon-remove' {{action 'frameClose' target='view'}}></i>"),
 		controller: null,
 		tagName: "li",
 		template: Ember.Handlebars.compile("{{Name}}"),
@@ -361,8 +361,8 @@ var app = function(){
 			setTimeout(function() { //最后执行，避免渲染冲突
 				self.appendTo(pageContent);
 				setTimeout(function() { //最后执行，避免渲染冲突
-					window.ReactivateInputs(); //重新初始化输入框
-					window.FramePageInit(); //重新初始化page frame
+					//window.ReactivateInputs(); //重新初始化输入框
+					//window.FramePageInit(); //重新初始化page frame
 				},
 				1);
 			},
@@ -483,11 +483,12 @@ var app = function(){
 				for (var i = 0; i < Length; ++i) {
 					newcontent[i] = AdminManager.DepartmentObject.create(data[i]).storeHistory("cut");//init the history data
 				}
-				newcontent[Length] = AdminManager.DepartmentObject.create(); //一个保留，用于新建
 				//controller.clear()
 				//controller.addObjects(newcontent);
 					console.log("begin destory");
 					//console.log(controller.content)
+
+				$("#frame-page-all-department_table").dataTable().fnDestroy();
 				for (var i=0, items = [],len = controller.content.length;i<len ; ++i)
 				{
 					console.log("destory");
@@ -500,6 +501,23 @@ var app = function(){
 				}
 				controller.content.clear();
 				controller.set("content", newcontent);
+
+				//reinit table
+				setTimeout(function(){
+					console.log("reinit table");
+					
+					$("#frame-page-all-department_table").dataTable({
+						"oLanguage": {"sSearch": "查询：",
+						"sLengthMenu": "显示 _MENU_ 记录",
+						"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
+						"oPaginate":{
+							"sNext":"下一页",
+							"sPrevious":"上一页",
+						},
+						"bDestroy":true,
+						"bRetrieve":true,
+					}});
+				},200);
 			});
 		},
 		multipleChoiceBinding:"choiceContent.multipleChoice",
@@ -508,8 +526,15 @@ var app = function(){
 			this.set("multipleChoice",!this.get("multipleChoice"));
 		},
 		addItem:function(){
-			var vs = AdminManager.AllDepartmentView.get("childViews");
-			vs[vs.length-1].$().dblclick();
+				var Obj = AdminManager.DepartmentObject.create();
+				if (!$("a[href=" + Obj.get("frameIDSeletor") + "]").length) {
+					var Con  = AdminManager.DepartmentController.create({
+						content: Obj
+					});
+					AdminManager.DepartmentView.create({
+						controller: Con
+					});
+				}
 		},
 		choiceContent:Em.ArrayController.extend({
 			content:[],
@@ -562,15 +587,16 @@ var app = function(){
 		controller:AdminManager.AllDepartmentController,
 		templateName:"all-department-control-bar"
 	});
-	AdminManager.AllDepartmentControlBarView.appendTo("#frame-page-all-department");
+	AdminManager.AllDepartmentControlBarView.appendTo("#frame-page-all-department_toolbar");
 	/**/
 	AdminManager.AllDepartmentView = Em.CollectionView.create({
 		contentBinding: "AdminManager.AllDepartmentController",
 		//controller:AdminManager.AllDepartmentController,
-		tagName: "ul",
+		tagName: "tbody",
 		classNames: ["listview", "fluid"],
 		itemViewClass: Em.View.extend({
 			templateName: "all-department",
+			tagName: "tr",
 			selected:false,
 			_selectedClass:function(){
 				return this.get("parentView").get("content").get("multipleChoice")&&this.get("selected")&&this.content.get("id");
@@ -620,7 +646,10 @@ var app = function(){
 			}
 		}),
 	});
-	AdminManager.AllDepartmentView.appendTo("#frame-page-all-department");
+	AdminManager.AllDepartmentView.appendTo("#frame-page-all-department_table");
+	//setTimeout(function(){
+
+	//},0);
 	/**/
 	//student
 	app_student($,Em);

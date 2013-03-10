@@ -1,9 +1,11 @@
 ﻿body
 {
+    overflow-x: hidden;
 }
 #interface
 {
-    padding-left: 20px;
+    /*padding-left: 20px;*/
+    padding: 2px;
 }
 #frame-page-all-department .listview li
 {
@@ -28,9 +30,9 @@
 	}
 }
 /*student info and calendar*/
-.studentframe{
+/*.studentframe{
 	margin-left: -40px;
-}
+}*/
 
 .prompt{
 	/*margin-bottom: -600px;*/
@@ -86,4 +88,90 @@
 	font-size:24px;
 	width:1em;
 	line-height:26px;
+}
+
+
+#frame-page-all-department_toolbar{
+    padding-bottom: 10px;
+}
+#frame-page-all-student_toolbar{
+    padding-bottom: 10px;
+}
+
+.selected{
+  color: #1dabb8 !important;
+}
+.selected td{
+  background-color: #1d1d1d !important;
+}
+.dataTables_length{
+    padding: 5px;
+    width: 300px;
+}
+.dataTables_length span{
+    padding: 5px;
+    float: left;
+}
+.dataTables_length select{
+    float: left;
+    width: 40%;
+}
+
+.dataTables_paginate.paging_two_button{
+    float: right;
+    font-family:FontAwesome;font-weight:normal;font-style:normal;text-decoration:inherit;-webkit-font-smoothing:antialiased;display:inline;width:auto;height:auto;line-height:normal;vertical-align:baseline;background-image:none;background-position:0% 0%;background-repeat:repeat;margin-top:0;
+}
+.dataTables_paginate.paging_two_button a{cursor: pointer;text-underline-style: none;}
+.paginate_disabled_previous
+{
+    color: #525252;
+}
+.paginate_disabled_next
+{
+    color: #525252;
+}
+.paginate_disabled_previous::before{content:"\f053";color: #525252;}
+.paginate_disabled_next::after{content:"\f054";color: #525252;}
+
+.paginate_enabled_previous::before{content:"\f053";}
+.paginate_enabled_next::after{content:"\f054";}
+
+
+
+
+.input-control.dropdown.button{
+    width: 100%;
+    padding: 0px;
+    padding-right: 2.5em;
+}
+.input-control.dropdown.button ul{
+    margin-top: 0px;
+    box-shadow: 0px 0px 5px #1dabb8;
+}
+
+
+#frame-page-navs{
+    padding: 2px;
+    padding-bottom: 0px;
+}
+#frame-page-navs li{
+    margin-bottom: -14px;
+}
+#frame-page-navs li a{
+    padding-right: 28px;
+}
+#frame-page-navs li[class*=right]{
+    margin-bottom: 0px;
+}
+#frame-page-navs li[class*=right] a{
+    padding-right: 14px;
+}
+#frame-page-navs li i{
+    position: relative;
+    top: -28px;
+    z-index: 2;
+    float: right;
+}
+#frame-page-navs li i:hover{
+    color: #a40400;
 }

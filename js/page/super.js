@@ -35,19 +35,19 @@
         }
     });
     //按钮功能提示
-    $("#frame-page-contents").on("mouseover",".toolbar button",function(e){
-        var $self = $(this);
-        var $detial = $self.parent().find(".detial-text");
-        if ($detial.length) {
-            $detial.html($self.attr("title"));
-        };
-    }).on("mouseout",".toolbar button",function(e){
-        var $self = $(this);
-        var $detial = $self.parent().find(".detial-text");
-        if ($detial.length) {
-            $detial.html("");
-        };
-    })
+    // $("#frame-page-contents").on("mouseover",".toolbar button",function(e){
+    //     var $self = $(this);
+    //     var $detial = $self.parent().find(".detial-text");
+    //     if ($detial.length) {
+    //         $detial.html($self.attr("title"));
+    //     };
+    // }).on("mouseout",".toolbar button",function(e){
+    //     var $self = $(this);
+    //     var $detial = $self.parent().find(".detial-text");
+    //     if ($detial.length) {
+    //         $detial.html("");
+    //     };
+    // })
     //用户
     //	Interface.on("click", ".people", function () {
     //		aid.slider();
@@ -59,13 +59,13 @@
 
 
     //滚动
-    DOMwhell(document.getElementById("interface"), 600);
-    DOMwhell(document.getElementById("frame-page-all-department"), 486);
-    DOMwhell(document.getElementById("list"), 600);
-    DOMwhell(document.getElementById("mask"), 1, true);
-    DOMwhell(document.getElementById("loading"), 1, true);
-    DOMwhell(document.getElementById("message"), 1, true);
-    DOMwhell($("#aid .page")[0]);
+    // DOMwhell(document.getElementById("interface"), 600);
+    // DOMwhell(document.getElementById("frame-page-all-department"), 486);
+    // DOMwhell(document.getElementById("list"), 600);
+    // DOMwhell(document.getElementById("mask"), 1, true);
+    // DOMwhell(document.getElementById("loading"), 1, true);
+    // DOMwhell(document.getElementById("message"), 1, true);
+    // DOMwhell($("#aid .page")[0]);
 
     //页面初始化 
 

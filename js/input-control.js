@@ -110,16 +110,21 @@ $(function(){
     
 		var allInputs = $('.input-control');
 
-		allInputs.each(function (index, input) {
+		// allInputs.each(function (index, input) {
 			
-        var params = {};
+  //       var params = {};
 
-					$input = $(input);
+		// 			$input = $(input);
 
 
-					$input.Input(params);
+		// 			$input.Input(params);
  
-		});
+		// });
+        //allInputs.Input({});
+
+        $("body").on("mouseover",".input-control",function(){
+            $(this).Input({});
+        })
 	
 }
 
