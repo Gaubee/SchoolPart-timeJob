@@ -1,18 +1,34 @@
 ﻿//Model bulid & Controler bulid & View Init
 (window.app_student = function($, Em) {
 	AdminManager.AllDepartments =	[
-						{Name:"xxx"},
-						{Name:"zzz"},
-						{Name:"www"},
-						{Name:"ccc"},
+						{Name:"中文系"},
+			            {Name:"外语系"},
+			            {Name:"数学系"},
+			            {Name:"电子系"},
+			            {Name:"计算机系"},
+			            {Name:"旅游系"},
+			            {Name:"管理系"},
+			            {Name:"服装系"},
+			            {Name:"美术系"},
+			            {Name:"地理系"},
+			            {Name:"化工系"},
+			            {Name:"历史系"},
+			            {Name:"法律系"},
+			            {Name:"经济系"},
+			            {Name:"音乐学院"},
+			            {Name:"爱恩学院"},
+			            {Name:"软件学院"},
+			            {Name:"海峡学院"},
+			            {Name:"商学院学院"},
+			            {Name:"交通学院"},
 					]
 	AdminManager.AllGrade = [
+		{Name:((new Date).getYear()-5).toString().substring(1)},
 		{Name:((new Date).getYear()-4).toString().substring(1)},
 		{Name:((new Date).getYear()-3).toString().substring(1)},
 		{Name:((new Date).getYear()-2).toString().substring(1)},
 		{Name:((new Date).getYear()-1).toString().substring(1)},
 		{Name:((new Date).getYear()+0).toString().substring(1)},
-		{Name:((new Date).getYear()+1).toString().substring(1)},
 	]
 	AdminManager.StudentObject = Em.Object.extend({
 		id: 0,
@@ -145,6 +161,71 @@
 //per
 	AdminManager.StudentController = Em.ObjectController.extend({
 		content:AdminManager.StudentObject.create(),
+		SignBeginDay:0,
+		SignBeginDate:function(){
+			var beginTime = this.get("SignBeginDay");
+			var b = new Date;
+                b.setDate(b.getDate()-beginTime);
+                b =	(1900+b.getYear()) +"-"+ (b.getMonth()+1) +"-"+ b.getDate();
+                return b;
+        }.property("SignBeginDay"),
+
+		SignEndDay:-1,
+		SignEndDate:function(){
+			var endTime = this.get("SignEndDay");
+			var e = new Date;
+                e.setDate(e.getDate()-endTime);
+                e =	(1900+e.getYear()) +"-"+ (e.getMonth()+1) +"-"+ e.getDate();
+                return e;
+		}.property("SignEndDay"),
+
+		Score_T:function(){
+			var Score = this.get("content.Score");
+			if (Score>90) {
+				return 9;
+			};
+			return parseInt( Score/10 );
+		}.property("content.Score"),
+		Score_B:function(){
+			return this.get("content.Score")%10;
+		}.property("content.Score"),
+		updateScore:function(){
+			var content = this.get("content");
+
+			var frameID = content.id;
+			console.log(".rating.T[data-id='"+frameID+"']");
+			var T = $(".rating.T[data-id='"+frameID+"']").RatingValue();
+			var B = $(".rating.B[data-id='"+frameID+"']").RatingValue();
+			var Score = T*10+B;
+			if (Score>100) {Score=100};
+			this.set("content.Score",Score);
+		},
+
+		AddSignDay:function(){
+			console.log("add");
+			var b = this.get("SignBeginDay");
+			var e = this.get("SignEndDay");
+			if (e>-1) {
+				b=e;
+				e-=7;
+				if (e<-1) {
+					e=-1;
+				};
+			};
+			this.set("SignBeginDay",b);
+			this.set("SignEndDay",e);
+			this.refreshData();
+		},
+		SubSignDay:function(){
+			console.log("sub");
+			var b = this.get("SignBeginDay");
+			var e = this.get("SignEndDay");
+				e=b;
+				b=b+7;
+			this.set("SignBeginDay",b);
+			this.set("SignEndDay",e);
+			this.refreshData();
+		},
 		init:function(){
 			var self = this;
 			var content = this.get("content");
@@ -158,6 +239,7 @@
 				},10);
 			})
 			this._super();
+			this.set("_Self",this);
 		},
 		iframeUrl:function(){
 			return "User_super.html?uid="+this.get("content.id");
@@ -168,6 +250,10 @@
 		toggleIsUpdate: function() {
 			//console.log(this.get("isUpdate"));
 			this.set("isUpdate", !this.get("isUpdate"));
+			setTimeout(function(){
+				console.log("InitRating");
+				window.InitRating();//初始化Rating
+			},10);
 			if (this.get("isUpdate")){// reinit the inputs
 				setTimeout(function() { //最后执行，避免渲染冲突
 						//window.ReactivateInputs(); //重新初始化输入框
@@ -184,7 +270,18 @@
 			}
 		},//
 		refreshData:function(){
-			
+			var self = this;
+			var b = this.get("SignBeginDay");
+			var e = this.get("SignEndDay");
+			var content = this.get("content");
+			DataBase.Student.GetSignMessage(content.id,b,e,function(data){
+				//console.log(data);
+				self.set("signMessage",data);
+				setTimeout(function(){
+					console.log("InitRating");
+					window.InitRating();//初始化Rating
+				},10);
+			})
 		},
 		canBackHistory:true,
 		_canBackHistory:function(){
@@ -209,13 +306,18 @@
 			this._super();
 			var self = this;
 			setTimeout(function(){
-				self.$().find(".rating.small").RatingPercents(self.get("sign.Gain"));
+				var rate = $(".rating.small[data-id='"+self.sign.id+"']");
+				//console.log(".rating.small[data-id='"+self.sign.id+"']");
+				window.R = self;
+				if (rate.length) {
+					rate.RatingPercents(self.get("sign.Gain"));
+				};
 			},1);
 		},
 		changeGain:function(){
 			var sign = this.get("sign");
-			console.log("sign");
-			this.set("sign.Gain",this.$().find(".rating").RatingPercents());
+			console.log(".rating.small[data-id='"+this.sign.id+"']");
+			this.set("sign.Gain",$(".rating.small[data-id='"+this.sign.id+"']").RatingPercents());
 			DataBase.Student.Sign.ModifyGain(sign,function(){
 
 			});
@@ -501,6 +603,10 @@
 			self.Inputs.Department.prompt.set("parentView",self);
 			self.Inputs.Grade.prompt.set("parentView",self);
 			*/
+			setTimeout(function(){
+				console.log("InitRating");
+				window.InitRating();//初始化Rating
+			},10);
 		},
 
 		Inputs: {
@@ -788,25 +894,45 @@
 	//View
 	AdminManager.AllStudentListController = AdminManager.StudentListController.extend({
 			departmenrName:"所有学生",
+			_Self:null,
 			refreshData:function(){
-				$("#frame-page-all-student_table").dataTable().fnDestroy();
+				var controller = this;
+				var S = controller.get("_Self");
+				if (S) {
+					S.fnDestroy();
+				}else{
+					$("#frame-page-all-student_table").width("100%");
+				};
 				this._super();
-				$("#frame-page-all-student_table").width("100%");
 				setTimeout(function(){
-					console.log("reinit table");
-					
-					$("#frame-page-all-student_table").dataTable({
-						"oLanguage": {"sSearch": "查询：",
-						"sLengthMenu": "显示 _MENU_ 记录",
-						"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
-						"oPaginate":{
-							"sNext":"下一页",
-							"sPrevious":"上一页",
-						},
-						"bDestroy":true,
-						"bRetrieve":true,
-					}});
-				},200);
+					if (!S) {
+						window.s = $("#frame-page-all-student_table").width("100%").dataTable({
+							"oLanguage": {"sSearch": "查询：",
+							"sLengthMenu": "显示 _MENU_ 记录",
+							"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
+							"oPaginate":{
+								"sNext":"下一页",
+								"sPrevious":"上一页",
+							},
+							"bDestroy":true,
+							"bRetrieve":true,
+						}});
+						controller.set("_Self",s);
+						controller.refreshData();
+					}else{
+						S.width("100%").dataTable({
+							"oLanguage": {"sSearch": "查询：",
+							"sLengthMenu": "显示 _MENU_ 记录",
+							"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
+							"oPaginate":{
+								"sNext":"下一页",
+								"sPrevious":"上一页",
+							},
+							"bDestroy":true,
+							"bRetrieve":true,
+						}});
+					};
+				},50);
 				return this;
 			}
 		}).create().refreshData();

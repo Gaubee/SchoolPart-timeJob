@@ -337,7 +337,7 @@
                 	Phone:data.Phone,
                 	Grade:11,
                 	ParentId:data.TeacherID,
-
+                	Score:data.Score,
                 }
                 if (!data.id) {
                 	upData.type="Add";

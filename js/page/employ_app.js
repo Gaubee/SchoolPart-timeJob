@@ -1,7 +1,7 @@
 ﻿//Model bulid & Controler bulid & View Init
 (function ($, Em) {
 
-	DataBase.Teacher.Login({RegisterNum:"87428899",Password:"myqg384266018"},function(data){
+	DataBase.Teacher.Login({RegisterNum:"123",Password:"123"},function(data){
 		window.EmploymentName = data.Name;
 		window.EmploymentId = data.id;
 		$("#departmentName").html(EmploymentName);

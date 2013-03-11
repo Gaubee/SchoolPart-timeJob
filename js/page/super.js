@@ -72,5 +72,5 @@
     //ready
     aid.slider(0); //隐藏用户简要信息页
     loading.noload(); //隐藏加载页
-    message.message("欢迎回来");
+   // message.message("欢迎回来");
 })(jQuery, Ember);

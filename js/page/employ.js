@@ -1,5 +1,9 @@
 ﻿//View Control
 (function ($) {
+    var contentP1= localStorage.getItem("EmploymentIdP1");
+    var contentP2= localStorage.getItem("EmploymentIdP2");
+    $("#P1").html(contentP1?contentP1:"自定义单位信息");
+    $("#P2").html(contentP2?contentP2:"自定义重要公示");
 
     //公告栏
     var Interface = $("#interface"); 
@@ -25,7 +29,10 @@
             textarea.blur(function () {
                 //console.log(textarea.html());
                 pDOM.editing = false;
-                p.html($.toTxt(textarea.val()));
+                var content = $.toTxt(textarea.val())
+                p.html(content);
+                localStorage.setItem("EmploymentId"+p.attr("id"),content);
+
             }).dblclick(function () { }).mousemove(function () { }).mouseover(function (e) {
                 e.stopPropagation();
             }).mousedown(function (e) {

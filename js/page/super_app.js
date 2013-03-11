@@ -475,8 +475,17 @@ var app = function(){
 	//Array
 	AdminManager.AllDepartmentController = Em.ArrayController.create({
 		content: [AdminManager.DepartmentObject.create()],
+		_Self:null,
 		refreshData: function() {
 			var controller = this;
+
+			var S = controller.get("_Self");
+			if (S) {
+				S.fnDestroy();
+			}else{
+				$("#frame-page-all-department_table").width("100%");
+			};
+
 			DataBase.Admin.GetTeacherList(function(data) {
 				var newcontent = [];
 				var Length = data.length;
@@ -488,7 +497,7 @@ var app = function(){
 					console.log("begin destory");
 					//console.log(controller.content)
 
-				$("#frame-page-all-department_table").dataTable().fnDestroy();
+				//$("#frame-page-all-department_table").dataTable().fnDestroy();
 				for (var i=0, items = [],len = controller.content.length;i<len ; ++i)
 				{
 					console.log("destory");
@@ -505,19 +514,36 @@ var app = function(){
 				//reinit table
 				setTimeout(function(){
 					console.log("reinit table");
+					if (!S) {
+						var  s = $("#frame-page-all-department_table").width("100%").dataTable({
+							"oLanguage": {"sSearch": "查询：",
+							"sLengthMenu": "显示 _MENU_ 记录",
+							"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
+							"oPaginate":{
+								"sNext":"下一页",
+								"sPrevious":"上一页",
+							},
+							"bDestroy":true,
+							"bRetrieve":true,
+						}});
+						controller.set("_Self",s);
+						controller.refreshData();
+					}else{
+						S.width("100%").dataTable({
+							"oLanguage": {"sSearch": "查询：",
+							"sLengthMenu": "显示 _MENU_ 记录",
+							"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
+							"oPaginate":{
+								"sNext":"下一页",
+								"sPrevious":"上一页",
+							},
+							"bDestroy":true,
+							"bRetrieve":true,
+						}});
+						//$("#frame-page-all-department_table").width("100%");
+					};
 					
-					$("#frame-page-all-department_table").dataTable({
-						"oLanguage": {"sSearch": "查询：",
-						"sLengthMenu": "显示 _MENU_ 记录",
-						"sInfo": "共有 _TOTAL_ 个记录，显示第 _START_ 至 _END_ 条",
-						"oPaginate":{
-							"sNext":"下一页",
-							"sPrevious":"上一页",
-						},
-						"bDestroy":true,
-						"bRetrieve":true,
-					}});
-				},200);
+				},50);
 			});
 		},
 		multipleChoiceBinding:"choiceContent.multipleChoice",
